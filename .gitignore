@@ -1,0 +1,28 @@
+# .gitignore
+
+
+# Apple
+.DS_Store
+
+
+# Secrets
+*.token
+.env
+
+# Model weights
+*.pt
+*.bin
+*.safetensors
+
+# Generated Outputs
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+
+$ result files
+data/
+models/.env
+sae_results/
+entropy_results/
+figures/
+*.png
