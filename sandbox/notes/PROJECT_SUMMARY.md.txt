@@ -1,0 +1,54 @@
+# SAELens Learning Project Summary
+
+## Context
+You're a climate scientist (15+ years experience, 70+ publications) exploring mechanistic interpretability as a potential research direction. You have 2 years of secure funding but need to determine if AI/interpretability work actually engages you intellectually before committing to a career transition.
+
+## The Test
+**Spend 2-3 weeks doing actual interpretability research work on your MacBook Pro (M3 Max, 36GB unified memory) to answer: Does this field actually interest me, or is it just an appealing narrative?**
+
+This is not a career commitment. It's a realistic trial.
+
+## Hardware & Setup
+- **Machine:** MacBook Pro M3 Max with 36GB unified memory
+- **Framework:** PyTorch with Metal Performance Shaders (MPS) acceleration
+- **Libraries:** SAELens + TransformerLens
+- **Model:** GPT-2 Small (well-studied, pre-trained SAEs available, runs efficiently on Mac)
+
+## Installation
+```bash
+pip install torch torchvision torchaudio
+pip install sae-lens transformer-lens
+```
+
+## Working Setup
+- `setup.py`: Loads GPT-2 Small model and pre-trained SAE once
+- Separate exploration scripts (`optionA.py`, etc.) import from `setup.py` to avoid reloading
+- Pre-trained SAE: `blocks.6.hook_resid_pre` from `gpt2-small-res-jb` release
+
+## Current Status
+- ✓ PyTorch + MPS verified working
+- ✓ SAELens/TransformerLens installed
+- ✓ Basic SAE loading and encoding/decoding working
+- Ready to explore feature activations
+
+## Research Direction
+**Mechanistic Interpretability Focus:**
+- Understanding how neural networks represent concepts internally
+- Using Sparse Autoencoders (SAEs) to extract interpretable features from activations
+- Preference: numbers/abstract concepts over word-game examples
+
+**Not pursuing:** EBM emulation project (abandoned as toy/uninteresting)
+
+## Exploration Plan
+Pick concrete questions about how small models work:
+- Option A: "What features activate when GPT-2 processes arithmetic?"
+- Option B: "How does the model represent negation?"
+- Option C: Your choice based on what actually pulls your curiosity
+
+**Success metric:** Does the work itself engage you when you're actually doing it? Not "should it," but does it?
+
+## Next Steps for Sonnet Chat
+- Technical debugging of SAELens/PyTorch issues
+- Code development and iteration
+- Hypothesis formation based on observations
+- Moving toward publishable research question (if interest holds)

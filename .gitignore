@@ -1,9 +1,9 @@
 # .gitignore
 
 
-# Apple
+# junk
 .DS_Store
-
+*~
 
 # Secrets
 *.token

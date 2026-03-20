@@ -1,0 +1,352 @@
+[
+  {
+    "pair_id": 0,
+    "role": "base",
+    "category": "pattern",
+    "description": "number sequence vs color intrusion",
+    "prompt": "one two three four"
+  },
+  {
+    "pair_id": 0,
+    "role": "contrast",
+    "category": "pattern",
+    "description": "number sequence vs color intrusion",
+    "prompt": "one two three purple"
+  },
+  {
+    "pair_id": 1,
+    "role": "base",
+    "category": "pattern",
+    "description": "weekday sequence vs noun intrusion",
+    "prompt": "Monday Tuesday Wednesday Thursday"
+  },
+  {
+    "pair_id": 1,
+    "role": "contrast",
+    "category": "pattern",
+    "description": "weekday sequence vs noun intrusion",
+    "prompt": "Monday Tuesday Wednesday coffee"
+  },
+  {
+    "pair_id": 2,
+    "role": "base",
+    "category": "pattern",
+    "description": "month sequence vs abstract noun intrusion",
+    "prompt": "January February March April"
+  },
+  {
+    "pair_id": 2,
+    "role": "contrast",
+    "category": "pattern",
+    "description": "month sequence vs abstract noun intrusion",
+    "prompt": "January February March democracy"
+  },
+  {
+    "pair_id": 3,
+    "role": "base",
+    "category": "pattern",
+    "description": "letter sequence vs digit intrusion",
+    "prompt": "A B C D"
+  },
+  {
+    "pair_id": 3,
+    "role": "contrast",
+    "category": "pattern",
+    "description": "letter sequence vs digit intrusion",
+    "prompt": "A B C seven"
+  },
+  {
+    "pair_id": 4,
+    "role": "base",
+    "category": "pattern",
+    "description": "color alternation vs abstract intrusion",
+    "prompt": "red blue red blue red"
+  },
+  {
+    "pair_id": 4,
+    "role": "contrast",
+    "category": "pattern",
+    "description": "color alternation vs abstract intrusion",
+    "prompt": "red blue red blue philosophy"
+  },
+  {
+    "pair_id": 5,
+    "role": "base",
+    "category": "pattern",
+    "description": "counting by tens vs noun intrusion",
+    "prompt": "10 20 30 40"
+  },
+  {
+    "pair_id": 5,
+    "role": "contrast",
+    "category": "pattern",
+    "description": "counting by tens vs noun intrusion",
+    "prompt": "10 20 30 banana"
+  },
+  {
+    "pair_id": 6,
+    "role": "base",
+    "category": "syntactic",
+    "description": "concrete location vs abstract noun",
+    "prompt": "The cat sat on the"
+  },
+  {
+    "pair_id": 6,
+    "role": "contrast",
+    "category": "syntactic",
+    "description": "concrete location vs abstract noun",
+    "prompt": "The cat sat on democracy"
+  },
+  {
+    "pair_id": 7,
+    "role": "base",
+    "category": "syntactic",
+    "description": "coherent continuation stem vs abrupt abstract",
+    "prompt": "She opened the door and"
+  },
+  {
+    "pair_id": 7,
+    "role": "contrast",
+    "category": "syntactic",
+    "description": "coherent continuation stem vs abrupt abstract",
+    "prompt": "She opened the door philosophy"
+  },
+  {
+    "pair_id": 8,
+    "role": "base",
+    "category": "syntactic",
+    "description": "plausible object vs number",
+    "prompt": "The dog barked at the"
+  },
+  {
+    "pair_id": 8,
+    "role": "contrast",
+    "category": "syntactic",
+    "description": "plausible object vs number",
+    "prompt": "The dog barked at seventeen"
+  },
+  {
+    "pair_id": 9,
+    "role": "base",
+    "category": "syntactic",
+    "description": "adjective before concrete noun vs abstract noun",
+    "prompt": "He picked up the heavy"
+  },
+  {
+    "pair_id": 9,
+    "role": "contrast",
+    "category": "syntactic",
+    "description": "adjective before concrete noun vs abstract noun",
+    "prompt": "He picked up the heavy equation"
+  },
+  {
+    "pair_id": 10,
+    "role": "base",
+    "category": "syntactic",
+    "description": "directional completion vs technical noun",
+    "prompt": "The sun rises in the"
+  },
+  {
+    "pair_id": 10,
+    "role": "contrast",
+    "category": "syntactic",
+    "description": "directional completion vs technical noun",
+    "prompt": "The sun rises in the algorithm"
+  },
+  {
+    "pair_id": 11,
+    "role": "base",
+    "category": "syntactic",
+    "description": "adjective before concrete vs discipline name",
+    "prompt": "They walked into the dark"
+  },
+  {
+    "pair_id": 11,
+    "role": "contrast",
+    "category": "syntactic",
+    "description": "adjective before concrete vs discipline name",
+    "prompt": "They walked into the dark calculus"
+  },
+  {
+    "pair_id": 12,
+    "role": "base",
+    "category": "predictability",
+    "description": "Shakespeare completion vs verb substitution",
+    "prompt": "To be or not to"
+  },
+  {
+    "pair_id": 12,
+    "role": "contrast",
+    "category": "predictability",
+    "description": "Shakespeare completion vs verb substitution",
+    "prompt": "To be or not to dance"
+  },
+  {
+    "pair_id": 13,
+    "role": "base",
+    "category": "predictability",
+    "description": "fairy tale opener vs mathematical term",
+    "prompt": "Once upon a"
+  },
+  {
+    "pair_id": 13,
+    "role": "contrast",
+    "category": "predictability",
+    "description": "fairy tale opener vs mathematical term",
+    "prompt": "Once upon a theorem"
+  },
+  {
+    "pair_id": 14,
+    "role": "base",
+    "category": "predictability",
+    "description": "Genesis opener vs technical term",
+    "prompt": "In the beginning"
+  },
+  {
+    "pair_id": 14,
+    "role": "contrast",
+    "category": "predictability",
+    "description": "Genesis opener vs technical term",
+    "prompt": "In the beginning calculus"
+  },
+  {
+    "pair_id": 15,
+    "role": "base",
+    "category": "predictability",
+    "description": "gothic fiction stem vs math term",
+    "prompt": "It was a dark and stormy"
+  },
+  {
+    "pair_id": 15,
+    "role": "contrast",
+    "category": "predictability",
+    "description": "gothic fiction stem vs math term",
+    "prompt": "It was a dark and stormy equation"
+  },
+  {
+    "pair_id": 16,
+    "role": "base",
+    "category": "predictability",
+    "description": "pangram completion vs abstract noun",
+    "prompt": "The quick brown fox jumps over the lazy"
+  },
+  {
+    "pair_id": 16,
+    "role": "contrast",
+    "category": "predictability",
+    "description": "pangram completion vs abstract noun",
+    "prompt": "The quick brown fox jumps over the lazy theorem"
+  },
+  {
+    "pair_id": 17,
+    "role": "base",
+    "category": "arithmetic",
+    "description": "arithmetic expression vs noun after operator",
+    "prompt": "1 + 1 ="
+  },
+  {
+    "pair_id": 17,
+    "role": "contrast",
+    "category": "arithmetic",
+    "description": "arithmetic expression vs noun after operator",
+    "prompt": "1 + 1 philosophy"
+  },
+  {
+    "pair_id": 18,
+    "role": "base",
+    "category": "arithmetic",
+    "description": "arithmetic expression vs concrete noun",
+    "prompt": "2 + 2 ="
+  },
+  {
+    "pair_id": 18,
+    "role": "contrast",
+    "category": "arithmetic",
+    "description": "arithmetic expression vs concrete noun",
+    "prompt": "2 + 2 river"
+  },
+  {
+    "pair_id": 19,
+    "role": "base",
+    "category": "arithmetic",
+    "description": "multiplication vs abstract noun",
+    "prompt": "3 x 3 ="
+  },
+  {
+    "pair_id": 19,
+    "role": "contrast",
+    "category": "arithmetic",
+    "description": "multiplication vs abstract noun",
+    "prompt": "3 x 3 democracy"
+  },
+  {
+    "pair_id": 20,
+    "role": "base",
+    "category": "arithmetic",
+    "description": "subtraction vs weekday",
+    "prompt": "10 - 5 ="
+  },
+  {
+    "pair_id": 20,
+    "role": "contrast",
+    "category": "arithmetic",
+    "description": "subtraction vs weekday",
+    "prompt": "10 - 5 Thursday"
+  },
+  {
+    "pair_id": 21,
+    "role": "base",
+    "category": "arithmetic",
+    "description": "addition vs animal",
+    "prompt": "5 + 3 ="
+  },
+  {
+    "pair_id": 21,
+    "role": "contrast",
+    "category": "arithmetic",
+    "description": "addition vs animal",
+    "prompt": "5 + 3 elephant"
+  },
+  {
+    "pair_id": 22,
+    "role": "base",
+    "category": "repetition",
+    "description": "pure repetition vs noun break",
+    "prompt": "the the the the"
+  },
+  {
+    "pair_id": 22,
+    "role": "contrast",
+    "category": "repetition",
+    "description": "pure repetition vs noun break",
+    "prompt": "the the the philosophy"
+  },
+  {
+    "pair_id": 23,
+    "role": "base",
+    "category": "repetition",
+    "description": "verb repetition vs abstract noun",
+    "prompt": "go go go go"
+  },
+  {
+    "pair_id": 23,
+    "role": "contrast",
+    "category": "repetition",
+    "description": "verb repetition vs abstract noun",
+    "prompt": "go go go democracy"
+  },
+  {
+    "pair_id": 24,
+    "role": "base",
+    "category": "repetition",
+    "description": "affirmation repetition vs technical term",
+    "prompt": "yes yes yes yes"
+  },
+  {
+    "pair_id": 24,
+    "role": "contrast",
+    "category": "repetition",
+    "description": "affirmation repetition vs technical term",
+    "prompt": "yes yes yes calculus"
+  }
+]

@@ -375,7 +375,7 @@ def main():
                         help="Top-k features per prompt (default: 10)")
     parser.add_argument("--category", type=str, default=None,
                         help="Filter to a single category")
-    parser.add_argument("--output-dir", type=str, default="sae_results",
+    parser.add_argument("--output-dir", type=str, default="figures",
                         help="Directory for results and plots")
     parser.add_argument("--no-plots", action="store_true",
                         help="Skip plot generation")
