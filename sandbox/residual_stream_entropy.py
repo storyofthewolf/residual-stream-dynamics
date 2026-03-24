@@ -14,8 +14,24 @@ Entropy formula:
         alpha  < 1   sensitive to small/rare activations
         alpha  > 1   dominated by large activations
 
+Data structure (NEW — 2D entropy surfaces):
+    Each result entry stores entropy as a 2D numpy array of shape [n_layers, seq_len].
+    Key format: "{norm_key}_alpha_{alpha}"  e.g. "energy_alpha_1.0"
+    Token labels stored as "str_tokens": ['<|endoftext|>', 'The', ' wolf', ...]
+
+    Backward-compatible slice for old 1D behavior:
+        result["energy_alpha_1.0"][:, -1]   → entropy vs layer at final token
+        result["energy_alpha_1.0"][layer, :] → entropy vs token position at fixed layer
+
 Trajectory geometry (PCA, cosine similarity, velocity, speed, acceleration)
 lives in residual_stream_dynamics.py.
+
+Plotting lives in entropy_plots.py:
+    plot_fixed_position()  — entropy vs layer at one token position (1D)
+    plot_fixed_layer()     — entropy vs token position at one layer (1D)
+    plot_2d_surface()      — full entropy surface as heatmap/contour (2D)
+    plot_overall_mean()    — mean ± 1σ across corpus pairs
+    plot_category()        — per-category base vs contrast curves
 
 Usage:
     python residual_stream_entropy.py --corpus corpus.json
@@ -36,24 +52,14 @@ from typing import Optional
 
 import torch
 import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens")
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 # Fallback prompts for quick standalone testing (no corpus required)
 DEFAULT_PROMPTS = [
-    "wolf",
-    "The wolf ran",
-    "The wolf ran through the forest",
-    "wolf wolf wolf",
-    "asdfgh",
-    "wol",
+    "After this error adjustment and freezing of attention and normalization nonlinearities"
 ]
-
-COLORS = plt.cm.tab10.colors
 
 
 # ============================================================================
@@ -139,7 +145,7 @@ def softmax_entropy(activations: torch.Tensor, alpha: float = 1.0) -> float:
 
 
 # ============================================================================
-# ANALYSIS OVER CORPUS
+# NORMALIZATION METHODS TABLE
 # ============================================================================
 
 # Normalization methods available for analysis.
@@ -151,25 +157,84 @@ NORM_METHODS = [
 ]
 
 
+# ============================================================================
+# CORE COMPUTATION: 2D ENTROPY SURFACE
+# For a single prompt, computes entropy at every (layer, token_position).
+# Returns a dict of 2D numpy arrays, shape [n_layers, seq_len].
+# ============================================================================
+
+def compute_entropy_surface(cache, n_layers: int, hook_pattern: str,
+                             seq_len: int, alphas: list) -> dict:
+    """
+    Compute entropy at every (layer, token_position) for a single prompt.
+
+    Args:
+        cache:        TransformerLens activation cache from run_with_cache()
+        n_layers:     number of transformer layers
+        hook_pattern: hook name template e.g. "blocks.{layer}.hook_resid_pre"
+        seq_len:      number of token positions (including BOS)
+        alphas:       list of Rényi alpha values
+
+    Returns:
+        dict mapping key strings to 2D numpy arrays of shape [n_layers, seq_len].
+        Key format: "{norm_key}_alpha_{alpha}"  e.g. "energy_alpha_1.0"
+
+    FORTRAN analogy:
+        This is equivalent to a doubly-nested loop over layer index and token
+        position index, writing results into a 2D array ENTROPY(layer, pos).
+        In FORTRAN you would declare:
+            REAL entropy(n_layers, seq_len)
+        Here we build that as a numpy array indexed [layer, token_position].
+    """
+    # Initialize 2D accumulator arrays: one per (norm_method, alpha) combination.
+    # Shape: [n_layers, seq_len] — analogous to FORTRAN REAL arr(n_layers, seq_len)
+    surfaces = {
+        f"{norm_key}_alpha_{alpha}": np.zeros((n_layers, seq_len), dtype=np.float32)
+        for norm_key, _, _ in NORM_METHODS
+        for alpha in alphas
+    }
+
+    for layer in range(n_layers):
+        hook_name = hook_pattern.format(layer=layer)
+        activations = cache[hook_name]          # shape: [batch, seq_len, d_model]
+
+        for t in range(seq_len):
+            vec = activations[0, t, :].float().cpu()   # shape: [d_model]
+
+            for norm_key, _, norm_fn in NORM_METHODS:
+                probs = norm_fn(vec)
+                for alpha in alphas:
+                    key = f"{norm_key}_alpha_{alpha}"
+                    surfaces[key][layer, t] = renyi_entropy(probs, alpha)
+
+    return surfaces
+
+
+# ============================================================================
+# ANALYSIS OVER CORPUS
+# ============================================================================
+
 def run_entropy_analysis(model, corpus: list, n_layers: int,
                          hook_pattern: str, device: str,
                          alphas: list,
                          category_filter: Optional[str] = None,
                          return_vectors: bool = False):
     """
-    For each prompt in corpus, compute per-layer Rényi entropy of the
-    residual stream activation vector at the final token position.
+    For each prompt in corpus, compute the 2D entropy surface [n_layers, seq_len]
+    at every token position and layer.
 
-    Computes all normalization methods × all alpha values.
+    Each result entry contains:
+        - "str_tokens":  list of string token labels e.g. ['<|endoftext|>', 'The', ...]
+        - "seq_len":     number of token positions
+        - "{norm_key}_alpha_{alpha}": 2D numpy array [n_layers, seq_len]
 
-    Result dict keys follow the pattern: "{norm_key}_alpha_{alpha}"
-    e.g. "energy_alpha_1.0", "abs_alpha_2.0", "softmax_alpha_0.5"
+    Backward-compatible slice for old 1D behavior:
+        result["energy_alpha_1.0"][:, -1]   → entropy vs layer, final token only
 
     Args:
-        return_vectors: if True, also return raw layer vectors as a second
-                        value — a dict { prompt_str: tensor (n_layers, d_model) }
-                        Used by residual_stream_dynamics.py to avoid a second
-                        forward pass.
+        return_vectors: if True, also return raw layer vectors as a second value.
+                        Dict { prompt_str: tensor (n_layers, d_model) } using
+                        final token position only (for dynamics compatibility).
 
     Returns:
         results list, or (results list, vectors dict) if return_vectors=True
@@ -185,31 +250,23 @@ def run_entropy_analysis(model, corpus: list, n_layers: int,
     for i, entry in enumerate(filtered):
         prompt = entry["prompt"]
         tokens = model.to_tokens(prompt, prepend_bos=True).to(device)
+        seq_len = tokens.shape[1]                          # number of token positions
+        str_tokens = model.to_str_tokens(prompt)           # human-readable token labels
 
         with torch.no_grad():
             _, cache = model.run_with_cache(tokens)
 
-        # Build entropy curves: {key: [layer0, layer1, ...]}
-        entropy_curves = {
-            f"{norm_key}_alpha_{alpha}": []
-            for norm_key, _, _ in NORM_METHODS
-            for alpha in alphas
-        }
+        # Compute full 2D entropy surface for this prompt
+        surfaces = compute_entropy_surface(
+            cache, n_layers, hook_pattern, seq_len, alphas
+        )
 
+        # Collect final-position vectors for dynamics compatibility
         layer_vecs = []
-
-        for layer in range(n_layers):
-            hook_name = hook_pattern.format(layer=layer)
-            activations = cache[hook_name]
-            vec = activations[0, -1, :].float().cpu()
-
-            for norm_key, _, norm_fn in NORM_METHODS:
-                probs = norm_fn(vec)
-                for alpha in alphas:
-                    key = f"{norm_key}_alpha_{alpha}"
-                    entropy_curves[key].append(renyi_entropy(probs, alpha))
-
-            if return_vectors:
+        if return_vectors:
+            for layer in range(n_layers):
+                hook_name = hook_pattern.format(layer=layer)
+                vec = cache[hook_name][0, -1, :].float().cpu()
                 layer_vecs.append(vec)
 
         results.append({
@@ -218,7 +275,9 @@ def run_entropy_analysis(model, corpus: list, n_layers: int,
             "category":    entry["category"],
             "description": entry["description"],
             "prompt":      prompt,
-            **entropy_curves,
+            "str_tokens":  str_tokens,
+            "seq_len":     seq_len,
+            **surfaces,
         })
 
         if return_vectors:
@@ -233,143 +292,15 @@ def run_entropy_analysis(model, corpus: list, n_layers: int,
 
 
 # ============================================================================
-# PLOTTING
-# ============================================================================
-
-def plot_overall_mean(results: list, alphas: list, output_dir: Path,
-                      model_name: str = ""):
-    """
-    One row of subplots per normalization method.
-    One column per alpha value.
-    Each subplot: mean ± 1σ entropy across all pairs, base vs contrast.
-    """
-    n_rows = len(NORM_METHODS)
-    n_cols = len(alphas)
-    n_layers = len(results[0][f"energy_alpha_{alphas[0]}"])
-    layers = list(range(n_layers))
-
-    fig, axes = plt.subplots(n_rows, n_cols,
-                             figsize=(5 * n_cols, 4 * n_rows),
-                             sharey=False, squeeze=False)
-
-    title = "Residual stream entropy — all categories (mean ± 1σ)"
-    if model_name:
-        title += f"  [{model_name}]"
-    fig.suptitle(title, fontsize=12)
-
-    for row, (norm_key, norm_label, _) in enumerate(NORM_METHODS):
-        for col, alpha in enumerate(alphas):
-            ax = axes[row][col]
-            key = f"{norm_key}_alpha_{alpha}"
-            alpha_label = "Shannon" if abs(alpha - 1.0) < 1e-6 else f"Rényi α={alpha}"
-
-            for role, color, ls in [("base",     "#1565C0", "-"),
-                                     ("contrast", "#B71C1C", "--")]:
-                curves = [r[key] for r in results if r["role"] == role]
-                if not curves:
-                    continue
-                arr = np.array(curves)
-                mean, std = arr.mean(axis=0), arr.std(axis=0)
-                ax.plot(layers, mean, color=color, linestyle=ls,
-                        linewidth=2.0, label=f"{role} mean")
-                ax.fill_between(layers, mean - std, mean + std,
-                                color=color, alpha=0.15)
-
-            ax.set_title(f"{norm_label}\n{alpha_label}", fontsize=9)
-            ax.set_xlabel("Layer")
-            ax.set_ylabel("Entropy (bits)")
-            ax.set_xticks(layers)
-            ax.grid(alpha=0.3)
-            if row == 0 and col == 0:
-                ax.legend(fontsize=8)
-
-    plt.tight_layout()
-    suffix = f"_{model_name}" if model_name else ""
-    out_path = output_dir / f"residual_entropy_overall{suffix}.png"
-    plt.savefig(out_path, dpi=130, bbox_inches="tight")
-    plt.close()
-    print(f"  ✓ {out_path}")
-
-
-def plot_category(results: list, category: str, alphas: list,
-                  output_dir: Path, model_name: str = ""):
-    """
-    Per-category plot. One subplot per normalization × alpha combination.
-    Base=solid, contrast=dashed. Bold lines=mean across pairs.
-    """
-    cat_results = [r for r in results if r["category"] == category]
-    if not cat_results:
-        return
-
-    by_pair = defaultdict(dict)
-    for r in cat_results:
-        by_pair[r["pair_id"]][r["role"]] = r
-
-    n_layers = len(next(iter(cat_results))[f"energy_alpha_{alphas[0]}"])
-    layers = list(range(n_layers))
-    PAIR_COLORS = list(plt.cm.tab10.colors) + list(plt.cm.Set2.colors[:5])
-
-    n_rows = len(NORM_METHODS)
-    n_cols = len(alphas)
-    fig, axes = plt.subplots(n_rows, n_cols,
-                             figsize=(5 * n_cols, 4 * n_rows),
-                             sharey=False, squeeze=False)
-
-    title = f"Residual stream entropy — {category}"
-    if model_name:
-        title += f"  [{model_name}]"
-    fig.suptitle(title, fontsize=12)
-
-    for row, (norm_key, norm_label, _) in enumerate(NORM_METHODS):
-        for col, alpha in enumerate(alphas):
-            ax = axes[row][col]
-            key = f"{norm_key}_alpha_{alpha}"
-            alpha_label = "Shannon" if abs(alpha - 1.0) < 1e-6 else f"Rényi α={alpha}"
-            all_base, all_contrast = [], []
-
-            for pair_idx, (pair_id, roles) in enumerate(sorted(by_pair.items())):
-                color = PAIR_COLORS[pair_idx % len(PAIR_COLORS)]
-                for role, ls in [("base", "-"), ("contrast", "--")]:
-                    if role not in roles:
-                        continue
-                    curve = roles[role][key]
-                    ax.plot(layers, curve, color=color, linestyle=ls,
-                            linewidth=1.0, alpha=0.5)
-                    (all_base if role == "base" else all_contrast).append(curve)
-
-            if all_base:
-                ax.plot(layers, np.mean(all_base, axis=0),
-                        color="black", linestyle="-", linewidth=2.2,
-                        label="mean base", zorder=5)
-            if all_contrast:
-                ax.plot(layers, np.mean(all_contrast, axis=0),
-                        color="dimgray", linestyle="--", linewidth=2.2,
-                        label="mean contrast", zorder=5)
-
-            ax.set_title(f"{norm_label}\n{alpha_label}", fontsize=9)
-            ax.set_xlabel("Layer")
-            ax.set_ylabel("Entropy (bits)")
-            ax.set_xticks(layers)
-            ax.grid(alpha=0.3)
-            if row == 0 and col == 0:
-                ax.legend(fontsize=7)
-
-    plt.tight_layout()
-    suffix = f"_{model_name}" if model_name else ""
-    out_path = output_dir / f"residual_entropy_{category}{suffix}.png"
-    plt.savefig(out_path, dpi=130, bbox_inches="tight")
-    plt.close()
-    print(f"  ✓ {out_path}")
-
-
-# ============================================================================
 # SUMMARY
 # ============================================================================
 
 def print_summary(results: list, alphas: list):
-    """Print mean trajectory for energy normalization at each alpha."""
+    """Print mean trajectory for energy normalization at each alpha.
+    Uses final token position only ([:, -1]) for backward compatibility."""
     print("\n" + "=" * 60)
     print("ENTROPY TRAJECTORY SUMMARY (energy normalization v²/Σv²)")
+    print("  (final token position)")
     print("=" * 60)
 
     for alpha in alphas:
@@ -379,7 +310,7 @@ def print_summary(results: list, alphas: list):
 
         by_role = defaultdict(list)
         for r in results:
-            by_role[r["role"]].append(r[key])
+            by_role[r["role"]].append(r[key][:, -1])   # slice to final token → 1D
 
         for role in ["base", "contrast"]:
             curves = by_role[role]
@@ -387,12 +318,48 @@ def print_summary(results: list, alphas: list):
                 continue
             mean = np.mean(curves, axis=0)
             min_layer = int(np.argmin(mean))
+            n_layers = len(mean)
             print(f"    {role.upper()} ({len(curves)} prompts): "
                   f"L0={mean[0]:.2f}  "
-                  f"L{len(mean)-1}={mean[-1]:.2f}  "
+                  f"L{n_layers-1}={mean[-1]:.2f}  "
                   f"min=L{min_layer}({mean[min_layer]:.2f})")
             print(f"      {' '.join(f'{v:.1f}' for v in mean)}")
     print()
+
+
+# ============================================================================
+# RESULTS SERIALIZATION
+# numpy arrays are not JSON-serializable; convert to nested lists for saving.
+# ============================================================================
+
+def results_to_json(results: list) -> list:
+    """Convert 2D numpy arrays in results to nested lists for JSON serialization."""
+    serializable = []
+    for r in results:
+        entry = {}
+        for k, v in r.items():
+            if isinstance(v, np.ndarray):
+                entry[k] = v.tolist()   # 2D array → list of lists
+            else:
+                entry[k] = v
+        serializable.append(entry)
+    return serializable
+
+
+def results_from_json(raw: list) -> list:
+    """Convert nested lists back to 2D numpy arrays after JSON load."""
+    results = []
+    for r in raw:
+        entry = {}
+        for k, v in r.items():
+            # Identify entropy surface keys by shape: list of lists of floats
+            if (isinstance(v, list) and len(v) > 0
+                    and isinstance(v[0], list)):
+                entry[k] = np.array(v, dtype=np.float32)
+            else:
+                entry[k] = v
+        results.append(entry)
+    return results
 
 
 # ============================================================================
@@ -447,7 +414,7 @@ def main():
             corpus = json.load(f)
         print(f"\n✓ Loaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
 
-        print(f"\nComputing residual stream entropy across {n_layers} layers...")
+        print(f"\nComputing residual stream entropy surfaces across {n_layers} layers...")
         results = run_entropy_analysis(
             model, corpus, n_layers, hook_pattern,
             cfg["device"], alphas, args.category
@@ -455,12 +422,13 @@ def main():
 
         results_path = output_dir / f"residual_entropy_results_{args.model}.json"
         with open(results_path, "w") as f:
-            json.dump(results, f, indent=2)
+            json.dump(results_to_json(results), f, indent=2)
         print(f"\n✓ Results saved to {results_path}")
 
         print_summary(results, alphas)
 
         if not args.no_plots:
+            from entropy_plots import plot_overall_mean, plot_category
             print(f"Generating plots in {output_dir}/...")
             categories = sorted(set(r["category"] for r in results))
             for cat in categories:
@@ -470,43 +438,60 @@ def main():
     # ── Default prompts mode (quick standalone test) ──────────────────────────
     else:
         print(f"\nNo corpus provided — running on default prompts...")
-        curves_by_prompt = {p: {a: [] for a in alphas} for p in DEFAULT_PROMPTS}
 
+        all_results = []
         for prompt in DEFAULT_PROMPTS:
             tokens = model.to_tokens(prompt).to(cfg["device"])
+            seq_len = tokens.shape[1]
+            str_tokens = model.to_str_tokens(prompt)
+
+            print(f"\nPrompt: '{prompt}'")
+            print(f"  Tokens ({seq_len}): {str_tokens}")
+
             with torch.no_grad():
                 _, cache = model.run_with_cache(tokens)
 
-            for layer in range(n_layers):
-                hook_name = hook_pattern.format(layer=layer)
-                vec = cache[hook_name][0, -1, :].float().cpu()
-                probs = normalize_energy(vec)
-                for alpha in alphas:
-                    curves_by_prompt[prompt][alpha].append(renyi_entropy(probs, alpha))
+            surfaces = compute_entropy_surface(
+                cache, n_layers, hook_pattern, seq_len, alphas
+            )
 
-            print(f"  '{prompt}': "
-                  f"{[f'{v:.3f}' for v in curves_by_prompt[prompt][1.0]]}")
+            # Print final-token Shannon entropy trajectory for quick inspection
+            shannon_final = surfaces["energy_alpha_1.0"][:, -1]
+            print(f"  Shannon entropy at final token ('{str_tokens[-1]}') vs layer:")
+            print(f"  {[f'{v:.3f}' for v in shannon_final]}")
+
+            all_results.append({
+                "prompt":     prompt,
+                "str_tokens": str_tokens,
+                "seq_len":    seq_len,
+                **surfaces,
+            })
 
         if not args.no_plots:
+            from entropy_plots import (plot_fixed_position, plot_fixed_layer,
+                                       plot_2d_surface)
             print(f"\nGenerating plots in {output_dir}/...")
-            shannon_curves = {p: curves_by_prompt[p][1.0] for p in DEFAULT_PROMPTS}
-            layers = list(range(len(next(iter(shannon_curves.values())))))
-            fig, ax = plt.subplots(figsize=(9, 5))
-            for i, (prompt, curve) in enumerate(shannon_curves.items()):
-                ax.plot(layers, curve, marker="o", markersize=4,
-                        linewidth=1.8, color=COLORS[i % len(COLORS)],
-                        label=repr(prompt))
-            ax.set_xlabel("Layer")
-            ax.set_ylabel("Entropy (bits)")
-            ax.set_title("Residual stream entropy — energy norm, Shannon (α=1)")
-            ax.set_xticks(layers)
-            ax.grid(alpha=0.3)
-            ax.legend(fontsize=8, bbox_to_anchor=(1.01, 1), loc="upper left")
-            plt.tight_layout()
-            out = str(output_dir / "residual_entropy_default.png")
-            plt.savefig(out, dpi=130, bbox_inches="tight")
-            plt.close()
-            print(f"✓ {out}")
+            for result in all_results:
+                prompt = result["prompt"]
+                safe_name = prompt.replace(" ", "_")[:30]
+
+                # 1D: entropy vs layer, every token position overlaid
+                plot_fixed_position(
+                    result, alphas, output_dir,
+                    filename=f"entropy_vs_layer_{safe_name}.png"
+                )
+
+                # 1D: entropy vs token position, every layer overlaid
+                plot_fixed_layer(
+                    result, alphas, output_dir,
+                    filename=f"entropy_vs_position_{safe_name}.png"
+                )
+
+                # 2D: full entropy surface heatmap
+                plot_2d_surface(
+                    result, alpha=1.0, output_dir=output_dir,
+                    filename=f"entropy_surface_{safe_name}.png"
+                )
 
     print(f"\nDone. Results in {output_dir}/\n")
 

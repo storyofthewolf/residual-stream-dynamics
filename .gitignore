@@ -21,8 +21,5 @@ __pycache__/
 
 $ result files
 data/
-models/.env
-sae_results/
-entropy_results/
 figures/
 *.png

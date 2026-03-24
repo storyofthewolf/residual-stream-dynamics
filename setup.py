@@ -5,12 +5,6 @@ Models are automatically downloaded and cached to ~/.cache/huggingface/hub/ on f
 Subsequent loads are fast (loads from cache).
 
 Usage:
-    # Load model (auto-caches on first run, loads from cache afterwards)
-    python predict.py "2 + 2 =" --model pythia-1b
-    
-    # Load model + SAE
-    python predict.py "2 + 2 =" --model pythia-1b --load-sae
-    
     # List available models
     python setup.py --list
     
@@ -254,6 +248,19 @@ def list_cached_models():
     print()
     return
 
+def scan_hooks(model, device: str, prompt: str = "The wolf ran through") -> None:
+    """Print all available hooks for blocks.0 with their shapes.
+    Useful for verifying hook availability before running analysis."""
+    tokens = model.to_tokens(prompt).to(device)
+    with torch.no_grad():
+        _, cache = model.run_with_cache(tokens)
+    print(f"\nScanning hooks in cache.keys() for prompt: '{prompt}'")
+    keys = [k for k in cache.keys() if 'blocks.0.' in k]
+    for key in keys:
+        print(f"  {key}: {cache[key].shape}")
+    print()
+    return
+
 """
 def list_available_saes(model_key: str):
     from sae_lens import pretrained_saes
@@ -287,6 +294,7 @@ def main():
     parser.add_argument("--model", type=str, default="pythia-1b", help="Model to load")
     parser.add_argument("--layer", type=int, default=None, help="SAE layer")
     parser.add_argument("--load-sae", action="store_true", help="Load SAE too")
+    parser.add_argument("--scan-hooks", action="store_true", help="Scann for layer hooks")
     
     args = parser.parse_args()
     
@@ -297,7 +305,7 @@ def main():
     if args.list_cache:
         list_cached_models()
         return
-    
+
     #if args.list_saes:
     #    list_available_saes(args.list_saes)
     #    return
@@ -308,11 +316,16 @@ def main():
             layer=args.layer,
             load_sae=args.load_sae
         )
-        print(f"Config: {cfg}")
+        print(f"Config: {cfg}\n")
     except Exception as e:
         print(f"Failed: {e}")
         return 1
 
+    if args.scan_hooks:
+        scan_hooks(model, cfg["device"])
+
+    print(f"\nDone.")
+              
 
 if __name__ == "__main__":
     main()
