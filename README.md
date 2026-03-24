@@ -79,14 +79,32 @@ python workflows/corpus_analysis.py --corpus corpus.json \
 
 
 ## Project Structure
-setup.py          — model registry, loading, and introspection (scan_hooks, list_models)
-extraction.py     — forward pass, ActivationRecord dataclass
-computation.py    — entropy surfaces, EntropyRecord dataclass
-entropy_plots.py  — all visualization
-corpus_gen.py     — corpus generation
-workflows/
-    explore_prompt.py   — single-prompt exploratory analysis
-    corpus_analysis.py  — full corpus base/contrast pipeline
-sandbox/          — deprecated scripts retained for reference
-figures/          — generated plots (gitignored)
-data/             — saved .npz results (gitignored)
+```
+.
+├── data/                   # Saved .npz results (gitignored)
+├── figures/                # Generated plots (gitignored)
+├── sandbox/                # Deprecated scripts retained for reference
+├── workflows/
+│   ├── corpus_analysis.py  # Full corpus base/contrast pipeline
+│   └── explore_prompt.py   # Single-prompt exploratory analysis
+├── computation.py          # Entropy surfaces, EntropyRecord dataclass
+├── corpus_gen.py           # Corpus generation
+├── entropy_plots.py        # All visualization
+├── extraction.py           # Forward pass, ActivationRecord dataclass
+└── setup.py                # Model registry, loading, and introspection
+```
+
+graph TD
+    Root[Project Root] --> Data[data/]
+    Root --> Figs[figures/]
+    Root --> Sand[sandbox/]
+    Root --> Work[workflows/]
+    
+    Work --> CA[corpus_analysis.py]
+    Work --> EP[explore_prompt.py]
+    
+    Root --> Comp[computation.py]
+    Root --> CG[corpus_gen.py]
+    Root --> Plots[entropy_plots.py]
+    Root --> Extract[extraction.py]
+    Root --> Setup[setup.py]
