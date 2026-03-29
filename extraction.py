@@ -39,11 +39,8 @@ Supported hook_types (short names → full patterns):
     "mlp_pre"     → blocks.{layer}.mlp.hook_pre     (internal MLP, d_model=4×hidden)
     "mlp_post"    → blocks.{layer}.mlp.hook_post    (internal MLP, d_model=4×hidden)
 
-FORTRAN analogy:
-    This module is equivalent to a data I/O layer — it reads from the
-    "instrument" (the neural network) and writes to a structured data record.
-    All subsequent analysis reads from that record without re-running the model,
-    exactly as post-processing scripts read from model output files.
+    This module is the data I/O layer — it reads from the neural network
+    residual stream and writes to a structured data record.
 """
 
 from __future__ import annotations

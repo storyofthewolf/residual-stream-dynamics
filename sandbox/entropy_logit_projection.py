@@ -26,7 +26,9 @@ Usage:
     python entropy_analysis.py --corpus corpus.json --category pattern
     python entropy_analysis.py --corpus corpus.json --no-plots
 """
-
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import json
 import argparse
 import warnings
@@ -101,9 +103,9 @@ def logit_lens_entropy(model, prompt: str, alphas: list, device: str) -> dict:
             normed = model.ln_final(resid)      # (seq_len, d_model)
             logits = normed @ W_U               # (seq_len, vocab)
 #      unnormalized logits (dot product with unembed matrix)    
-#             logits = resid @ W_U
+#            logits = resid @ W_U
 
-        probs = logits / model.cfg.d_model**0.5
+        probs = torch.softmax(logits, dim=-1)  # (seq_len, vocab)
 
         for pos in range(seq_len):
             p = probs[pos]

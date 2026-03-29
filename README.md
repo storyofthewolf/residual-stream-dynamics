@@ -94,17 +94,9 @@ python workflows/corpus_analysis.py --corpus corpus.json \
 └── setup.py                # Model registry, loading, and introspection
 ```
 
-graph TD
-    Root[Project Root] --> Data[data/]
-    Root --> Figs[figures/]
-    Root --> Sand[sandbox/]
-    Root --> Work[workflows/]
-    
-    Work --> CA[corpus_analysis.py]
-    Work --> EP[explore_prompt.py]
-    
-    Root --> Comp[computation.py]
-    Root --> CG[corpus_gen.py]
-    Root --> Plots[entropy_plots.py]
-    Root --> Extract[extraction.py]
-    Root --> Setup[setup.py]
+## Information of hook 
+- hook_resid_pre = residual stream before the attention operation at this layer
+- hook_attn_out = the output of the attention sub-layer alone (the delta)
+- hook_resid_mid = resid_pre + attn_out (residual stream after attention, before MLP)
+- hook_mlp_out = the output of the MLP sub-layer alone (the delta)
+- hook_resid_post = resid_mid + mlp_out = resid_pre + attn_out + mlp_out
