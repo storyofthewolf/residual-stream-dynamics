@@ -124,6 +124,24 @@ MODEL_CONFIGS = {
         "gated": False,
         "requires_auth": False
     },
+    "gpt2-large": {
+        "hf_name": "gpt2-large",
+        "sae_release": "gpt2-large-res-jb",
+        "default_layer": 8,
+        "hook_pattern": "blocks.{layer}.hook_resid_pre",
+        "description": "GPT-2 Large",
+        "gated": False,
+        "requires_auth": False
+    },
+    "gpt2-xl": {
+        "hf_name": "gpt2-xl",
+        "sae_release": None,
+        "default_layer": 8,
+        "hook_pattern": "blocks.{layer}.hook_resid_pre",
+        "description": "GPT-2 XL",
+        "gated": False,
+        "requires_auth": False
+    },
 }
 
 
