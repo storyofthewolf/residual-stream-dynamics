@@ -6,7 +6,7 @@ Produces EntropyRecords for consumption by entropy_plots.py.
 Pipeline position:
     extraction.py → COMPUTATION (this file) → entropy_plots.py
 
-Two parallel computation paths, both producing EntropyRecords:
+Three computation paths, all producing EntropyRecords:
 
     compute_residual_stream_entropy(record, alphas, norm_keys)
         Geometric entropy measured directly in activation space.
@@ -19,6 +19,13 @@ Two parallel computation paths, both producing EntropyRecords:
         Normalization path is fixed: ln_final → @ W_U → softmax.
         Requires W_U and ln_final passed from the workflow layer.
         Produces len(alphas) EntropyRecords with norm_key="logit_lens".
+
+    compute_wu_subspace_entropy(record, alphas, Vh, k_values)
+        Entropy in the W_U prediction subspace (r‖) and its orthogonal
+        complement (r⊥), decomposed via SVD of the unembedding matrix.
+        Requires pre-computed Vh from compute_wu_svd().
+        Produces 2 × len(k_values) × len(alphas) EntropyRecords
+        with norm_keys "wu_parallel_k{k}" and "wu_orthogonal_k{k}".
 
 Both functions accept one ActivationRecord and return a list of EntropyRecords.
 Iteration over corpora is handled by the workflow scripts, not here.
@@ -57,6 +64,11 @@ Expansion points:
     Future analysis types (RenyiSpectrumRecord, VonNeumannRecord,
     DynamicsRecord) will be added to this file as new dataclasses and
     compute functions following the same ActivationRecord → *Record pattern.
+
+W_U subspace helpers (used by workflow layer):
+    compute_wu_svd(W_U)                         — SVD wrapper, returns Vh
+    wu_explained_variance(W_U, k_values)        — diagnostic: fraction of
+                                                  W_U Frobenius norm per k
 """
 
 from __future__ import annotations
@@ -424,6 +436,205 @@ def compute_logit_lens_entropy(
 
 
 # ============================================================================
+# COMPUTATION PATH 3: W_U SUBSPACE ENTROPY
+# Decomposes the residual stream into the token-prediction subspace (r‖)
+# and its orthogonal complement (r⊥) via SVD of the unembedding matrix.
+# Tests whether the anti-correlation between residual stream entropy and
+# logit lens entropy arises from subspace segregation.
+#
+# Requires W_U or its pre-computed SVD, passed from the workflow layer.
+# Produces EntropyRecords with norm_keys like "wu_parallel_k50",
+# "wu_orthogonal_k50".
+# ============================================================================
+
+def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
+    """
+    Compute the right singular vectors of W_U for subspace decomposition.
+
+    W_U has shape [d_model, vocab_size].  We take the SVD of W_U.T
+    (shape [vocab_size, d_model]) to get the right singular vectors Vh,
+    whose rows are orthonormal basis vectors for d_model space, ordered
+    by how much variance in W_U each direction explains.
+
+    FORTRAN analogy:
+        This is like computing the eigenvectors of a covariance matrix
+        once before a time-stepping loop — a basis-set precomputation
+        that gets reused at every timestep (here, every prompt).
+
+    Args:
+        W_U:  unembedding matrix, shape [d_model, vocab_size]
+              obtained from model.W_U.detach() in the workflow layer
+
+    Returns:
+        Vh:   right singular vectors, shape [d_model, d_model]
+              (or [min(vocab, d_model), d_model] — but vocab >> d_model
+               so this is always [d_model, d_model])
+              Row i is the i-th principal direction of W_U, ordered by
+              decreasing singular value.
+    """
+    _, _, Vh = torch.linalg.svd(W_U.T.float(), full_matrices=False)
+    return Vh
+
+
+def wu_explained_variance(W_U: torch.Tensor, k_values: list) -> dict:
+    """
+    Fraction of W_U's Frobenius norm captured by the top-k singular directions.
+
+    This is the transformer equivalent of explained variance in EOF/PCA
+    analysis — it tells you how much of the unembedding matrix's "energy"
+    lives in the top-k directions. Use this to report k choices in terms
+    of explained variance (e.g. "k=100 captures 85% of W_U variance")
+    rather than arbitrary integer rank.
+
+    FORTRAN analogy:
+        Like computing cumulative explained variance from eigenvalues
+        of a covariance matrix: sum(lambda_1..k) / sum(lambda_all).
+        The squared singular values play the role of eigenvalues.
+
+    Args:
+        W_U:      unembedding matrix, shape [d_model, vocab_size]
+        k_values: list of subspace ranks to evaluate
+
+    Returns:
+        dict mapping k -> fraction of Frobenius norm explained (float in [0, 1])
+    """
+    _, S, _ = torch.linalg.svd(W_U.T.float(), full_matrices=False)
+    total = (S ** 2).sum()
+    return {k: ((S[:k] ** 2).sum() / total).item() for k in k_values}
+
+
+def compute_wu_subspace_entropy(
+    record:   ActivationRecord,
+    alphas:   list,
+    Vh:       torch.Tensor,
+    k_values: list,
+) -> list:
+    """
+    Compute entropy in the W_U prediction subspace (r‖) and its orthogonal
+    complement (r⊥) at every (layer, token_position) for a sweep of
+    subspace ranks k and Rényi alpha values.
+
+    The decomposition:
+        Q_k  = Vh[:k, :].T          top-k right singular vectors of W_U
+        r‖   = Q_k @ (Q_k.T @ r)    projection onto prediction subspace
+        r⊥   = r - r‖               orthogonal complement
+
+    At each (layer, token, k), the energy normalization v²/Σv² converts
+    each subspace vector into a probability distribution over its d_model
+    dimensions, and Rényi entropy measures the concentration.
+
+    Scientific note on entropy scale:
+        r‖ has at most k nonzero components → entropy bounded by log2(k).
+        r⊥ has at most (d_model - k) nonzero components → bounded by
+        log2(d_model - k). The entropies live on different scales when
+        k ≠ d_model/2. This is physically meaningful (captures dimensional
+        concentration) but should be kept in mind when comparing across k.
+
+    FORTRAN analogy:
+        Think of Vh as a pre-computed spectral basis (like spherical harmonics
+        or EOFs). Q_k is a truncation to the first k modes. The projection
+        Q_k @ (Q_k.T @ r) is a spectral filter — it keeps the large-scale
+        modes and the residual r⊥ is the small-scale remainder. The k-sweep
+        is like varying the truncation wavenumber in a spectral model to see
+        where the scientifically interesting signal lives.
+
+    Args:
+        record:   ActivationRecord from extraction.py
+        alphas:   list of Rényi alpha values, e.g. [0.5, 1.0, 2.0, 3.0]
+        Vh:       right singular vectors from compute_wu_svd(),
+                  shape [d_model, d_model]. Row i = i-th principal direction.
+        k_values: list of subspace ranks to sweep, e.g. [10, 50, 100, 200, 400, 600]
+
+    Returns:
+        list of EntropyRecord with norm_keys "wu_parallel_k{k}" and
+        "wu_orthogonal_k{k}", one per (subspace, k, alpha) combination.
+        Length = 2 * len(k_values) * len(alphas)
+    """
+    n_layers = record.n_layers
+    seq_len  = record.seq_len
+    d_model  = record.d_model
+
+    # Validate k_values against d_model
+    for k in k_values:
+        if k < 1 or k >= d_model:
+            raise ValueError(
+                f"k={k} out of range for d_model={d_model}. "
+                f"k must satisfy 1 <= k < d_model."
+            )
+
+    # Build norm_keys for all (subspace, k) combinations
+    norm_keys_par  = [f"wu_parallel_k{k}" for k in k_values]
+    norm_keys_orth = [f"wu_orthogonal_k{k}" for k in k_values]
+    all_norm_keys  = norm_keys_par + norm_keys_orth
+
+    # Initialize surfaces: dict keyed by (norm_key, alpha) → [n_layers, seq_len]
+    # This is the same 3D-array-indexed-by-dict pattern used throughout the
+    # codebase — think of it as surfaces(norm_key, layer, token).
+    surfaces = {
+        (nk, alpha): np.zeros((n_layers, seq_len), dtype=np.float32)
+        for nk in all_norm_keys
+        for alpha in alphas
+    }
+
+    # Precompute projection matrices Q_k for each k — one-time cost.
+    # Q_k has shape [d_model, k]: columns are the top-k singular directions.
+    # Storing Q_k @ Q_k.T directly as a [d_model, d_model] projection matrix
+    # would use more memory but save a matmul per (layer, token, k). For
+    # d_model <= 4096 and a handful of k values this is fine either way;
+    # I'll store Q_k and do the two-step projection for clarity.
+    Vh_cpu = Vh.float().cpu()
+    Q_k_dict = {}
+    for k in k_values:
+        Q_k_dict[k] = Vh_cpu[:k, :].T.contiguous()  # [d_model, k]
+
+    # Main loop: layer → token → k → alpha
+    # Outer loops match compute_residual_stream_entropy() and
+    # compute_logit_lens_entropy() for structural consistency.
+    with torch.no_grad():
+        for layer in range(n_layers):
+            for t in range(seq_len):
+                # Extract one activation vector — same as the residual stream path
+                r = torch.from_numpy(
+                    record.activations[layer, t, :]
+                ).float()  # [d_model]
+
+                for k in k_values:
+                    Q_k = Q_k_dict[k]
+
+                    # Project: r‖ = Q_k @ (Q_k.T @ r), r⊥ = r - r‖
+                    coeffs = Q_k.T @ r         # [k]
+                    proj   = Q_k @ coeffs       # [d_model] — r‖
+                    orth   = r - proj           # [d_model] — r⊥
+
+                    # Energy normalization: v² / Σv²
+                    proj_sq = proj ** 2
+                    orth_sq = orth ** 2
+                    p_par  = proj_sq / proj_sq.sum().clamp(min=1e-12)
+                    p_orth = orth_sq / orth_sq.sum().clamp(min=1e-12)
+
+                    # Clamp away from zero for log stability
+                    p_par  = p_par.clamp(min=1e-12)
+                    p_orth = p_orth.clamp(min=1e-12)
+
+                    nk_par  = f"wu_parallel_k{k}"
+                    nk_orth = f"wu_orthogonal_k{k}"
+
+                    for alpha in alphas:
+                        surfaces[(nk_par, alpha)][layer, t] = (
+                            renyi_entropy(p_par, alpha)
+                        )
+                        surfaces[(nk_orth, alpha)][layer, t] = (
+                            renyi_entropy(p_orth, alpha)
+                        )
+
+    # Package into EntropyRecords via the shared helper
+    norm_alpha_pairs = [
+        (nk, alpha) for nk in all_norm_keys for alpha in alphas
+    ]
+    return _package_entropy_records(surfaces, norm_alpha_pairs, record)
+
+
+# ============================================================================
 # LOOKUP HELPERS
 # ============================================================================
 
@@ -455,9 +666,28 @@ def filter_records(
 # ============================================================================
 
 def save_entropy_records(records: list, path) -> None:
-    """Save a list of EntropyRecords to a single .npz file."""
+    """Save a list of EntropyRecords to a single .npz file.
+
+    Handles variable seq_len across records by padding surfaces to a
+    common shape and storing the original seq_len for each record.
+    On load, surfaces are trimmed back to their original dimensions.
+    """
     n = len(records)
-    surfaces    = np.stack([r.surface    for r in records], axis=0)
+
+    # Find max dimensions for padding
+    max_layers  = max(r.surface.shape[0] for r in records)
+    max_seq_len = max(r.surface.shape[1] for r in records)
+
+    # Pad each surface to [max_layers, max_seq_len] with NaN
+    padded = np.full((n, max_layers, max_seq_len), np.nan, dtype=np.float32)
+    seq_lens   = np.zeros(n, dtype=np.int32)
+    n_layers_a = np.zeros(n, dtype=np.int32)
+    for i, r in enumerate(records):
+        nl, sl = r.surface.shape
+        padded[i, :nl, :sl] = r.surface
+        seq_lens[i]   = sl
+        n_layers_a[i] = nl
+
     prompts     = np.array([r.prompt     for r in records], dtype=object)
     model_names = np.array([r.model_name for r in records], dtype=object)
     hook_types  = np.array([r.hook_type  for r in records], dtype=object)
@@ -470,7 +700,9 @@ def save_entropy_records(records: list, path) -> None:
 
     np.savez(
         path,
-        surfaces    = surfaces,
+        surfaces    = padded,
+        seq_lens    = seq_lens,
+        n_layers    = n_layers_a,
         prompts     = prompts,
         model_names = model_names,
         hook_types  = hook_types,
@@ -485,11 +717,26 @@ def save_entropy_records(records: list, path) -> None:
 
 
 def load_entropy_records(path) -> list:
-    """Load a list of EntropyRecords from a .npz file."""
+    """Load a list of EntropyRecords from a .npz file.
+
+    Trims padded surfaces back to their original [n_layers, seq_len]
+    dimensions using the stored seq_lens and n_layers arrays.
+    Backward-compatible: files saved without seq_lens/n_layers arrays
+    are loaded without trimming (assumes uniform shape).
+    """
     d = np.load(path, allow_pickle=True)
     n = len(d["prompts"])
+
+    has_shape_info = "seq_lens" in d and "n_layers" in d
+
     records = []
     for i in range(n):
+        surface = d["surfaces"][i]
+        if has_shape_info:
+            nl = int(d["n_layers"][i])
+            sl = int(d["seq_lens"][i])
+            surface = surface[:nl, :sl]
+
         records.append(EntropyRecord(
             prompt     = str(d["prompts"][i]),
             str_tokens = [],
@@ -497,7 +744,7 @@ def load_entropy_records(path) -> list:
             hook_type  = str(d["hook_types"][i]),
             norm_key   = str(d["norm_keys"][i]),
             alpha      = float(d["alphas"][i]),
-            surface    = d["surfaces"][i],
+            surface    = surface,
             d_model    = int(d["d_models"][i]),
             role       = str(d["roles"][i])      or None,
             category   = str(d["categories"][i]) or None,
