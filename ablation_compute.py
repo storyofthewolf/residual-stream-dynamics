@@ -1,4 +1,4 @@
-"""ablation.py — Interventional ablation of the r⊥ orthogonal complement.
+"""ablation_compute.py — Interventional ablation of the r⊥ orthogonal complement.
 
 Consumes ActivationRecords from extraction.py.
 Produces AblationRecords for consumption by ablation_plots.py.
@@ -33,7 +33,7 @@ Validation:
     validate_ablation(W_U, Vh, d_model)         — linear algebra checks
 
 Scientific motivation:
-    The k-sweep analysis in computation.py shows that the base-vs-contrast
+    The k-sweep analysis in entropy_compute.py shows that the base-vs-contrast
     entropy difference in r⊥ persists robustly until k approaches full rank.
     This is a correlational finding. Ablation converts it to an interventional
     claim: if removing r⊥ degrades base prompt predictions more than contrast
@@ -57,7 +57,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
-from computation import renyi_entropy
+from entropy_compute import renyi_entropy
 
 
 # ============================================================================
@@ -80,12 +80,6 @@ class AblationRecord:
     value measuring the effect at the final layer after the model propagates
     through remaining layers with the ablated residual stream.
 
-    FORTRAN analogy:
-        Think of this as a derived type that holds the output fields of a
-        diagnostic subroutine. The arrays are indexed like REAL :: kl(n_layers)
-        for posthoc, or REAL :: kl(1) for intervention. The metadata fields
-        are like integer/character tags that identify which experiment
-        produced this record.
     """
     # Core results
     kl_divergence:      np.ndarray    # KL(probs_full || probs_ablated) per layer
@@ -128,10 +122,6 @@ def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
     Note: computed on CPU regardless of W_U device, due to MPS
     instability with torch.linalg.svd on large matrices.
 
-    FORTRAN analogy: computing the eigenvectors of a covariance matrix
-    for EOF analysis. Done once; reused for all subsequent projections.
-    Like calling DSYEV on the covariance matrix at the start of a run
-    and storing the eigenvectors for repeated use in the time loop.
     """
     U, S, Vh = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
     return Vh    # shape [d_model, d_model]
@@ -191,9 +181,6 @@ def validate_ablation(
         Vh:      precomputed right singular vectors from compute_wu_svd()
         d_model: model's residual stream dimension
 
-    FORTRAN analogy: a validation subroutine you call once at the start
-    of a simulation — like checking that your basis set is orthonormal
-    and complete before beginning time-stepping.
     """
     assert Vh.shape[0] == d_model, (
         f"Vh has {Vh.shape[0]} rows but d_model={d_model}"
@@ -275,7 +262,7 @@ def compute_posthoc_ablation(
     Returns:
         list of AblationRecord, one per k value. Length = len(k_values).
 
-    FORTRAN analogy:
+    Analogy:
         Think of this as a two-level loop: the outer loop over k values
         is like varying a truncation wavenumber in a spectral model,
         and the inner loop over layers is like iterating over vertical
@@ -392,13 +379,6 @@ def make_ablation_hook(Q_k: torch.Tensor):
     Returns:
         hook_fn: callable with signature (value, hook) -> value
                  compatible with TransformerLens run_with_hooks()
-
-    FORTRAN analogy:
-        This is like a callback subroutine that the model's time-stepper
-        calls at a specific vertical level. It receives the state variable,
-        applies a spectral filter (zeroing high-wavenumber modes), and
-        hands the modified state back to the time-stepper to continue
-        propagating.
     """
     def hook_fn(value, hook):
         # value shape: [batch, seq_len, d_model]
@@ -450,7 +430,7 @@ def compute_intervention_ablation(
         Length = len(k_values) × len(intervention_layers).
         Each record has metric arrays of shape [1] (single final-layer value).
 
-    FORTRAN analogy:
+    Analogy:
         This is a perturbed-simulation experiment. The clean forward pass
         is the control run. For each (layer, k) combination, you restart
         the simulation, inject a perturbation at one vertical level, let

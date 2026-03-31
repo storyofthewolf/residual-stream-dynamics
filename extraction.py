@@ -5,7 +5,7 @@ the analysis pipeline. All other modules consume ActivationRecords;
 none of them run forward passes.
 
 Pipeline position:
-    EXTRACTION (this file) → computation.py → entropy_plots.py
+    EXTRACTION (this file) → entropy_compute.py → entropy_plots.py
 
 ActivationRecord fields:
     prompt      : str                  — original prompt string
@@ -93,7 +93,7 @@ MLP_INTERNAL_HOOKS    = {"mlp_pre", "mlp_post"}
 # ============================================================================
 # ACTIVATION RECORD
 # The fundamental data structure of the pipeline.
-# Produced by extraction.py, consumed by computation.py and entropy_plots.py.
+# Produced by extraction.py, consumed by entropy_compute.py and entropy_plots.py.
 # ============================================================================
 
 @dataclass

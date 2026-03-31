@@ -21,9 +21,9 @@ Two stages, run independently or together:
 
 Pipeline:
     extraction.extract_corpus()                    -> dict[hook, list[ActivationRecord]]
-    ablation.compute_wu_svd(W_U)                   -> Vh (one-time)
-    ablation.wu_explained_variance(Vh, W_U, ks)    -> diagnostic table
-    ablation.validate_ablation(W_U, Vh, d_model)   -> sanity checks
+    ablation_compute.compute_wu_svd(W_U)                   -> Vh (one-time)
+    ablation_compute.wu_explained_variance(Vh, W_U, ks)    -> diagnostic table
+    ablation_compute.validate_ablation(W_U, Vh, d_model)   -> sanity checks
     _run_posthoc_corpus()                          -> list[AblationRecord]
     _run_intervention_corpus()  (optional)         -> list[AblationRecord]
     ablation_plots.*                               -> figures
@@ -76,7 +76,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from setup import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_corpus, HOOK_TYPES
-from ablation import (
+from ablation_compute import (
     AblationRecord,
     compute_wu_svd,
     wu_explained_variance,
@@ -111,7 +111,7 @@ DEFAULT_INTERVENTION_LAYERS = {
 # ============================================================================
 # CORPUS ITERATION HELPERS
 # Same orchestration pattern as wu_subspace_analysis.py — loops live here,
-# computation functions live in ablation.py.
+# computation functions live in ablation_compute.py.
 # ============================================================================
 
 def _run_posthoc_corpus(
@@ -199,7 +199,7 @@ def _run_intervention_corpus(
 # ============================================================================
 # SERIALIZATION
 # Save/load AblationRecords to .npz for reproducibility and later plotting.
-# Follows the same pattern as save_entropy_records in computation.py.
+# Follows the same pattern as save_entropy_records in entropy_compute.py.
 # ============================================================================
 
 def save_ablation_records(records: list, path) -> None:

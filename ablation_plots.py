@@ -1,10 +1,10 @@
 """ablation_plots.py — Visualization for ablation results.
 
-Consumes AblationRecords from ablation.py.
+Consumes AblationRecords from ablation_compute.py.
 No model, no torch, no forward passes — pure visualization.
 
 Pipeline position (parallel to the entropy visualization path):
-    extraction.py → ablation.py → VISUALIZATION (this file)
+    extraction.py → ablation_compute.py → VISUALIZATION (this file)
 
 Plot functions:
     Posthoc ablation (Stage 1):

@@ -1,4 +1,4 @@
-"""computation.py — Entropy and metric computation over ActivationRecords.
+"""entropy_compute.py — Entropy and metric computation over ActivationRecords.
 
 Consumes ActivationRecords from extraction.py.
 Produces EntropyRecords for consumption by entropy_plots.py.
@@ -399,11 +399,6 @@ def compute_logit_lens_entropy(
         list of EntropyRecord with norm_key="logit_lens", one per alpha.
         Length = len(alphas)
 
-    FORTRAN analogy:
-        Identical loop structure to compute_residual_stream_entropy(),
-        but the normalization step calls an external operator (the unembedding
-        projection) rather than a local function. Analogous to a parameterized
-        physics scheme that requires externally supplied coefficients.
     """
     n_layers = record.n_layers
     seq_len  = record.seq_len
@@ -456,11 +451,6 @@ def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
     whose rows are orthonormal basis vectors for d_model space, ordered
     by how much variance in W_U each direction explains.
 
-    FORTRAN analogy:
-        This is like computing the eigenvectors of a covariance matrix
-        once before a time-stepping loop — a basis-set precomputation
-        that gets reused at every timestep (here, every prompt).
-
     Args:
         W_U:  unembedding matrix, shape [d_model, vocab_size]
               obtained from model.W_U.detach() in the workflow layer
@@ -485,11 +475,6 @@ def wu_explained_variance(W_U: torch.Tensor, k_values: list) -> dict:
     lives in the top-k directions. Use this to report k choices in terms
     of explained variance (e.g. "k=100 captures 85% of W_U variance")
     rather than arbitrary integer rank.
-
-    FORTRAN analogy:
-        Like computing cumulative explained variance from eigenvalues
-        of a covariance matrix: sum(lambda_1..k) / sum(lambda_all).
-        The squared singular values play the role of eigenvalues.
 
     Args:
         W_U:      unembedding matrix, shape [d_model, vocab_size]
@@ -530,7 +515,7 @@ def compute_wu_subspace_entropy(
         k ≠ d_model/2. This is physically meaningful (captures dimensional
         concentration) but should be kept in mind when comparing across k.
 
-    FORTRAN analogy:
+    Analogy:
         Think of Vh as a pre-computed spectral basis (like spherical harmonics
         or EOFs). Q_k is a truncation to the first k modes. The projection
         Q_k @ (Q_k.T @ r) is a spectral filter — it keeps the large-scale

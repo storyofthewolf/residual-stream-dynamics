@@ -11,8 +11,8 @@ rank the prompt-differentiating signal lives in W_U's singular value spectrum.
 
 Pipeline:
     extraction.extract_corpus()                     -> dict[hook, list[ActivationRecord]]
-    computation.compute_wu_svd(W_U)                 -> Vh (one-time)
-    computation.wu_explained_variance(W_U, k_values)-> diagnostic table
+    entropy_compute.compute_wu_svd(W_U)                 -> Vh (one-time)
+    entrop_compute.wu_explained_variance(W_U, k_values)-> diagnostic table
     _run_wu_subspace_corpus()                       -> list[EntropyRecord]
     _run_residual_stream_corpus()  (optional)       -> list[EntropyRecord]
     _run_logit_lens_corpus()       (optional)       -> list[EntropyRecord]
@@ -59,7 +59,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from setup import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_corpus, HOOK_TYPES
-from computation import (
+from entropy_compute import (
     compute_wu_svd,
     wu_explained_variance,
     compute_wu_subspace_entropy,

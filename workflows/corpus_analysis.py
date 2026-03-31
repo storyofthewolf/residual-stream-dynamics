@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from setup import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_corpus, HOOK_TYPES
-from computation import (
+from entropy_compute import (
     compute_residual_stream_entropy,
     compute_logit_lens_entropy,
     print_summary,
@@ -54,7 +54,7 @@ DEFAULT_HOOKS = ["resid_post"]
 
 # ============================================================================
 # CORPUS ITERATION HELPERS
-# Orchestration loops live here in the workflow layer, not in computation.py.
+# Orchestration loops live here in the workflow layer, not in entropy_compute.py.
 # Each function iterates one compute function over a list of ActivationRecords.
 # ============================================================================
 

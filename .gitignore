@@ -19,7 +19,12 @@ __pycache__/
 .ipynb_checkpoints/
 *.pyc
 
-$ result files
+# result files
 data/
 figures/
 *.png
+
+# extras
+old/
+code_design_prompts/
+tests/

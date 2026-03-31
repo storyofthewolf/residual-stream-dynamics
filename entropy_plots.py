@@ -1,10 +1,10 @@
 """entropy_plots.py — Visualization for entropy surfaces.
 
-Consumes EntropyRecords from computation.py.
+Consumes EntropyRecords from entropy_compute.py.
 No model, no torch, no forward passes — pure visualization.
 
 Pipeline position:
-    extraction.py -> computation.py -> VISUALIZATION (this file)
+    extraction.py -> entropy_compute.py -> VISUALIZATION (this file)
 
 Plot functions:
     Single-prompt exploratory:
@@ -39,7 +39,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from computation import EntropyRecord, NORM_LABELS, filter_records
+from entropy_compute import EntropyRecord, NORM_LABELS, filter_records
 from extraction import HOOK_LABELS
 
 

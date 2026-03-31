@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from setup import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_activations, HOOK_TYPES, save_activation_record
-from computation import (
+from entropy_compute import (
     compute_residual_stream_entropy,
     compute_logit_lens_entropy,
     filter_records,
@@ -64,7 +64,7 @@ DEFAULT_HOOKS = ["resid_post", "attn_out", "mlp_out"]
 
 # ============================================================================
 # SINGLE-PROMPT ITERATION HELPERS
-# Orchestration lives here in the workflow layer, not in computation.py.
+# Orchestration lives here in the workflow layer, not in entropy_compute.py.
 # ============================================================================
 
 def _run_residual_stream_prompt(
