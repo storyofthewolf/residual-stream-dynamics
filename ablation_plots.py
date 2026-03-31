@@ -47,8 +47,8 @@ import matplotlib.pyplot as plt
 
 COLOR_BASE     = "#1f77b4"
 COLOR_CONTRAST = "#d62728"
-STYLE_BASE     = {"color": COLOR_BASE,     "linestyle": "-",  "linewidth": 2.0}
-STYLE_CONTRAST = {"color": COLOR_CONTRAST, "linestyle": "--", "linewidth": 2.0}
+STYLE_BASE     = {"color": COLOR_BASE,     "linestyle": "-", "linewidth": 2.0}
+STYLE_CONTRAST = {"color": COLOR_CONTRAST, "linestyle": "-", "linewidth": 2.0}
 GRID_ALPHA     = 0.3
 BAND_ALPHA     = 0.2
 DPI            = 150
@@ -100,12 +100,16 @@ def _aggregate_ablation_records(
 
     Returns a nested dict:
         result[role][k] = {
-            "kl_mean":   np.ndarray [n_layers],
-            "kl_sem":    np.ndarray [n_layers],
-            "ent_mean":  np.ndarray [n_layers],
-            "ent_sem":   np.ndarray [n_layers],
-            "top1_mean": np.ndarray [n_layers],   # fraction preserved
-            "top1_sem":  np.ndarray [n_layers],
+            "kl_mean":          np.ndarray [n_layers],
+            "kl_sem":           np.ndarray [n_layers],
+            "ent_change_mean":  np.ndarray [n_layers],
+            "ent_change_sem":   np.ndarray [n_layers],
+            "top1_mean":        np.ndarray [n_layers],   # fraction preserved
+            "top1_sem":         np.ndarray [n_layers],
+            "ent_full_mean":    np.ndarray [n_layers],
+            "ent_full_sem":     np.ndarray [n_layers],
+            "ent_abl_mean":     np.ndarray [n_layers],
+            "ent_able_sem":     np.ndarray [n_layers],
             "n_prompts": int,
         }
 
@@ -129,22 +133,30 @@ def _aggregate_ablation_records(
         n = len(recs)
 
         # Stack arrays: each is [n_layers] for posthoc
-        kl_stack   = np.array([r.kl_divergence   for r in recs])   # [n_prompts, n_layers]
-        ent_stack  = np.array([r.entropy_change   for r in recs])
-        top1_stack = np.array([r.top1_preserved.astype(float) for r in recs])
+        kl_stack          = np.array([r.kl_divergence   for r in recs])   # [n_prompts, n_layers]
+        ent_change_stack  = np.array([r.entropy_change   for r in recs])
+        ent_full_stack    = np.array([r.entropy_full   for r in recs])
+        ent_abl_stack     = np.array([r.entropy_ablated   for r in recs])
+        top1_stack        = np.array([r.top1_preserved.astype(float) for r in recs])
 
         sqrt_n = np.sqrt(n) if n > 1 else 1.0
 
         result[role][k] = {
-            "kl_mean":   kl_stack.mean(axis=0),
-            "kl_sem":    kl_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
-                         else np.zeros_like(kl_stack.mean(axis=0)),
-            "ent_mean":  ent_stack.mean(axis=0),
-            "ent_sem":   ent_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
-                         else np.zeros_like(ent_stack.mean(axis=0)),
-            "top1_mean": top1_stack.mean(axis=0),
-            "top1_sem":  top1_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
-                         else np.zeros_like(top1_stack.mean(axis=0)),
+            "kl_mean":         kl_stack.mean(axis=0),
+            "kl_sem":          kl_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
+                               else np.zeros_like(kl_stack.mean(axis=0)),
+            "ent_change_mean": ent_change_stack.mean(axis=0),
+            "ent_change_sem":  ent_change_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
+                               else np.zeros_like(ent_change_stack.mean(axis=0)),
+            "ent_full_mean":   ent_full_stack.mean(axis=0),
+            "ent_full_sem":    ent_full_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
+                               else np.zeros_like(ent_full_stack.mean(axis=0)),
+            "ent_abl_mean":    ent_abl_stack.mean(axis=0),
+            "ent_abl_sem":     ent_abl_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
+                               else np.zeros_like(ent_abl_stack.mean(axis=0)),
+            "top1_mean":       top1_stack.mean(axis=0),
+            "top1_sem":        top1_stack.std(axis=0, ddof=1) / sqrt_n if n > 1
+                               else np.zeros_like(top1_stack.mean(axis=0)),
             "n_prompts": n,
         }
 
@@ -519,7 +531,7 @@ def plot_entropy_change_vs_layer(
         n_layers = None
         for cat in ["base", "contrast"]:
             if cat in agg and k in agg[cat]:
-                n_layers = len(agg[cat][k]["ent_mean"])
+                n_layers = len(agg[cat][k]["ent_change_mean"])
                 break
         if n_layers is None:
             ax.text(0.5, 0.5, "no data", ha="center", va="center",
@@ -535,10 +547,10 @@ def plot_entropy_change_vs_layer(
             if cat not in agg or k not in agg[cat]:
                 continue
             d = agg[cat][k]
-            ax.plot(layers, d["ent_mean"], label=label, **style)
+            ax.plot(layers, d["ent_change_mean"], label=label, **style)
             ax.fill_between(layers,
-                            d["ent_mean"] - d["ent_sem"],
-                            d["ent_mean"] + d["ent_sem"],
+                            d["ent_change_mean"] - d["ent_change_sem"],
+                            d["ent_change_mean"] + d["ent_change_sem"],
                             color=style["color"], alpha=BAND_ALPHA)
 
         ax.axhline(0, color="gray", linewidth=0.8, linestyle="--")
@@ -573,7 +585,116 @@ def plot_entropy_change_vs_layer(
 
 
 # ============================================================================
-# FIGURE 5: INTERVENTION HEATMAP (Stage 2 only)
+# FIGURE 5: ENTROPY VS LAYER
+# One panel per k value. Connects ablation to the existing entropy framework.
+# ============================================================================
+
+def plot_entropy_vs_layer(
+    records:    list,
+    model_name: str,
+    k_values:   list[int],
+    ev_dict:    dict | None = None,
+    save_path:  str | None  = None,
+) -> plt.Figure:
+    """
+    Entropy vs layer after posthoc ablation.
+
+    Connects ablation results to the existing entropy framework. Prediction:
+    base prompts show larger positive entropy change (removing r⊥ makes
+    their token distributions more diffuse), consistent with base prompts
+    having invested more structured content in r⊥.
+
+    Args:
+        records:    list of AblationRecord
+        model_name: used in title
+        k_values:   one panel per k value
+        ev_dict:    optional {k: EV fraction} for panel titles
+        save_path:  output file path, or None
+
+    Returns:
+        matplotlib Figure object
+    """
+    agg = _aggregate_ablation_records(records, ablation_type="posthoc")
+    n_rows, n_cols = _panel_layout(len(k_values))
+
+    fig, axes = plt.subplots(n_rows, n_cols,
+                             figsize=(14, 5 * n_rows),
+                             squeeze=False)
+    fig.suptitle(
+        f"Posthoc ablation: entropy vs layer  [{model_name}]",
+        fontsize=12,
+    )
+
+    for idx, k in enumerate(k_values):
+        row = idx // n_cols
+        col = idx % n_cols
+        ax  = axes[row][col]
+
+        n_layers = None
+        for cat in ["base", "contrast"]:
+            if cat in agg and k in agg[cat]:
+                n_layers = len(agg[cat][k]["ent_full_mean"])
+                break
+        if n_layers is None:
+            ax.text(0.5, 0.5, "no data", ha="center", va="center",
+                    transform=ax.transAxes)
+            continue
+
+        layers = np.arange(n_layers)
+
+        for cat, style, label in [
+            ("base",     STYLE_BASE,     "base"),
+            ("contrast", STYLE_CONTRAST, "contrast"),
+        ]:
+            if cat not in agg or k not in agg[cat]:
+                continue
+            d = agg[cat][k]
+            ax.plot(layers, d["ent_full_mean"], label=label, **style)
+            ax.fill_between(layers,
+                            d["ent_full_mean"] - d["ent_full_sem"],
+                            d["ent_full_mean"] + d["ent_full_sem"],
+                            color=style["color"], alpha=BAND_ALPHA)
+
+            ax.plot(layers, d["ent_abl_mean"], label=label, **(style | {"linestyle": "--"}))
+            #ax.plot(layers, d["ent_abl_mean"], label=label, **style)
+            ax.fill_between(layers,
+                            d["ent_abl_mean"] - d["ent_abl_sem"],
+                            d["ent_abl_mean"] + d["ent_abl_sem"],
+                            color=style["color"], alpha=BAND_ALPHA)
+
+        ax.axhline(0, color="gray", linewidth=0.8, linestyle="--")
+        ax.set_title(_panel_title(k, ev_dict), fontsize=10)
+        ax.set_xlabel("Layer")
+        ax.set_ylabel("Entropy (bits)")
+        ax.set_xticks(layers)
+        ax.grid(alpha=GRID_ALPHA)
+
+        # Sign annotation
+        ax.text(0.97, 0.95,
+                "↑ more diffuse / ↓ more concentrated",
+                transform=ax.transAxes, fontsize=7, ha="right", va="top",
+                color="gray")
+
+        if idx == 0:
+            ax.legend(fontsize=8, loc="upper left")
+
+    # Hide unused axes
+    total_axes = n_rows * n_cols
+    for idx in range(len(k_values), total_axes):
+        row = idx // n_cols
+        col = idx % n_cols
+        axes[row][col].set_visible(False)
+
+    plt.tight_layout()
+
+    if save_path is not None:
+        _save(fig, save_path)
+
+    return fig
+
+
+# ============================================================================
+# FIGURE 6: INTERVENTION HEATMAP (Stage 2 only)
 # 2D heatmap of (intervention_layer, k) effects with base/contrast/difference.
 # ============================================================================
 

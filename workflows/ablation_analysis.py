@@ -89,6 +89,7 @@ from ablation_plots import (
     plot_kl_vs_k,
     plot_top1_preservation,
     plot_entropy_change_vs_layer,
+    plot_entropy_vs_layer,
     plot_intervention_heatmap,
     _safe_model_name,
 )
@@ -713,6 +714,12 @@ def _generate_plots(
         plot_entropy_change_vs_layer(
             posthoc_recs, model_name, k_values, ev_dict=ev_dict,
             save_path=str(output_dir / f"ablation_entropy_change_{safe_name}.png"),
+        )
+
+        # Figure 5: Entropy vs layer
+        plot_entropy_vs_layer(
+            posthoc_recs, model_name, k_values, ev_dict=ev_dict,
+            save_path=str(output_dir / f"ablation_entropy_{safe_name}.png"),
         )
 
     if interv_recs:

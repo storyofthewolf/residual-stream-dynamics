@@ -86,7 +86,9 @@ class AblationRecord:
     entropy_change:     np.ndarray    # H(probs_ablated) - H(probs_full) per layer
     top1_preserved:     np.ndarray    # bool: top predicted token unchanged
                                       # shape [n_layers] for posthoc, [1] for intervention
-
+    entropy_full:       np.ndarray    # H(probs_full) per layer
+    entropy_ablated:    np.ndarray    # H(probs_ablated) per layer
+                                      
     # Experiment parameters
     k:                  int           # subspace rank used for projection
     ablation_type:      str           # "posthoc" or "intervention"
@@ -315,6 +317,8 @@ def compute_posthoc_ablation(
 
         kl_div     = np.zeros(n_layers, dtype=np.float64)
         ent_change = np.zeros(n_layers, dtype=np.float64)
+        ent_full   = np.zeros(n_layers, dtype=np.float64)
+        ent_abl    = np.zeros(n_layers, dtype=np.float64)
         top1_pres  = np.zeros(n_layers, dtype=bool)
 
         with torch.no_grad():
@@ -338,6 +342,8 @@ def compute_posthoc_ablation(
                     pf * (pf.log() - probs_abl.log())
                 ).sum().item()
 
+                ent_abl[layer] = H_abl
+                ent_full[layer] = H_full[layer]
                 ent_change[layer] = H_abl - H_full[layer]
                 top1_pres[layer]  = (top1_abl == top1_full[layer])
 
@@ -345,6 +351,8 @@ def compute_posthoc_ablation(
             kl_divergence      = kl_div,
             entropy_change     = ent_change,
             top1_preserved     = top1_pres,
+            entropy_full       = ent_full,
+            entropy_ablated    = ent_abl,
             k                  = k,
             ablation_type      = "posthoc",
             intervention_layer = None,
@@ -488,6 +496,8 @@ def compute_intervention_ablation(
                 kl_divergence      = np.array([kl_div]),
                 entropy_change     = np.array([ent_chg]),
                 top1_preserved     = np.array([top1_pres]),
+                entropy_full       = np.array([H_full]),
+                entropy_ablated    = np.array([H_abl]),
                 k                  = k,
                 ablation_type      = "intervention",
                 intervention_layer = L,
