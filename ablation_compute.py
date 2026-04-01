@@ -511,6 +511,48 @@ def compute_intervention_ablation(
 
     return results
 
+
+# ============================================================================
+# K-VALUE SELECTION FROM EXPLAINED VARIANCE THRESHOLDS
+# ============================================================================
+
+def k_values_from_ev_thresholds(
+    W_U:        torch.Tensor,
+    thresholds: list[float],
+    d_model:    int,
+) -> list[int]:
+    """
+    Find the smallest k that achieves each explained variance threshold.
+
+    Scans the full singular value spectrum and returns one k per threshold.
+    Useful for choosing k values in principled terms rather than arbitrary
+    integer ranks.
+
+    Args:
+        W_U:        unembedding matrix [d_model, vocab_size]
+        thresholds: list of target explained variance fractions, e.g. [0.5, 0.9, 0.99]
+        d_model:    model dimension
+
+    Returns:
+        sorted list of unique k values (one per threshold, deduplicated)
+    """
+    _, S, _ = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
+    cumvar = (S**2).cumsum(dim=0) / (S**2).sum()
+
+    k_values = set()
+    for thresh in thresholds:
+        # Find first k where cumulative variance >= threshold
+        mask = cumvar >= thresh
+        if mask.any():
+            k = int(mask.nonzero(as_tuple=True)[0][0].item()) + 1  # 1-indexed
+            k = min(k, d_model - 1)  # k must be < d_model
+            k_values.add(k)
+        else:
+            k_values.add(d_model - 1)
+
+    return sorted(k_values)
+
+
 # ============================================================================
 # SERIALIZATION
 # Save/load AblationRecords to .npz for reproducibility and later plotting.
@@ -661,42 +703,3 @@ def print_ablation_summary(
     print()
 
 
-# ============================================================================
-# K-VALUE SELECTION FROM EXPLAINED VARIANCE THRESHOLDS
-# ============================================================================
-
-def k_values_from_ev_thresholds(
-    W_U:        torch.Tensor,
-    thresholds: list[float],
-    d_model:    int,
-) -> list[int]:
-    """
-    Find the smallest k that achieves each explained variance threshold.
-
-    Scans the full singular value spectrum and returns one k per threshold.
-    Useful for choosing k values in principled terms rather than arbitrary
-    integer ranks.
-
-    Args:
-        W_U:        unembedding matrix [d_model, vocab_size]
-        thresholds: list of target explained variance fractions, e.g. [0.5, 0.9, 0.99]
-        d_model:    model dimension
-
-    Returns:
-        sorted list of unique k values (one per threshold, deduplicated)
-    """
-    _, S, _ = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
-    cumvar = (S**2).cumsum(dim=0) / (S**2).sum()
-
-    k_values = set()
-    for thresh in thresholds:
-        # Find first k where cumulative variance >= threshold
-        mask = cumvar >= thresh
-        if mask.any():
-            k = int(mask.nonzero(as_tuple=True)[0][0].item()) + 1  # 1-indexed
-            k = min(k, d_model - 1)  # k must be < d_model
-            k_values.add(k)
-        else:
-            k_values.add(d_model - 1)
-
-    return sorted(k_values)

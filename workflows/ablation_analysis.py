@@ -83,9 +83,10 @@ from ablation_compute import (
     validate_ablation,
     compute_posthoc_ablation,
     compute_intervention_ablation,
+    k_values_from_ev_thresholds,
     save_ablation_records,
     load_ablation_records,
-    print_ablation_summary,
+    print_ablation_summary
 )
 from ablation_plots import (
     plot_kl_vs_layer,

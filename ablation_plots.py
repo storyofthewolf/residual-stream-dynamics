@@ -38,6 +38,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
 
 # ============================================================================
@@ -731,7 +732,6 @@ def _aggregate_intervention_records(records: list) -> dict:
 
     return dict(result)
 
-
 def plot_intervention_heatmap(
     records:    list,
     model_name: str,
@@ -756,7 +756,6 @@ def plot_intervention_heatmap(
     """
     agg = _aggregate_intervention_records(records)
 
-    # Determine metric key and labels
     metric_key_map = {
         "kl_divergence":  "kl_mean",
         "entropy_change": "ent_mean",
@@ -770,7 +769,6 @@ def plot_intervention_heatmap(
     mkey   = metric_key_map[metric]
     mlabel = metric_label_map[metric]
 
-    # Collect all unique layers and k values
     all_keys = set()
     for cat_data in agg.values():
         all_keys.update(cat_data.keys())
@@ -783,11 +781,9 @@ def plot_intervention_heatmap(
 
     layers_sorted = sorted(set(L for L, k in all_keys))
     k_sorted      = sorted(set(k for L, k in all_keys))
+    n_layers_int  = len(layers_sorted)
+    n_k           = len(k_sorted)
 
-    n_layers_int = len(layers_sorted)
-    n_k          = len(k_sorted)
-
-    # Build 2D grids for each category
     def build_grid(cat_data):
         grid = np.full((n_k, n_layers_int), np.nan)
         for i, k in enumerate(k_sorted):
@@ -800,59 +796,73 @@ def plot_intervention_heatmap(
     grid_contrast = build_grid(agg.get("contrast", {}))
     grid_diff     = grid_base - grid_contrast
 
-    # Choose colormap
     if metric == "top1_preserved":
-        cmap_main = "Blues"
-        cmap_diff = "RdBu_r"
+        cmap_main     = "Blues"
+        cmap_diff     = "RdBu_r"
+        vmin_main     = 0.0
+        vmax_main_plot = 1.0
     else:
-        cmap_main = "RdBu_r"
-        cmap_diff = "RdBu_r"
-
-    # Symmetric vmin/vmax for main panels
-    vmax_main = max(np.nanmax(np.abs(grid_base)),
-                    np.nanmax(np.abs(grid_contrast)))
-    if metric == "top1_preserved":
-        vmin_main, vmax_main_plot = 0.0, 1.0
-    else:
-        vmin_main, vmax_main_plot = -vmax_main, vmax_main
+        cmap_main      = "RdBu_r"
+        cmap_diff      = "RdBu_r"
+        vmax_main      = max(np.nanmax(np.abs(grid_base)),
+                             np.nanmax(np.abs(grid_contrast)))
+        vmin_main      = -vmax_main
+        vmax_main_plot = vmax_main
 
     vmax_diff = np.nanmax(np.abs(grid_diff))
 
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
+    # --- 2 subfigures ---
+    fig = plt.figure(figsize=(18, 6))
     fig.suptitle(
         f"Intervention ablation: {metric} heatmap  [{model_name}]",
         fontsize=12,
     )
 
-    # Base panel
+    # Split figure into two subfigures: left (2 panels + cbar) and right (1 panel + cbar)
+    # width_ratios controls the gross left/right balance
+    sf_left, sf_right = fig.subfigures(1, 2, width_ratios=[2.2, 1.1], wspace=0.12)
+
+    # Left subfigure: 3 columns — panel1, panel2, colorbar
+    gs_left = gridspec.GridSpec(1, 3, width_ratios=[10, 10, 0.6],
+                                 wspace=0.12, figure=sf_left)
+    ax1      = sf_left.add_subplot(gs_left[0, 0])
+    ax2      = sf_left.add_subplot(gs_left[0, 1])
+    cbar_ax1 = sf_left.add_subplot(gs_left[0, 2])
+
+    # Right subfigure: 2 columns — panel3, colorbar
+    gs_right = gridspec.GridSpec(1, 2, width_ratios=[10, 0.6],
+                                  wspace=0.12, figure=sf_right)
+    ax3      = sf_right.add_subplot(gs_right[0, 0])
+    cbar_ax2 = sf_right.add_subplot(gs_right[0, 1])
+
+    # --- everything below is unchanged from before ---
     im1 = ax1.imshow(grid_base, aspect="auto", origin="lower",
                      cmap=cmap_main, vmin=vmin_main, vmax=vmax_main_plot)
     ax1.set_title("Base prompts", fontsize=10)
 
-    # Contrast panel
     im2 = ax2.imshow(grid_contrast, aspect="auto", origin="lower",
                      cmap=cmap_main, vmin=vmin_main, vmax=vmax_main_plot)
     ax2.set_title("Contrast prompts", fontsize=10)
 
-    # Shared colorbar for base/contrast
-    fig.colorbar(im2, ax=[ax1, ax2], label=mlabel, shrink=0.8)
+    fig.colorbar(im2, cax=cbar_ax1, label=mlabel)
 
-    # Difference panel
     im3 = ax3.imshow(grid_diff, aspect="auto", origin="lower",
                      cmap=cmap_diff, vmin=-vmax_diff, vmax=vmax_diff)
     ax3.set_title("Base − Contrast", fontsize=10)
-    fig.colorbar(im3, ax=ax3, label=f"Δ {mlabel}", shrink=0.8)
 
-    # Axis labels and ticks
+    fig.colorbar(im3, cax=cbar_ax2, label=f"Δ {mlabel}")
+
+    for ax in [ax1, ax3]:
+        ax.set_ylabel("Subspace rank k")
+        
     for ax in [ax1, ax2, ax3]:
         ax.set_xlabel("Intervention layer")
-        ax.set_ylabel("Subspace rank k")
         ax.set_xticks(range(n_layers_int))
         ax.set_xticklabels([str(L) for L in layers_sorted], fontsize=8)
         ax.set_yticks(range(n_k))
         ax.set_yticklabels([str(k) for k in k_sorted], fontsize=8)
 
-    plt.tight_layout()
+    fig.subplots_adjust(left=0.06, right=0.97, top=0.90, bottom=0.12)
 
     if save_path is not None:
         _save(fig, save_path)
