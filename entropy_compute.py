@@ -648,6 +648,7 @@ def filter_records(
 
 # ============================================================================
 # SERIALIZATION
+# Save/load EntropyRecords to .npz for reproducibility and later plotting.
 # ============================================================================
 
 def save_entropy_records(records: list, path) -> None:

@@ -57,6 +57,7 @@ from entropy_plots import (plot_fixed_position, plot_fixed_layer,
 DEFAULT_PROMPTS = [
     "The wolf ran through",
     "Ran through wolf the",
+    "mucho gusto el lobo"
 ]
 
 DEFAULT_HOOKS = ["resid_post", "attn_out", "mlp_out"]
