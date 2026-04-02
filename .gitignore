@@ -29,8 +29,10 @@ figures/workflows/*
 !figures/workflows/.gitkeep
 
 
+
 # extras
 old/
 code_design_prompts/
 tests/
 sandbox/
+figures/extras/
