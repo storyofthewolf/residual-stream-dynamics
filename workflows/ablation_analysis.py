@@ -41,6 +41,14 @@ Usage:
     python workflows/ablation_analysis.py --corpus corpus.json \\
         --stage2 --intervention-layers 4 8 10
 
+    # Stage 2 at every layer (full heatmap; fast for 12-layer models)
+    python workflows/ablation_analysis.py --corpus corpus.json \\
+        --stage2 --intervention-all-layers
+
+    # Stage 2 at every 3rd layer (practical for 36-48 layer models)
+    python workflows/ablation_analysis.py --corpus corpus.json \\
+        --stage2 --intervention-all-layers --intervention-stride 3
+
     # Just Stage 1 with k values chosen by explained variance thresholds
     python workflows/ablation_analysis.py --corpus corpus.json \\
         --ev-thresholds 0.50 0.75 0.90 0.95 0.99
@@ -238,6 +246,14 @@ def main():
     parser.add_argument("--intervention-layers", type=int, nargs="+", default=None,
                         help="Layers to intervene at for Stage 2 "
                              "(default: auto from entropy crossover peak)")
+    parser.add_argument("--intervention-all-layers", action="store_true",
+                        help="Intervene at all layers (or strided subset with "
+                             "--intervention-stride). Overridden by "
+                             "--intervention-layers if both specified.")
+    parser.add_argument("--intervention-stride", type=int, default=1,
+                        help="Layer stride for --intervention-all-layers: "
+                             "intervene every Nth layer (default: 1 = every layer). "
+                             "Final layer is always included regardless of stride.")
 
     # ── Filtering ──
     parser.add_argument("--category", type=str, default=None,
@@ -423,8 +439,17 @@ def main():
         # ── Stage 2: intervention ablation (optional) ──
         if args.stage2:
             # Determine intervention layers
+            # Priority: --intervention-layers > --intervention-all-layers > auto-defaults
             if args.intervention_layers is not None:
+                # Explicit list takes highest priority
                 int_layers = sorted(args.intervention_layers)
+            elif args.intervention_all_layers:
+                # All layers with optional stride, final layer always included
+                stride = max(1, args.intervention_stride)
+                int_layers = list(range(0, n_layers, stride))
+                if (n_layers - 1) not in int_layers:
+                    int_layers.append(n_layers - 1)
+                int_layers = sorted(int_layers)
             elif args.model in DEFAULT_INTERVENTION_LAYERS:
                 int_layers = DEFAULT_INTERVENTION_LAYERS[args.model]
             else:
