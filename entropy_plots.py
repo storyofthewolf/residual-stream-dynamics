@@ -340,7 +340,7 @@ def plot_hook_comparison(
     if filename is None:
         hooks = "_vs_".join(r.hook_type for r in records)
         safe  = ref.prompt.replace(" ", "_")[:20]
-        filename = f"hook_comparison_{hooks}_{safe}.png"
+        filename = f"hook_comparison_{hooks}_{safe}_{corpus_tag}{run_tag}.png"
     _save(fig, output_dir, filename)
 
 
@@ -355,6 +355,8 @@ def plot_overall_mean(
     entropy_records: list,
     alphas:          list,
     output_dir:      Path,
+    corpus_tag:      str,
+    run_tag:         str,
     model_name:      str = "",
     hook_type:       str = "resid_post",
 ) -> None:
@@ -370,6 +372,8 @@ def plot_overall_mean(
         entropy_records: flat list of EntropyRecord
         alphas:          list of alpha values to plot
         output_dir:      directory for saved figure
+        corpus_tag:      corpus name
+        run_tag:         optional runtime tag to avoid collisions
         model_name:      used in title and filename
         hook_type:       which hook type to plot (default "resid_post")
     """
@@ -430,7 +434,7 @@ def plot_overall_mean(
 
     plt.tight_layout()
     suffix = f"_{model_name}" if model_name else ""
-    _save(fig, output_dir, f"entropy_overall_{hook_type}{suffix}.png")
+    _save(fig, output_dir, f"entropy_overall_{hook_type}{suffix}_{corpus_tag}{run_tag}.png")
 
 
 # ============================================================================
@@ -442,6 +446,8 @@ def plot_category(
     category:        str,
     alphas:          list,
     output_dir:      Path,
+    corpus_tag:      str,
+    run_tag:         str,
     model_name:      str = "",
     hook_type:       str = "resid_post",
 ) -> None:
@@ -456,6 +462,8 @@ def plot_category(
         category:        corpus category string to filter to
         alphas:          list of alpha values
         output_dir:      directory for saved figure
+        corpus_tag:      corpus name
+        run_tag:         optional runtime tag to avoid collisions
         model_name:      used in title and filename
         hook_type:       which hook type to plot
     """
@@ -524,7 +532,7 @@ def plot_category(
 
     plt.tight_layout()
     suffix = f"_{model_name}" if model_name else ""
-    _save(fig, output_dir, f"entropy_{category}_{hook_type}{suffix}.png")
+    _save(fig, output_dir, f"entropy_{category}_{hook_type}{suffix}_{corpus_tag}{run_tag}.png")
 
 
 # ============================================================================
@@ -553,6 +561,8 @@ def plot_paired_difference(
     entropy_records: list,
     alphas:          list,
     output_dir:      Path,
+    corpus_tag:      str,
+    run_tag:         str,
     model_name:      str   = "",
     hook_type:       str   = "resid_post",
     ci_level:        float = 0.95,
@@ -573,6 +583,8 @@ def plot_paired_difference(
         entropy_records: flat list of EntropyRecord
         alphas:          list of alpha values to plot
         output_dir:      directory for saved figure
+        corpus_tag:      corpus name
+        run_tag:         optional runtime tag to avoid collisions
         model_name:      used in title and filename
         hook_type:       which hook type to plot (default "resid_post")
         ci_level:        confidence level for the interval (default 0.95)
@@ -668,4 +680,4 @@ def plot_paired_difference(
     plt.tight_layout()
     suffix = f"_{model_name}" if model_name else ""
     _save(fig, output_dir,
-          f"entropy_paired_diff_{hook_type}{suffix}.png")
+          f"entropy_paired_diff_{hook_type}{suffix}_{corpus_tag}{run_tag}.png")

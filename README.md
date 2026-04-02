@@ -9,6 +9,7 @@ A package for analysising the residual stream and related layer properties of to
 - ablation_compute.py - defines AblationRecord and functions used in posthoc ablation and interventonal ablation experiments.
 - ablation_plots.py - all plot function accept AblationRecord objects, performs various plotting routines.
 - corpus_gen.py - generates corpus of prompts
+- setup.py - model handling
 - workflows/single_prompt.py — edit DEFAULT_PROMPTS at the top for quick experiments. Runs --hooks resid_post attn_out mlp_out by default, generating the hook comparison plot automatically. Use --save-data to write results for later multi-model comparison.
 - workflows/entropy_analysis.py — drops in as a replacement for the old corpus mode in residual_stream_entropy.py. Same --corpus and --model flags as before.
 - workflows/wu_subspace_analysis.py - workflow for residual stream SVD 
@@ -77,23 +78,27 @@ python workflows/entropy_analysis.py --corpus corpus.json \
 | `--hooks` | resid_post, attn_out, mlp_out | Space Separate hook types |
 | `--alpha` | 0.5, 1.0, 2.0, 3.0 | Renyi entropy alpha values |
 | `--norm` | energy, abs, softmax | Normalization methods |
-| `--output-dir` | figures/explore | Where figures and data land |
+| `--output-dir-plots` | figures/workflows | Where figures land |
+| `--output-dir-data` | figures/data | Where .npz data files land |
 | `--no-plots` | off | Skip plotting routines |
 | `--save-data` | off | Write .npz for multi-model comparisons |
-
-## See specific workflow scripts for unique arguments
+| `--run-tag` | None | Tag to append to file names to avoid collisions |
+### See specific workflow scripts for unique arguments
 
 ## Project Structure
 ```
 .
+├── corpus/                      # json files for corpus of prompts
 ├── data/                        # Saved .npz results (gitignored)
 ├── figures/                     # Generated plots (gitignored)
-├── sandbox/                     # Deprecated scripts retained for reference
-├── workflows/
-    ├── entropy_analysis.py      # Full corpus base/contrast pipeline
-    ├── ablation_analysis.py
-    ├── wu_subspace_analysis.py
-    └── single_prompt.py         # Single-prompt exploratory analysis
+    ├── workflows                # Figures auto-generated from workflows
+    └── notebooks                # Figures generated from post-processing .npz files 
+├── workflows/                   # Workflows driving core *_compute.py and *_plots.py pathways
+    ├── entropy_analysis.py      # Residual stream and logit lens entropy experiments: corpus driven
+    ├── ablation_analysis.py     # Ablation experiments; post-hoc and intervention; corpus driven
+    ├── wu_subspace_analysis.py  # Decomposition of residual stream @ unembedding matrix; corpus driven
+    └── single_prompt.py         # Single prompt entropy
+├── Notebooks                    # Juypter Notebooks of results
 ├── entropy_compute.py           # EntropyRecord dataclass and entropy calc functions
 ├── entropy_plots.py             # Entropy multiplot visualization
 ├── ablation_compute.py          # AblationRecord dataclass and ablation calc functions 
@@ -104,7 +109,7 @@ python workflows/entropy_analysis.py --corpus corpus.json \
 
 ```
 
-## Information of hook 
+## Information on hooks 
 - hook_resid_pre = residual stream before the attention operation at this layer
 - hook_attn_out = the output of the attention sub-layer alone (the delta)
 - hook_resid_mid = resid_pre + attn_out (residual stream after attention, before MLP)

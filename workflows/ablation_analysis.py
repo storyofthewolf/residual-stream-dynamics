@@ -244,23 +244,32 @@ def main():
                         help="Filter to a single corpus category")
 
     # ── Output ──
-    parser.add_argument("--output-dir", type=str, default="figures/ablation",
-                        help="Directory for plots and saved data")
+    parser.add_argument("--output-dir-plots", type=str, default="figures/workflows/ablation_analysis",
+                        help="Directory for saved plots")
     parser.add_argument("--no-plots", action="store_true",
                         help="Skip plot generation")
+    parser.add_argument("--output-dir-data", type=str, default="data",
+                        help="Directory for saved data")
     parser.add_argument("--save-data", action="store_true",
                         help="Save AblationRecords to .npz for later analysis")
     parser.add_argument("--load-data", type=str, default=None,
                         help="Load precomputed AblationRecords from .npz "
                              "(skips extraction and computation, goes straight to plots)")
+    parser.add_argument("--run-tag", type=str, default="",
+                        help="Optional tag appended to output filenames to prevent collisions")
 
     # ── Device ──
     parser.add_argument("--device", type=str, default="cpu")
 
     args = parser.parse_args()
 
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir_plots = Path(args.output_dir_plots)
+    output_dir_plots.mkdir(parents=True, exist_ok=True)
+    output_dir_data = Path(args.output_dir_data)
+    output_dir_data.mkdir(parents=True, exist_ok=True)
+
+    # naming tags
+    run_tag = f"_{args.run_tag}" if args.run_tag else ""
 
     hook_types = args.hooks
     for ht in hook_types:
@@ -297,9 +306,9 @@ def main():
         # Skip to plotting
         if not args.no_plots:
             _generate_plots(all_ablation_records, k_values, ev_dict,
-                            model_name, output_dir, args)
+                            model_name, corpus_tag, run_tag, output_dir_plots, args)
 
-        print(f"\nDone. Results in {output_dir}/\n")
+        print(f"\nDone. Results in {output_dir_plots}/\n")
         return 0
 
     # ==================================================================
@@ -308,11 +317,13 @@ def main():
 
     # ── Load corpus ──
     corpus_path = Path(args.corpus)
+    corpus_tag = corpus_path.stem  # define tag for file naming
     if not corpus_path.exists():
-        print(f"Corpus not found: {corpus_path}")
-        print("  Run: python corpus_gen.py")
+        corpus_path = Path("corpus") / corpus_path
+    if not corpus_path.exists():
+        print(f"Corpus not found: {args.corpus}")
         return 1
-
+    
     with open(corpus_path) as f:
         corpus = json.load(f)
     print(f"\nLoaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
@@ -455,15 +466,15 @@ def main():
 
     # ── Save ──
     if args.save_data:
-        data_path = output_dir / f"ablation_records_{args.model}.npz"
+        data_path = output_dir_data / f"ablation_records_{args.model}_{corpus_tag}{run_tag}.npz"
         save_ablation_records(all_ablation_records, data_path)
 
     # ── Plots ──
     if not args.no_plots:
         _generate_plots(all_ablation_records, k_values, ev_dict,
-                        args.model, output_dir, args)
+                        args.model, corpus_tag, run_tag, output_dir_plots, args)
 
-    print(f"\nDone. Results in {output_dir}/\n")
+    print(f"\nDone. Results in {output_dir_plots}/\n")
     return 0
 
 
@@ -478,6 +489,8 @@ def _generate_plots(
     k_values:    list[int],
     ev_dict:     dict | None,
     model_name:  str,
+    corpus_tag:  str,
+    run_tag:      str,
     output_dir:  Path,
     args,
 ) -> None:
@@ -494,7 +507,7 @@ def _generate_plots(
         # Figure 1: KL divergence vs layer
         plot_kl_vs_layer(
             posthoc_recs, model_name, k_values, ev_dict=ev_dict,
-            save_path=str(output_dir / f"ablation_kl_vs_layer_{safe_name}.png"),
+            save_path=str(output_dir / f"ablation_kl_vs_layer_{safe_name}_{corpus_tag}{run_tag}.png"),
         )
 
         # Figure 2: KL divergence vs k at fixed layers
@@ -512,25 +525,25 @@ def _generate_plots(
             plot_kl_vs_k(
                 posthoc_recs, model_name, fixed_layers, k_values,
                 ev_dict=ev_dict,
-                save_path=str(output_dir / f"ablation_kl_vs_k_layers{layer_str}_{safe_name}.png"),
+                save_path=str(output_dir / f"ablation_kl_vs_k_layers{layer_str}_{safe_name}_{corpus_tag}{run_tag}.png"),
             )
 
         # Figure 3: Top-1 preservation
         plot_top1_preservation(
             posthoc_recs, model_name, k_values, ev_dict=ev_dict,
-            save_path=str(output_dir / f"ablation_top1_preservation_{safe_name}.png"),
+            save_path=str(output_dir / f"ablation_top1_preservation_{safe_name}_{corpus_tag}{run_tag}.png"),
         )
 
         # Figure 4: Entropy change vs layer
         plot_entropy_change_vs_layer(
             posthoc_recs, model_name, k_values, ev_dict=ev_dict,
-            save_path=str(output_dir / f"ablation_entropy_change_{safe_name}.png"),
+            save_path=str(output_dir / f"ablation_entropy_change_{safe_name}_{corpus_tag}{run_tag}.png"),
         )
 
         # Figure 5: Entropy vs layer
         plot_entropy_vs_layer(
             posthoc_recs, model_name, k_values, ev_dict=ev_dict,
-            save_path=str(output_dir / f"ablation_entropy_{safe_name}.png"),
+            save_path=str(output_dir / f"ablation_entropy_{safe_name}_{corpus_tag}{run_tag}.png"),
         )
 
     if interv_recs:
@@ -540,7 +553,7 @@ def _generate_plots(
         for metric in ["kl_divergence", "entropy_change", "top1_preserved"]:
             plot_intervention_heatmap(
                 interv_recs, model_name, metric=metric,
-                save_path=str(output_dir / f"ablation_intervention_heatmap_{metric}_{safe_name}.png"),
+                save_path=str(output_dir / f"ablation_intervention_heatmap_{metric}_{safe_name}_{corpus_tag}{run_tag}.png"),
             )
 
 

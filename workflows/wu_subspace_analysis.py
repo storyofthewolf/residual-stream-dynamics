@@ -162,6 +162,8 @@ def plot_k_sweep_difference(
     k_values:        list,
     alphas:          list,
     output_dir:      Path,
+    corpus_tag:      str,
+    run_tag:         str,
     model_name:      str   = "",
     hook_type:       str   = "resid_post",
     subspace:        str   = "orthogonal",
@@ -179,6 +181,8 @@ def plot_k_sweep_difference(
         k_values:        list of subspace ranks that were swept
         alphas:          list of alpha values to plot (one subplot column each)
         output_dir:      directory for saved figure
+        corpus_tag:      corpus name
+        run_tag:         optional runtime tag to avoid collisions        
         model_name:      used in title and filename
         hook_type:       which hook type (default "resid_post")
         subspace:        "orthogonal" or "parallel"
@@ -240,7 +244,7 @@ def plot_k_sweep_difference(
     plt.tight_layout()
     suffix = f"_{model_name}" if model_name else ""
     _save(fig, output_dir,
-          f"k_sweep_{subspace}_{hook_type}{suffix}.png")
+          f"k_sweep_{subspace}_{hook_type}{suffix}_{corpus_tag}{run_tag}.png")
 
 
 # ============================================================================
@@ -255,6 +259,8 @@ def plot_subspace_comparison(
     k:               int,
     alphas:          list,
     output_dir:      Path,
+    corpus_tag:      str,
+    run_tag:         str,
     model_name:      str   = "",
     hook_type:       str   = "resid_post",
 ) -> None:
@@ -272,6 +278,8 @@ def plot_subspace_comparison(
         k:               which subspace rank to plot
         alphas:          alpha values (one subplot per alpha)
         output_dir:      directory for saved figure
+        corpus_tag:      corpus name
+        run_tag:         optional runtime tag to avoid collisions
         model_name:      used in title and filename
         hook_type:       which hook type (default "resid_post")
     """
@@ -349,7 +357,7 @@ def plot_subspace_comparison(
     plt.tight_layout()
     suffix = f"_{model_name}" if model_name else ""
     _save(fig, output_dir,
-          f"subspace_comparison_k{k}_{hook_type}{suffix}.png")
+          f"subspace_comparison_k{k}_{hook_type}{suffix}_{corpus_tag}{run_tag}.png")
 
 
 # ============================================================================
@@ -360,6 +368,8 @@ def plot_explained_variance(
     ev:          dict,
     d_model:     int,
     output_dir:  Path,
+    corpus_tag:  str,
+    run_tag:     str,
     model_name:  str = "",
 ) -> None:
     """
@@ -370,6 +380,8 @@ def plot_explained_variance(
         ev:         dict from wu_explained_variance(), mapping k -> fraction
         d_model:    model dimension (for axis labeling)
         output_dir: directory for saved figure
+        corpus_tag:      corpus name
+        run_tag:         optional runtime tag to avoid collisions
         model_name: used in title and filename
     """
     ks   = sorted(ev.keys())
@@ -397,7 +409,7 @@ def plot_explained_variance(
     plt.tight_layout()
 
     suffix = f"_{model_name}" if model_name else ""
-    _save(fig, output_dir, f"wu_explained_variance{suffix}.png")
+    _save(fig, output_dir, f"wu_explained_variance{suffix}_{corpus_tag}{run_tag}.png")
 
 
 # ============================================================================
@@ -408,35 +420,59 @@ def main():
     parser = argparse.ArgumentParser(
         description="W_U subspace entropy analysis (r‖/r⊥ decomposition)"
     )
+    
+    # ── Required ──
     parser.add_argument("--corpus", type=str, required=True,
                         help="Path to corpus JSON from corpus_gen.py")
+                        
+    # ── Model and hooks ──
     parser.add_argument("--model", type=str, default="gpt2-small",
                         help="Model name (must be in setup.py MODEL_CONFIGS)")
     parser.add_argument("--hooks", type=str, nargs="+", default=DEFAULT_HOOKS,
                         help=f"Hook types to extract. Choices: {sorted(HOOK_TYPES.keys())}")
+                        
+    # ── Alpha and k space ──
     parser.add_argument("--alpha", type=float, nargs="+", default=[1.0, 2.0],
                         help="Renyi alpha values (default: Shannon + alpha=2)")
     parser.add_argument("--k", type=int, nargs="+", default=None,
                         help=f"Subspace ranks to sweep (default: auto-scaled to d_model)")
+
+    # ── Do residual stream and logit lens ──
     parser.add_argument("--also-residual", action="store_true",
                         help="Also compute full residual stream entropy for comparison")
     parser.add_argument("--also-logit-lens", action="store_true",
                         help="Also compute logit-lens entropy for comparison")
+                        
+    # ── Filtering ──
     parser.add_argument("--category", type=str, default=None,
                         help="Filter to a single corpus category")
-    parser.add_argument("--output-dir", type=str, default="figures/wu_subspace",
-                        help="Directory for plots and saved data")
+                        
+    # ── Output ──
+    parser.add_argument("--output-dir-plots", type=str, default="figures/workflows/wu_subspace",
+                        help="Directory for saved plots")
     parser.add_argument("--no-plots", action="store_true",
                         help="Skip plot generation")
+    parser.add_argument("--output-dir-data", type=str, default="data",
+                        help="Directory for saved data")
     parser.add_argument("--save-data", action="store_true",
                         help="Save EntropyRecords to .npz for later analysis")
+    parser.add_argument("--run-tag", type=str, default="",
+                        help="Optional tag appended to output filenames to prevent collisions")
+                        
+    # ── Device ──
     parser.add_argument("--device", type=str, default="cpu")
+    
     args = parser.parse_args()
 
     alphas     = sorted(set(args.alpha))
     hook_types = args.hooks
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir_plots = Path(args.output_dir_plots)
+    output_dir_plots.mkdir(parents=True, exist_ok=True)
+    output_dir_data = Path(args.output_dir_data)
+    output_dir_data.mkdir(parents=True, exist_ok=True)
+
+    # naming tags
+    run_tag = f"_{args.run_tag}" if args.run_tag else ""
 
     for ht in hook_types:
         if ht not in HOOK_TYPES:
@@ -444,11 +480,13 @@ def main():
             return 1
 
     corpus_path = Path(args.corpus)
+    corpus_tag = corpus_path.stem  # define tag for file naming
     if not corpus_path.exists():
-        print(f"Corpus not found: {corpus_path}")
-        print("  Run: python corpus_gen.py")
+        corpus_path = Path("corpus") / corpus_path
+    if not corpus_path.exists():
+        print(f"Corpus not found: {args.corpus}")
         return 1
-
+        
     with open(corpus_path) as f:
         corpus = json.load(f)
     print(f"\nLoaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
@@ -544,28 +582,33 @@ def main():
 
     # ── Save ──────────────────────────────────────────────────────────────────
     if args.save_data:
-        data_path = output_dir / f"wu_subspace_records_{args.model}.npz"
+        data_path = output_dir_data / f"wu_subspace_records_{args.model}_{corpus_tag}{run_tag}.npz"
         save_entropy_records(all_entropy_records, data_path)
 
     # ── Plots ─────────────────────────────────────────────────────────────────
     if not args.no_plots:
-        print(f"\nGenerating plots in {output_dir}/...")
+        print(f"\nGenerating plots in {output_dir_plots}/...")
 
         for ht in hook_types:
 
             # 1. Explained variance spectrum
-            plot_explained_variance(ev, d_model, output_dir,
+            plot_explained_variance(ev, d_model, output_dir_plots,
+                                    corpus_tag, run_tag,
                                     model_name=args.model)
 
             # 2. K-sweep: how does base-contrast difference vary with k?
             #    One plot for r⊥, one for r‖
             plot_k_sweep_difference(
-                all_entropy_records, k_values, alphas, output_dir,
+                all_entropy_records, k_values, alphas,
+                output_dir_plots,
+                corpus_tag, run_tag,
                 model_name=args.model, hook_type=ht,
                 subspace="orthogonal",
             )
             plot_k_sweep_difference(
-                all_entropy_records, k_values, alphas, output_dir,
+                all_entropy_records, k_values, alphas,
+                output_dir_plots,
+                corpus_tag, run_tag,
                 model_name=args.model, hook_type=ht,
                 subspace="parallel",
             )
@@ -574,11 +617,13 @@ def main():
             #    r‖ vs r⊥ (and full + logit lens if available)
             for k in k_values:
                 plot_subspace_comparison(
-                    all_entropy_records, k, alphas, output_dir,
+                    all_entropy_records, k, alphas,
+                    output_dir_plots,
+                    corpus_tag, run_tag,
                     model_name=args.model, hook_type=ht,
                 )
 
-    print(f"\nDone. Results in {output_dir}/\n")
+    print(f"\nDone. Results in {output_dir_plots}/\n")
 
 
 if __name__ == "__main__":

@@ -131,32 +131,52 @@ def main():
     parser = argparse.ArgumentParser(
         description="Single-prompt exploratory entropy analysis"
     )
+    
+    # ── Model and hooks ──
     parser.add_argument("--model", type=str, default="gpt2-small",
                         help="Model name (must be in setup.py MODEL_CONFIGS)")
     parser.add_argument("--hooks", type=str, nargs="+", default=DEFAULT_HOOKS,
                         help=f"Hook types to extract. Choices: {sorted(HOOK_TYPES.keys())}")
+
+    # ── Alpha and normalizations ──
     parser.add_argument("--alpha", type=float, nargs="+", default=[0.5, 1.0, 2.0, 3.0],
                         help="Renyi alpha values (alpha=1.0 is Shannon entropy)")
     parser.add_argument("--norm", type=str, nargs="+", default=RESIDUAL_NORM_KEYS,
                         help="Normalization methods for residual stream: energy, abs, softmax")
+    
+    # ── Logit-lens ──
     parser.add_argument("--logit-lens", action="store_true",
                         help="Also compute logit-lens entropy (token prediction space)")
     parser.add_argument("--no-residual", action="store_true",
                         help="Skip residual stream entropy (use with --logit-lens)")
-    parser.add_argument("--output-dir", type=str, default="figures/explore",
-                        help="Directory for plots and saved data")
+
+    # ── Output ──
+    parser.add_argument("--output-dir-plots", type=str, default="figures/workflows/single_prompt",
+                        help="Directory for saved plots")
     parser.add_argument("--no-plots", action="store_true",
                         help="Skip plot generation")
+    parser.add_argument("--output-dir-data", type=str, default="data",
+                        help="Directory for saved data")
     parser.add_argument("--save-data", action="store_true",
                         help="Save EntropyRecords to .npz for later multi-model plots")
+    parser.add_argument("--run-tag", type=str, default="",
+                        help="Optional tag appended to output filenames to prevent collisions")
+
+    # ── Device ──
     parser.add_argument("--device", type=str, default="cpu")
+  
     args = parser.parse_args()
 
     alphas     = sorted(set(args.alpha))
     hook_types = args.hooks
     norm_keys  = args.norm
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir_plots = Path(args.output_dir_plots)
+    output_dir_plots.mkdir(parents=True, exist_ok=True)
+    output_dir_data = Path(args.output_dir_data)
+    output_dir_data.mkdir(parents=True, exist_ok=True)
+
+    # naming tags
+    run_tag = f"_{args.run_tag}" if args.run_tag else ""
 
     for ht in hook_types:
         if ht not in HOOK_TYPES:
@@ -244,16 +264,16 @@ def main():
                                                norm_key="energy", alpha=1.0)
                 if shannon_energy:
                     plot_2d_surface(
-                        shannon_energy[0], output_dir,
-                        filename=f"entropy_surface_{ht}_{safe}.png"
+                        shannon_energy[0], output_dir_plots,
+                        filename=f"entropy_surface_{ht}_{safe}{run_tag}.png"
                     )
                     plot_fixed_position(
-                        shannon_energy[0], output_dir,
-                        filename=f"entropy_vs_layer_{ht}_{safe}.png"
+                        shannon_energy[0], output_dir_plots,
+                        filename=f"entropy_vs_layer_{ht}_{safe}{run_tag}.png"
                     )
                     plot_fixed_layer(
-                        shannon_energy[0], output_dir,
-                        filename=f"entropy_vs_position_{ht}_{safe}.png"
+                        shannon_energy[0], output_dir_plots,
+                        filename=f"entropy_vs_position_{ht}_{safe}{run_tag}.png"
                     )
 
                 # 2D entropy surface — Shannon, logit lens
@@ -262,12 +282,12 @@ def main():
                                                norm_key="logit_lens", alpha=1.0)
                     if ll_shannon:
                         plot_2d_surface(
-                            ll_shannon[0], output_dir,
-                            filename=f"entropy_surface_logit_lens_{ht}_{safe}.png"
+                            ll_shannon[0], output_dir_plots,
+                            filename=f"entropy_surface_logit_lens_{ht}_{safe}{run_tag}.png"
                         )
                         plot_fixed_position(
-                            ll_shannon[0], output_dir,
-                            filename=f"entropy_vs_layer_logit_lens_{ht}_{safe}.png"
+                            ll_shannon[0], output_dir_plots,
+                            filename=f"entropy_vs_layer_logit_lens_{ht}_{safe}{run_tag}.png"
                         )
 
             # Hook comparison at final token, Shannon energy norm
@@ -282,17 +302,17 @@ def main():
                         comp_records.append(matched[0])
                 if len(comp_records) > 1:
                     plot_hook_comparison(
-                        comp_records, output_dir,
+                        comp_records, output_dir_plots,
                         token_position=-1,
-                        filename=f"hook_comparison_{safe}.png"
+                        filename=f"hook_comparison_{safe}{run_tag}.png"
                     )
 
     # ── Save data ─────────────────────────────────────────────────────────────
     if args.save_data and all_entropy_records:
-        data_path = output_dir / f"entropy_records_{args.model}.npz"
+        data_path = output_dir_data / f"entropy_records_{args.model}{run_tag}.npz"
         save_entropy_records(all_entropy_records, data_path)
 
-    print(f"\nDone. Results in {output_dir}/\n")
+    print(f"\nDone. Results in {output_dir_plots}/\n")
 
 
 if __name__ == "__main__":

@@ -189,9 +189,6 @@ def main():
     print(f"  {n_pairs} contrast pairs ({len(corpus)} total prompts)")
     print(f"  Categories: {', '.join(categories)}")
     print(f"\nRun with --list-categories to see all pairs.")
-    print(f"Feed to: python entropy_analysis.py --corpus {output_path}")
-    print(f"         python sae_analysis.py --corpus {output_path}\n")
-
 
 if __name__ == "__main__":
     main()

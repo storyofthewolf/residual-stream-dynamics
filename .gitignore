@@ -20,9 +20,13 @@ __pycache__/
 *.pyc
 
 # result files
-data/
-figures/
-*.png
+*.npz
+
+data/*
+!data/.gitkeep
+
+figures/workflows/*
+!figures/workflows/.gitkeep
 
 
 # extras
