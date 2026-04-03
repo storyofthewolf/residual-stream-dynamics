@@ -246,12 +246,8 @@ def main():
     parser.add_argument("--intervention-layers", type=int, nargs="+", default=None,
                         help="Layers to intervene at for Stage 2 "
                              "(default: auto from entropy crossover peak)")
-    parser.add_argument("--intervention-all-layers", action="store_true",
-                        help="Intervene at all layers (or strided subset with "
-                             "--intervention-stride). Overridden by "
-                             "--intervention-layers if both specified.")
-    parser.add_argument("--intervention-stride", type=int, default=1,
-                        help="Layer stride for --intervention-all-layers: "
+    parser.add_argument("--intervention-stride", type=int, default=None,
+                        help="Layer stride for Stage 2 interventions: "
                              "intervene every Nth layer (default: 1 = every layer). "
                              "Final layer is always included regardless of stride.")
 
@@ -439,11 +435,11 @@ def main():
         # ── Stage 2: intervention ablation (optional) ──
         if args.stage2:
             # Determine intervention layers
-            # Priority: --intervention-layers > --intervention-all-layers > auto-defaults
+            # Priority: --intervention-layers > --intervention-stride > hardcoded model defaults > auto-defaults
             if args.intervention_layers is not None:
                 # Explicit list takes highest priority
                 int_layers = sorted(args.intervention_layers)
-            elif args.intervention_all_layers:
+            elif args.intervention_stride is not None:
                 # All layers with optional stride, final layer always included
                 stride = max(1, args.intervention_stride)
                 int_layers = list(range(0, n_layers, stride))
