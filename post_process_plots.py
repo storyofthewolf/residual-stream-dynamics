@@ -62,29 +62,73 @@ def get_param_count(model_name: str) -> int:
 
 # ── Internal helpers ───────────────────────────────────────────────────────────
 
-def _mean_and_ci(profiles):
+def _mean_and_ci(profiles, ci_level=0.95):
     """
-    Compute layer-wise mean and 95% CI across a list of variable-length profiles.
-    Profiles are aligned by fractional layer depth (0 → 1) via interpolation
-    onto a common 100-point grid — safe for cross-model comparison.
+    Compute layer-wise mean and t-distribution confidence interval across a
+    list of variable-length profiles. Profiles are aligned by fractional layer
+    depth (0 -> 1) via interpolation onto a common 100-point grid.
+
+    Uses t-distribution CI on the mean (not a percentile interval), consistent
+    with the paired t-test approach used in entropy_plots.py.
 
     Returns
     -------
     grid : np.ndarray, shape [100]
     mean : np.ndarray, shape [100]
-    lo   : np.ndarray, shape [100]   (2.5th percentile)
-    hi   : np.ndarray, shape [100]   (97.5th percentile)
+    lo   : np.ndarray, shape [100]   lower CI bound
+    hi   : np.ndarray, shape [100]   upper CI bound
     """
+    from scipy import stats as sp_stats
+
     grid = np.linspace(0, 1, 100)
     interpolated = []
     for p in profiles:
         n = len(p)
         x = np.linspace(0, 1, n)
         interpolated.append(np.interp(grid, x, p))
-    arr  = np.array(interpolated)          # [n_prompts, 100]
-    mean = np.nanmean(arr, axis=0)
-    lo   = np.nanpercentile(arr, 2.5,  axis=0)
-    hi   = np.nanpercentile(arr, 97.5, axis=0)
+
+    arr    = np.array(interpolated)
+    n      = arr.shape[0]
+    mean   = np.nanmean(arr, axis=0)
+    sem    = np.nanstd(arr, axis=0, ddof=1) / np.sqrt(n)
+    t_crit = sp_stats.t.ppf(1 - (1 - ci_level) / 2, df=n - 1)
+    lo     = mean - t_crit * sem
+    hi     = mean + t_crit * sem
+    return grid, mean, lo, hi
+
+
+def _diff_and_ci(base_profiles, contrast_profiles, ci_level=0.95):
+    """
+    Compute layer-wise paired difference (base - contrast) with t-distribution
+    CI on the mean difference. Matches the methodology in entropy_plots.py.
+
+    Returns
+    -------
+    grid : np.ndarray, shape [100]
+    mean : np.ndarray, shape [100]
+    lo   : np.ndarray, shape [100]
+    hi   : np.ndarray, shape [100]
+    """
+    from scipy import stats as sp_stats
+
+    grid = np.linspace(0, 1, 100)
+
+    def _interp(profiles):
+        return np.array([
+            np.interp(grid, np.linspace(0, 1, len(p)), p)
+            for p in profiles
+        ])
+
+    b    = _interp(base_profiles)
+    c    = _interp(contrast_profiles)
+    diff = b - c
+
+    n      = diff.shape[0]
+    mean   = np.nanmean(diff, axis=0)
+    sem    = np.nanstd(diff, axis=0, ddof=1) / np.sqrt(n)
+    t_crit = sp_stats.t.ppf(1 - (1 - ci_level) / 2, df=n - 1)
+    lo     = mean - t_crit * sem
+    hi     = mean + t_crit * sem
     return grid, mean, lo, hi
 
 
@@ -196,17 +240,7 @@ def plot_paired_difference(
     """
     fig, ax = _get_or_create_ax(ax, figsize=(6, 4))
 
-    # interpolate both onto common grid then difference
-    grid = np.linspace(0, 1, 100)
-    base_interp     = np.array([np.interp(grid, np.linspace(0,1,len(p)), p)
-                                 for p in base_profiles])
-    contrast_interp = np.array([np.interp(grid, np.linspace(0,1,len(p)), p)
-                                 for p in contrast_profiles])
-    diff = base_interp - contrast_interp      # [n_pairs, 100]
-
-    mean = np.nanmean(diff, axis=0)
-    lo   = np.nanpercentile(diff, 2.5,  axis=0)
-    hi   = np.nanpercentile(diff, 97.5, axis=0)
+    grid, mean, lo, hi = _diff_and_ci(base_profiles, contrast_profiles)
 
     ax.plot(grid, mean, color=DIFF_COLOR, linewidth=1.8, label=label)
     ax.fill_between(grid, lo, hi, color=DIFF_COLOR, alpha=0.2)
@@ -454,3 +488,187 @@ def plot_scaling_summary(
     fig.tight_layout()
     _save(fig, save_path)
     return fig, ax
+
+
+# ── Multi-model grid ───────────────────────────────────────────────────────────
+
+def plot_paired_difference_grid(
+    model_data,
+    save_path=None,
+):
+    """
+    Grid of paired difference curves (base - contrast) for all models.
+    Rows: GPT-2 family (top), Pythia family (bottom).
+    Columns: one per model within each family.
+    Both residual stream and logit lens shown per panel.
+
+    Parameters
+    ----------
+    model_data : dict
+        Keyed by model name. Each value is a dict with keys:
+            'base_resid', 'contrast_resid', 'base_logit', 'contrast_logit'
+        Each value is a list of np.ndarray profiles.
+    save_path : str or Path, optional
+
+    Returns
+    -------
+    fig, axes
+    """
+    gpt2_models   = [m for m in model_data if "gpt2"   in m]
+    pythia_models = [m for m in model_data if "pythia" in m]
+
+    n_cols = max(len(gpt2_models), len(pythia_models))
+    fig, axes = plt.subplots(2, n_cols, figsize=(4 * n_cols, 7), sharey="row")
+    fig.suptitle("Paired difference: base - contrast  [all models]", fontsize=13)
+
+    grid = np.linspace(0, 1, 100)
+
+    def _plot_diff(ax, base, contrast, color, label):
+        _, mean, lo, hi = _diff_and_ci(base, contrast)
+        ax.plot(grid, mean, color=color, linewidth=1.8, label=label)
+        ax.fill_between(grid, lo, hi, color=color, alpha=0.2)
+
+    for row, models in enumerate([gpt2_models, pythia_models]):
+        for col, model in enumerate(models):
+            ax = axes[row, col]
+            md = model_data[model]
+            _plot_diff(ax, md["base_resid"],  md["contrast_resid"],  BASE_COLOR,     "resid")
+            _plot_diff(ax, md["base_logit"],  md["contrast_logit"],  CONTRAST_COLOR, "logit lens")
+            ax.axhline(0, color="gray", linewidth=0.8, linestyle="--")
+            ax.set_title(model, fontsize=9)
+            ax.set_xlabel("Fractional layer depth", fontsize=8)
+            if col == 0:
+                ax.set_ylabel("Delta Entropy (bits)", fontsize=8)
+            ax.legend(fontsize=7)
+        for col in range(len(models), n_cols):
+            axes[row, col].set_visible(False)
+
+    fig.tight_layout()
+    _save(fig, save_path)
+    return fig, axes
+
+
+def plot_top1_vs_k(
+    abl_data,
+    k_values,
+    model_name="",
+    hook_type="resid_post",
+    ax=None,
+    save_path=None,
+):
+    """
+    Top-1 token preservation rate vs subspace rank k for post-hoc ablation.
+
+    Parameters
+    ----------
+    abl_data : NpzFile
+        Loaded ablation .npz from load_ablation_npz().
+    k_values : list of int
+        Subspace ranks to plot. Must exist in abl_data.
+    model_name : str
+    hook_type : str
+    ax : matplotlib Axes, optional
+    save_path : str or Path, optional
+
+    Returns
+    -------
+    fig, ax
+    """
+    from npz_utils import get_ablation_records
+
+    fig, ax = _get_or_create_ax(ax, figsize=(7, 4))
+
+    base_rates     = []
+    contrast_rates = []
+
+    for k in k_values:
+        _, _, base_top1,     _, _ = get_ablation_records(
+            abl_data, role="base",     ablation_type="posthoc", k=k, hook_type=hook_type)
+        _, _, contrast_top1, _, _ = get_ablation_records(
+            abl_data, role="contrast", ablation_type="posthoc", k=k, hook_type=hook_type)
+
+        base_rates.append(np.mean([np.mean(p.astype(float)) for p in base_top1]))
+        contrast_rates.append(np.mean([np.mean(p.astype(float)) for p in contrast_top1]))
+
+    ax.plot(k_values, base_rates,     color=BASE_COLOR,     marker="o", linewidth=1.8, label="base")
+    ax.plot(k_values, contrast_rates, color=CONTRAST_COLOR, marker="o", linewidth=1.8, label="contrast")
+    ax.axhline(1.0, color="gray", linewidth=0.8, linestyle="--")
+    ax.set_xlabel("Subspace rank k")
+    ax.set_ylabel("Mean top-1 preservation rate")
+    ax.set_title(f"Post-hoc ablation: top-1 preservation vs k  [{model_name}]", fontsize=11)
+    ax.legend(fontsize=9)
+
+    fig.tight_layout()
+    _save(fig, save_path)
+    return fig, ax
+
+
+def compute_scaling_summary(model_data):
+    """
+    Compute peak paired difference statistics across all models.
+    Returns a list of dicts ready for plot_scaling_summary().
+
+    Parameters
+    ----------
+    model_data : dict
+        Keyed by model name. Each value has keys:
+            'base_resid', 'contrast_resid', 'base_logit', 'contrast_logit'
+
+    Returns
+    -------
+    model_results : list of dict
+        Each dict has keys: 'model_name', 'family', 'peak_resid', 'peak_logit'
+    """
+    grid = np.linspace(0, 1, 100)
+
+    def _peak(base, contrast):
+        _, mean, _, _ = _diff_and_ci(base, contrast)
+        return float(np.max(np.abs(mean)))
+
+    results = []
+    for model, md in model_data.items():
+        results.append({
+            "model_name": model,
+            "family":     "gpt2" if "gpt2" in model else "pythia",
+            "peak_resid": _peak(md["base_resid"], md["contrast_resid"]),
+            "peak_logit": _peak(md["base_logit"], md["contrast_logit"]),
+        })
+    return results
+
+
+def load_all_models(models, data_dir, corpus_tag):
+    """
+    Load entropy profiles for all models in a single call.
+    Returns a dict ready for plot_paired_difference_grid() and compute_scaling_summary().
+
+    Parameters
+    ----------
+    models : list of str
+        Model names, e.g. ['gpt2-small', 'pythia-160m', ...]
+    data_dir : str or Path
+        Directory containing .npz files.
+    corpus_tag : str
+        Corpus stem used in filenames, e.g. 'base_vs_contrast_n50'.
+
+    Returns
+    -------
+    model_data : dict
+        Keyed by model name. Each value has keys:
+            'base_resid', 'contrast_resid', 'base_logit', 'contrast_logit'
+    """
+    from npz_utils import load_entropy_npz, get_final_token_profiles
+
+    data_dir   = Path(data_dir)
+    model_data = {}
+
+    for model in models:
+        path = data_dir / f"entropy_records_{model}_{corpus_tag}.npz"
+        d    = load_entropy_npz(path)
+        model_data[model] = {
+            "base_resid":     get_final_token_profiles(d, norm_key="energy",     role="base")[0],
+            "contrast_resid": get_final_token_profiles(d, norm_key="energy",     role="contrast")[0],
+            "base_logit":     get_final_token_profiles(d, norm_key="logit_lens", role="base")[0],
+            "contrast_logit": get_final_token_profiles(d, norm_key="logit_lens", role="contrast")[0],
+        }
+
+    return model_data

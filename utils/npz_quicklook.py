@@ -4,7 +4,7 @@ import numpy as np
 
 
 def query_entropRecord():
-    data = np.load("data/entropy_records_gpt2-small_base_vs_contrast_n50.npz",
+    data = np.load("../data/entropy_records_gpt2-small_base_vs_contrast_n50.npz",
                     allow_pickle=True)
     print(data.files)
 
@@ -31,7 +31,7 @@ def query_entropRecord():
 
 
 def query_ablationRecord():
-    data = np.load("data/ablation_records_gpt2-small_base_vs_contrast_n50.npz",
+    data = np.load("../data/ablation_records_gpt2-small_base_vs_contrast_n50.npz",
                allow_pickle=True)
     print("keys:", data.files)
 
@@ -39,9 +39,10 @@ def query_ablationRecord():
     for k in data.files:
         arr = data[k]
         print(f"{k}: dtype={arr.dtype}, shape={arr.shape}, sample={arr.flat[0]}")
-    
+        
+        
 def query_wuRecord():
-    data = np.load("data/wu_subspace_records_gpt2-small_base_vs_contrast_n50.npz",
+    data = np.load("../data/wu_subspace_records_gpt2-small_base_vs_contrast_n50.npz",
                    allow_pickle=True)
     print("keys:", data.files)
     for k in data.files:

@@ -29,7 +29,7 @@ These are duplicated between ablation_compute.py and entropy_compute.py, with on
 Versions in ablation_compute.py are called in workflows/ablation_analysis.py
 Versions in entropy_compute.py are called in workflows/wu_subspace_analysis.py
 
- These could be unified at a later date into a svd_utls.py file.  Leave for now.
+These could be unified at a later date into a svd_utls.py file.  Leave for now.
 
 ## inconsistency in argument passing of filenames between entropy_plots.py and ablation_plots.py
 
@@ -44,5 +44,15 @@ which has a merged path+filename passed from the workflow scripts
 
 ## institute more robust data and plot naming conventions if parameter sweeps significantly proliferate
 - plotting functions in  entropy_plots.py have different arguments lists for those driven for corpus vs single prompt testing
+- added {corpus_tag}{run_tag} to moderate collisions as a stop-gap fix 
 
-## include explained variance vs k-subpsace rank on Entropy and/or Ablation recods
+## save additional varibales to records:
+- explained variance vs k-subpsace rank; plotted but not saved for post-processing
+- save raw residual stream and logit lens data cube for post-processing
+
+## refactor plotting applications between workflow plot dumps and curated post process plots
+- currently entropy_plots.py and ablation_plots.py produce exploratory, multipanel diagnostic figures
+- seperately post_process_plots.py injest .npz's to make bespoke presentation figures
+- some low-level helper functions are currently duplicated in both
+- eventually move helpers to a shared plotting utility script. shared low-level helpers: _mean_and_ci, _diff_and_ci, _save, color constants, _fdr_bh.
+

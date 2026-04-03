@@ -98,7 +98,8 @@ python workflows/entropy_analysis.py --corpus corpus.json \
     ├── ablation_analysis.py     # Ablation experiments; post-hoc and intervention; corpus driven
     ├── wu_subspace_analysis.py  # Decomposition of residual stream @ unembedding matrix; corpus driven
     └── single_prompt.py         # Single prompt entropy
-├── Notebooks                    # Juypter Notebooks of results
+├── Notebooks/                   # Juypter Notebooks of results
+├── utils/                       # common utility functions and scripts
 ├── entropy_compute.py           # EntropyRecord dataclass and entropy calc functions
 ├── entropy_plots.py             # Entropy multiplot visualization
 ├── ablation_compute.py          # AblationRecord dataclass and ablation calc functions 
