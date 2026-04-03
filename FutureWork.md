@@ -44,3 +44,5 @@ which has a merged path+filename passed from the workflow scripts
 
 ## institute more robust data and plot naming conventions if parameter sweeps significantly proliferate
 - plotting functions in  entropy_plots.py have different arguments lists for those driven for corpus vs single prompt testing
+
+## include explained variance vs k-subpsace rank on Entropy and/or Ablation recods
