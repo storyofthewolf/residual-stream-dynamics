@@ -151,9 +151,6 @@ def wu_explained_variance(
     than raw integer rank. Report in paper as percentage thresholds
     (e.g. k corresponding to 50%, 75%, 90%, 95%, 99% explained variance).
 
-    FORTRAN analogy: computing cumulative explained variance from
-    eigenvalues: sum(lambda_1..k) / sum(lambda_all). The squared
-    singular values play the role of eigenvalues of the covariance matrix.
     """
     _, S, _ = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
     total = (S**2).sum()
@@ -172,6 +169,7 @@ def validate_ablation(
 ) -> None:
     """
     Validate the projection decomposition before running ablation experiments.
+    Test based on a partial projection.  
 
     Checks:
         1. Reconstruction: r‖ + r⊥ = r (to floating point tolerance)
@@ -328,9 +326,15 @@ def compute_posthoc_ablation(
                     record.activations[layer, -1, :]
                 ).float()                                   # [d_model]
 
+                # can also try reversing the order
+                # Posthoc: project the post-LN vector, since W_U acts on post-LN vectors
+                # and the SVD basis is the eigenbasis of W_U^T W_U on post-LN space.
+                #normed     = ln_final(r).cpu()                    # [d_model]
+                #normed_abl = Q_k @ (Q_k.T @ normed)               # [d_model]
+                #logits_abl = normed_abl @ W_U_cpu                 # [vocab_size]
+                
                 # Project into top-k W_U subspace: keep r‖, zero r⊥
                 r_ablated = Q_k @ (Q_k.T @ r)              # [d_model]
-
                 normed_abl = ln_final(r_ablated).cpu()      # [d_model]
                 logits_abl = normed_abl @ W_U_cpu           # [vocab_size]
                 probs_abl  = torch.softmax(logits_abl, dim=-1).clamp(min=1e-12)
@@ -542,13 +546,21 @@ def k_values_from_ev_thresholds(
     k_values = set()
     for thresh in thresholds:
         # Find first k where cumulative variance >= threshold
+        # k is 1-indexed (number of directions to keep), so valid range is [1, d_model].
+        # k=d_model means Vh[:d_model,:] = full Vh, making Q_k @ Q_k.T the identity
+        # — a true no-op ablation. This is the correct sentinel for ev_threshold=1.0.
+        # Note: for some models W_U has a numerically rank-deficient tail, so cumvar
+        # may reach 1.0 before k=d_model (e.g. gpt2-small reaches it at k=762).
+        # That is real structure in W_U, not a bug.
         mask = cumvar >= thresh
         if mask.any():
             k = int(mask.nonzero(as_tuple=True)[0][0].item()) + 1  # 1-indexed
-            k = min(k, d_model - 1)  # k must be < d_model
+            #k = min(k, d_model - 1)  # k must be < d_model
+            k = min(k, d_model)  # cap at d_model, not d_model-1
             k_values.add(k)
         else:
-            k_values.add(d_model - 1)
+            #k_values.add(d_model - 1)
+             k_values.add(d_model)
 
     return sorted(k_values)
 

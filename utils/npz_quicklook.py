@@ -6,13 +6,7 @@ import numpy as np
 def query_entropRecord():
     data = np.load("../data/entropy_records_gpt2-small_base_vs_contrast_n50.npz",
                     allow_pickle=True)
-    print(data.files)
-
-#    arr = data["norm_keys"]
-#    print(arr)
-
-#    arr = data["surfaces"]
-#    print(arr[500,4,:])
+    print("keys", data.files)
 
     print(f"-------------------------------")
     print("unique norm_keys:", np.unique(data["norm_keys"]))

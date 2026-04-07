@@ -431,6 +431,159 @@ def plot_intervention_heatmap(
     return fig, ax
 
 
+def plot_top1_intervention_tripanel(
+    base_mat,
+    contrast_mat,
+    k_values,
+    layer_indices,
+    model_name: str = "",
+    y_mode: str = "relative",
+    d_model: int = None,
+    ev_dict: dict = None,
+    max_layer_ticks: int = 16,
+    save_path=None,
+):
+    """
+    Three-panel heatmap for forward-pass intervention ablation, top-1 preservation only.
+
+    Panels: base prompts | contrast prompts | base − contrast difference.
+    The split-subfigure layout gives the two absolute panels a shared colorbar
+    (Blues, 0–1) and the difference panel its own symmetric colorbar (RdBu_r).
+
+    This is the multi-panel companion to plot_intervention_heatmap(), which shows
+    only the difference. Use this function when the absolute preservation rates
+    for each role are needed alongside the difference — e.g. to verify that a
+    blue patch in the difference panel reflects base robustness rather than mutual
+    collapse.
+
+    Parameters
+    ----------
+    base_mat : np.ndarray, shape [n_k, n_layers]
+        Top-1 preservation rate for base prompts.
+        Rows = k values (subspace ranks), cols = intervention layers.
+        Build upstream with build_intervention_heatmap(..., metric='top1_preserved',
+        role='base').
+    contrast_mat : np.ndarray, same shape
+        Top-1 preservation rate for contrast prompts.
+    k_values : array-like of int
+        Subspace ranks corresponding to rows (bottom to top, origin='lower').
+    layer_indices : array-like of int
+        Intervention layer indices corresponding to columns.
+    model_name : str
+        Used in the figure suptitle.
+    y_mode : str
+        Controls y-axis labelling of subspace rank. One of:
+            'k'        — raw integer rank (default for backwards compatibility)
+            'relative' — k / d_model fraction; requires d_model.
+            'ev'       — explained variance fraction; requires ev_dict mapping k -> float.
+        'relative' is recommended for cross-model comparison since it normalises
+        by architecture width.
+    d_model : int, optional
+        Model hidden dimension. Required when y_mode='relative'.
+    ev_dict : dict, optional
+        Mapping {k: explained_variance_fraction}. Required when y_mode='ev'.
+        Produced by wu_explained_variance() in ablation_compute.py.
+    max_layer_ticks : int
+        Maximum number of x-axis (intervention layer) tick labels to show.
+        Prevents overlap on dense models. A stride is computed automatically
+        so that the number of visible labels does not exceed this value.
+        Default 16 is comfortable up to ~32-layer models at typical figure width.
+    save_path : str or Path, optional
+        If provided, saves at 150 DPI.
+
+    Returns
+    -------
+    fig : matplotlib Figure
+    axes : tuple of three Axes — (ax_base, ax_contrast, ax_diff)
+    """
+    import matplotlib.gridspec as gridspec
+
+    # ── Validate y_mode inputs ────────────────────────────────────────────────
+    if y_mode == "relative" and d_model is None:
+        raise ValueError("y_mode='relative' requires d_model.")
+    if y_mode == "ev" and ev_dict is None:
+        raise ValueError("y_mode='ev' requires ev_dict.")
+
+    # ── Build y-axis (subspace rank) labels ───────────────────────────────────
+    # Heatmap rows are indexed 0..n_k-1; labels are the scientifically meaningful
+    # quantity selected by y_mode.
+    if y_mode == "relative":
+        y_labels = [f"{k / d_model:.2f}" for k in k_values]
+        y_axis_label = "Relative subspace rank  k / d_model"
+    elif y_mode == "ev":
+        y_labels = [f"{ev_dict[k]*100:.1f}%" if k in ev_dict else str(k)
+                    for k in k_values]
+        y_axis_label = "Explained variance retained"
+    else:  # 'k'
+        y_labels = [str(k) for k in k_values]
+        y_axis_label = "Subspace rank k"
+
+    # ── Build x-axis (intervention layer) tick decimation ────────────────────
+    # stride = smallest integer such that n_layers / stride <= max_layer_ticks.
+    # This is the same logic used in atmospheric model output: when you have 128
+    # pressure levels but only room for 16 axis labels, you show every 8th level.
+    n_lyr  = len(layer_indices)
+    stride = max(1, int(np.ceil(n_lyr / max_layer_ticks)))
+    x_tick_positions = list(range(0, n_lyr, stride))
+    x_tick_labels    = [str(layer_indices[i]) for i in x_tick_positions]
+
+    # ── Compute difference and colormap limits ────────────────────────────────
+    diff_mat  = base_mat - contrast_mat
+    vmax_diff = np.nanmax(np.abs(diff_mat))
+    n_k       = len(k_values)
+
+    # ── Figure and subfigure layout ───────────────────────────────────────────
+    # Two subfigures: left holds base+contrast with a shared colorbar (Blues);
+    # right holds the difference with its own symmetric colorbar (RdBu_r).
+    # width_ratios=[2.2, 1.1] gives the difference panel slightly less width
+    # than the two absolute panels combined — matches ablation_plots.py.
+    fig = plt.figure(figsize=(18, 5))
+    fig.suptitle(
+        f"Intervention ablation: top-1 preservation heatmap  [{model_name}]",
+        fontsize=12,
+    )
+
+    sf_left, sf_right = fig.subfigures(1, 2, width_ratios=[2.2, 1.1], wspace=0.12)
+
+    gs_left  = gridspec.GridSpec(1, 3, width_ratios=[10, 10, 0.6],
+                                 wspace=0.12, figure=sf_left)
+    gs_right = gridspec.GridSpec(1, 2, width_ratios=[10, 0.6],
+                                 wspace=0.12, figure=sf_right)
+
+    ax_base     = sf_left.add_subplot(gs_left[0, 0])
+    ax_contrast = sf_left.add_subplot(gs_left[0, 1])
+    cbar_ax1    = sf_left.add_subplot(gs_left[0, 2])
+    ax_diff     = sf_right.add_subplot(gs_right[0, 0])
+    cbar_ax2    = sf_right.add_subplot(gs_right[0, 1])
+
+    im_kw = dict(aspect="auto", origin="lower")
+
+    im1 = ax_base.imshow(    base_mat,     cmap="Blues",  vmin=0,          vmax=1,         **im_kw)
+    im2 = ax_contrast.imshow(contrast_mat, cmap="Blues",  vmin=0,          vmax=1,         **im_kw)
+    im3 = ax_diff.imshow(    diff_mat,     cmap="RdBu_r", vmin=-vmax_diff, vmax=vmax_diff, **im_kw)
+
+    ax_base.set_title("Base prompts",      fontsize=10)
+    ax_contrast.set_title("Contrast prompts", fontsize=10)
+    ax_diff.set_title("Base − Contrast",   fontsize=10)
+
+    fig.colorbar(im2, cax=cbar_ax1, label="Top-1 preservation rate")
+    fig.colorbar(im3, cax=cbar_ax2, label="Δ Top-1 preservation rate")
+
+    # ── Apply axis ticks and labels to all three panels ───────────────────────
+    for ax in [ax_base, ax_contrast, ax_diff]:
+        ax.set_xlabel("Intervention layer", fontsize=9)
+        ax.set_xticks(x_tick_positions)
+        ax.set_xticklabels(x_tick_labels, fontsize=7)
+        ax.set_yticks(range(n_k))
+        ax.set_yticklabels(y_labels, fontsize=7)
+
+    for ax in [ax_base, ax_diff]:
+        ax.set_ylabel(y_axis_label, fontsize=9)
+
+    _save(fig, save_path)
+    return fig, (ax_base, ax_contrast, ax_diff)
+
+
 # ── Cross-model scaling summary ────────────────────────────────────────────────
 
 def plot_scaling_summary(
@@ -601,7 +754,6 @@ def plot_top1_vs_k(
     fig.tight_layout()
     _save(fig, save_path)
     return fig, ax
-
 
 def compute_scaling_summary(model_data):
     """

@@ -372,7 +372,9 @@ def main():
             ))
 
     # Final validation: k must satisfy 1 <= k < d_model
-    k_values = [k for k in k_values if 1 <= k < d_model]
+    # k=d_model is explicitly allowed: Vh[:d_model,:] is the full right-singular
+    # basis, making Q_k @ Q_k.T the identity — a true no-op ablation.
+    k_values = [k for k in k_values if 1 <= k <= d_model]
     if not k_values:
         print(f"No valid k values for d_model={d_model}. Aborting.")
         return 1
