@@ -431,15 +431,20 @@ def plot_intervention_heatmap(
     return fig, ax
 
 
-def plot_top1_intervention_tripanel(
+def plot_ablation_heatmap_tripanel(
     base_mat,
     contrast_mat,
     k_values,
     layer_indices,
     model_name: str = "",
+    title: str = "",
+    x_axis_label: str = "layers",
     y_mode: str = "relative",
     d_model: int = None,
     ev_dict: dict = None,
+    y_tick_labels: list = None,
+    cbar_label: str = "",
+    cbar_diff_label: str = "",
     max_layer_ticks: int = 16,
     save_path=None,
 ):
@@ -471,18 +476,35 @@ def plot_top1_intervention_tripanel(
         Intervention layer indices corresponding to columns.
     model_name : str
         Used in the figure suptitle.
+    title : str
+        Used in the figure suptitle.
+    x_axis_label : str
+        Set axis label from arugment passing.
+        Else defaults to "layers"
     y_mode : str
         Controls y-axis labelling of subspace rank. One of:
-            'k'        — raw integer rank (default for backwards compatibility)
+            'k'        — raw integer rank
             'relative' — k / d_model fraction; requires d_model.
             'ev'       — explained variance fraction; requires ev_dict mapping k -> float.
         'relative' is recommended for cross-model comparison since it normalises
         by architecture width.
+        Ignored when y_tick_labels is provided.
     d_model : int, optional
         Model hidden dimension. Required when y_mode='relative'.
     ev_dict : dict, optional
         Mapping {k: explained_variance_fraction}. Required when y_mode='ev'.
         Produced by wu_explained_variance() in ablation_compute.py.
+    y_tick_labels : list of str, optional
+        Explicit y-axis labels, one per entry in k_values (bottom to top).
+        Overrides y_mode entirely. Use this when EV values are known from
+        the workflow run but not stored in the npz — e.g.:
+            y_tick_labels=['10%', '25%', '50%', '75%', '90%', '95%',
+                           '99%', '99.9%', '100%']    
+        Must have the same length as k_values.
+    cbar_label : str
+        Colorbar label for two raw value panel
+    cbar_diff_label : str
+        Colorbar label for difference panel
     max_layer_ticks : int
         Maximum number of x-axis (intervention layer) tick labels to show.
         Prevents overlap on dense models. A stride is computed automatically
@@ -498,25 +520,33 @@ def plot_top1_intervention_tripanel(
     """
     import matplotlib.gridspec as gridspec
 
-    # ── Validate y_mode inputs ────────────────────────────────────────────────
-    if y_mode == "relative" and d_model is None:
-        raise ValueError("y_mode='relative' requires d_model.")
-    if y_mode == "ev" and ev_dict is None:
-        raise ValueError("y_mode='ev' requires ev_dict.")
-
     # ── Build y-axis (subspace rank) labels ───────────────────────────────────
-    # Heatmap rows are indexed 0..n_k-1; labels are the scientifically meaningful
-    # quantity selected by y_mode.
-    if y_mode == "relative":
-        y_labels = [f"{k / d_model:.2f}" for k in k_values]
-        y_axis_label = "Relative subspace rank  k / d_model"
-    elif y_mode == "ev":
-        y_labels = [f"{ev_dict[k]*100:.1f}%" if k in ev_dict else str(k)
-                    for k in k_values]
+    if y_tick_labels is not None:
+        # Manual override — use as-is, skip y_mode logic entirely.
+        if len(y_tick_labels) != len(k_values):
+            raise ValueError(
+                f"y_tick_labels has {len(y_tick_labels)} entries but "
+                f"k_values has {len(k_values)}. Lengths must match."
+            )
+        y_labels     = list(y_tick_labels)
         y_axis_label = "Explained variance retained"
-    else:  # 'k'
-        y_labels = [str(k) for k in k_values]
-        y_axis_label = "Subspace rank k"
+    else:
+        # ── Validate y_mode inputs ────────────────────────────────────────────
+        if y_mode == "relative" and d_model is None:
+            raise ValueError("y_mode='relative' requires d_model.")
+        if y_mode == "ev" and ev_dict is None:
+            raise ValueError("y_mode='ev' requires ev_dict.")
+
+        if y_mode == "relative":
+            y_labels     = [f"{k / d_model:.2f}" for k in k_values]
+            y_axis_label = "Relative subspace rank  k / d_model"
+        elif y_mode == "ev":
+            y_labels     = [f"{ev_dict[k]*100:.1f}%" if k in ev_dict else str(k)
+                            for k in k_values]
+            y_axis_label = "Explained variance retained"
+        else:  # 'k'
+            y_labels     = [str(k) for k in k_values]
+            y_axis_label = "Subspace rank k"
 
     # ── Build x-axis (intervention layer) tick decimation ────────────────────
     # stride = smallest integer such that n_layers / stride <= max_layer_ticks.
@@ -539,7 +569,8 @@ def plot_top1_intervention_tripanel(
     # than the two absolute panels combined — matches ablation_plots.py.
     fig = plt.figure(figsize=(18, 5))
     fig.suptitle(
-        f"Intervention ablation: top-1 preservation heatmap  [{model_name}]",
+      #  f"Intervention ablation: top-1 preservation heatmap  [{model_name}]",
+        f"{title} [{model_name}]",
         fontsize=12,
     )
 
@@ -566,16 +597,25 @@ def plot_top1_intervention_tripanel(
     ax_contrast.set_title("Contrast prompts", fontsize=10)
     ax_diff.set_title("Base − Contrast",   fontsize=10)
 
-    fig.colorbar(im2, cax=cbar_ax1, label="Top-1 preservation rate")
-    fig.colorbar(im3, cax=cbar_ax2, label="Δ Top-1 preservation rate")
+    fig.colorbar(im2, cax=cbar_ax1, label=cbar_label)
+    fig.colorbar(im3, cax=cbar_ax2, label=cbar_diff_label)
 
     # ── Apply axis ticks and labels to all three panels ───────────────────────
     for ax in [ax_base, ax_contrast, ax_diff]:
-        ax.set_xlabel("Intervention layer", fontsize=9)
+        ax.set_xlabel(x_axis_label, fontsize=9)
         ax.set_xticks(x_tick_positions)
         ax.set_xticklabels(x_tick_labels, fontsize=7)
         ax.set_yticks(range(n_k))
-        ax.set_yticklabels(y_labels, fontsize=7)
+        #ax.set_yticklabels(y_labels, fontsize=7)
+
+    # y-axis labels: shown on ax_base and ax_diff only.
+    # ax_contrast shares the same y-scale as ax_base; showing labels on both
+    # causes the contrast panel's tick labels to overlap the base panel's plot
+    # area. Suppressing them here keeps the shared colorbar as the sole legend.
+    ax_base.set_yticklabels(y_labels, fontsize=7)
+    ax_contrast.set_yticklabels([])
+    ax_diff.set_yticklabels(y_labels, fontsize=7)
+
 
     for ax in [ax_base, ax_diff]:
         ax.set_ylabel(y_axis_label, fontsize=9)

@@ -298,3 +298,97 @@ def build_intervention_heatmap(
 
     return matrix
 
+
+def build_posthoc_heatmap(
+    data,
+    metric,
+    role,
+    k_values,
+    hook_type="resid_post",
+):
+    """
+    Build a 2D matrix of a scalar summary statistic across (k, model_layer)
+    for posthoc ablation records. Companion to build_intervention_heatmap().
+
+    Axes: rows = subspace rank k, columns = model layer index (0..n_layers-1).
+    The number of columns is inferred from the data (arr_lens of the first
+    matching record). This matches the shape expected by
+    plot_top1_intervention_tripanel() in post_process_plots.py, so the same
+    plotting function handles both posthoc and intervention heatmaps.
+
+    The scalar summary per (k, layer) cell is the mean across prompts:
+        - top1_preserved  : fraction of prompts preserving top-1 token
+        - entropy_change  : mean ΔEntropy across prompts  (H_ablated - H_full)
+        - kl_divergence   : mean KL divergence across prompts
+
+    Parameters
+    ----------
+    data : NpzFile
+        Loaded ablation .npz from load_ablation_npz().
+    metric : str
+        One of: 'top1_preserved', 'entropy_change', 'kl_divergence'.
+    role : str
+        One of: 'base', 'contrast'.
+    k_values : list of int
+        Subspace ranks to include (rows of output matrix).
+    hook_type : str
+        Default 'resid_post'.
+
+    Returns
+    -------
+    matrix : np.ndarray, shape [n_k, n_layers]
+        Mean summary statistic per (k, layer) cell.
+        NaN where no records exist for a given k.
+    n_layers : int
+        Number of model layers inferred from the data.
+    """
+    # Infer n_layers from the first available k so the caller doesn't need
+    # to pass it separately.
+    n_layers = None
+    for k in k_values:
+        try:
+            kl_out, ent_out, top1_out, _, lens = get_ablation_records(
+                data, role=role, ablation_type="posthoc",
+                k=k, hook_type=hook_type,
+            )
+            n_layers = int(lens[0])
+            break
+        except ValueError:
+            continue
+
+    if n_layers is None:
+        raise ValueError(
+            f"No posthoc records found for role='{role}', "
+            f"hook_type='{hook_type}', k in {k_values}."
+        )
+
+    matrix = np.full((len(k_values), n_layers), np.nan)
+
+    for i, k in enumerate(k_values):
+        try:
+            kl_out, ent_out, top1_out, _, _ = get_ablation_records(
+                data, role=role, ablation_type="posthoc",
+                k=k, hook_type=hook_type,
+            )
+        except ValueError:
+            continue  # leave row as NaN
+
+        if metric == "top1_preserved":
+            matrix[i] = np.mean(
+                np.array([p.astype(float) for p in top1_out]), axis=0
+            )
+        elif metric == "entropy_change":
+            matrix[i] = np.mean(
+                np.array([p for p in ent_out]), axis=0
+            )
+        elif metric == "kl_divergence":
+            matrix[i] = np.mean(
+                np.array([p for p in kl_out]), axis=0
+            )
+        else:
+            raise ValueError(
+                f"Unknown metric: '{metric}'. "
+                f"Choose from: top1_preserved, entropy_change, kl_divergence"
+            )
+
+    return matrix, n_layers

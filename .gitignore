@@ -28,11 +28,15 @@ data/*
 figures/workflows/*
 !figures/workflows/.gitkeep
 
+figures/notebooks/*
+!figures/notebooks/.gitkeep
+
 
 
 # extras
 old/
 code_design_prompts/
+claude_staging_area/
 tests/
 sandbox/
 figures/extras/

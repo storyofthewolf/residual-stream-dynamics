@@ -18,6 +18,7 @@ A direct test of this hypothesis would compute the per-direction logit influence
 
 ## tests randomization of content from residual stream matrix.
 
+## computing layer-wise Jacobian norms along base vs contrast trajectories would let you separate the two effects.
 
 # Technical 
 
@@ -51,8 +52,17 @@ which has a merged path+filename passed from the workflow scripts
 - save raw residual stream and logit lens data cube for post-processing
 
 ## refactor plotting applications between workflow plot dumps and curated post process plots
-- currently entropy_plots.py and ablation_plots.py produce exploratory, multipanel diagnostic figures
+- [ ] currently entropy_plots.py and ablation_plots.py produce exploratory, multipanel diagnostic figures
 - seperately post_process_plots.py injest .npz's to make bespoke presentation figures
 - some low-level helper functions are currently duplicated in both
 - eventually move helpers to a shared plotting utility script. shared low-level helpers: _mean_and_ci, _diff_and_ci, _save, color constants, _fdr_bh.
 
+
+## 
+- [ ] Add `d_model` and `n_layers` as scalar metadata fields to ablation .npz
+      (save_ablation_records / load_ablation_records). Enables plot_top1_intervention_tripanel
+      x_mode='relative' without requiring D_MODEL lookup dict in notebook.
+
+- [ ] Add `ev_fractions` array to ablation .npz when --ev-thresholds is used
+      (parallel to `ks`). Enables y_mode='ev' in plot_top1_intervention_tripanel
+      without requiring a separate wu_subspace_analysis run to recover the EV dict.
