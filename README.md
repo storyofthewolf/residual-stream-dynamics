@@ -42,8 +42,8 @@ for full discussion and `FutureWork.md` for ongoing directions.
 
 To keep the github clean, we do not commit .npz and .png files.
 However, precomputed .npz files and notebook figures can be found here:
-https://drive.google.com/drive/folders/1dhfdz3xhMUrZ2StbQWpE7WTx7IP7Z3_l?usp=sharing
-https://drive.google.com/drive/folders/14BkETR9IoxGrwzEcMWljHJSD8LKN9uKc?usp=sharing
+- [Precomputed .npz files](https://drive.google.com/drive/folders/1dhfdz3xhMUrZ2StbQWpE7WTx7IP7Z3_l?usp=sharing)
+- [Notebook figures](https://drive.google.com/drive/folders/14BkETR9IoxGrwzEcMWljHJSD8LKN9uKc?usp=sharing)
 
 To regenerate the data from scratch (or produce new data for different models, corpora, etc)
 run the scripts in `workflows/` (see "Running the workflows" below for usage). Workflow execution
@@ -51,6 +51,7 @@ for small models can be done on a Macbook Pro with ~36 GB Ram, utilizing the Tra
 along with standard python libraries (numpy, torch, matplotlib, etc).
 
 ## Project structure
+```
 .
 
 ├── corpus/                      # JSON files for corpus of prompts
@@ -75,7 +76,7 @@ along with standard python libraries (numpy, torch, matplotlib, etc).
 ├── post_process_plots.py        # Plotting from stored .npz files (used in notebooks)
 ├── corpus_gen.py                # Corpus generation
 └── setup.py                     # Model registry, loading, and introspection
-
+```
 
 
 
