@@ -31,7 +31,7 @@ Key function:
     resid_post vs attn_out vs mlp_out always uses identical forward pass data.
 
 Supported hook_types (short names → full patterns):
-    "resid_pre"   → blocks.{layer}.hook_resid_pre
+    "resid_pre"   → blocks.{layer}.hook_resid_pre    
     "resid_mid"   → blocks.{layer}.hook_resid_mid   (GPT-2, Gemma-2, Llama only)
     "resid_post"  → blocks.{layer}.hook_resid_post
     "attn_out"    → blocks.{layer}.hook_attn_out

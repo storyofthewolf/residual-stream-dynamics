@@ -1,118 +1,145 @@
-# residual stream dynamics
+# Residual Stream Dynamics
 
-A package for analysising the residual stream and related layer properties of toy LLMs
+Mechanistic analysis of residual stream geometry and unembedding-matrix
+subspace structure in small open-weight LLMs (GPT-2, Pythia).
 
-## File Structure
-- extraction.py — defines ActivationRecord and extract_activations(). The critical function accepts a list of hook types and returns a dict of records from one forward pass. The HOOK_TYPES registry at the top is where you add new hook types — no other changes needed elsewhere. The has_resid_mid flag is detected automatically by probing the cache before the main forward pass.
-- entropy_compute.py — defines EntropyRecord and compute_entropy_surface(). One ActivationRecord → multiple EntropyRecords (one per norm×alpha combination). The filter_records() helper is the primary tool for selecting subsets downstream. Future analysis types (RenyiSpectrumRecord, VonNeumannRecord, DynamicsRecord) follow the same pattern — new dataclass, new compute function, same ActivationRecord input.
-- entropy_plots.py — all plot functions now accept EntropyRecord objects directly. Hook type, norm, alpha, d_model, and prompt are all read from the record rather than passed as separate arguments. The new plot_hook_comparison() is the primary tool for your attention vs MLP scientific question.
-- ablation_compute.py - defines AblationRecord and functions used in posthoc ablation and interventonal ablation experiments.
-- ablation_plots.py - all plot function accept AblationRecord objects, performs various plotting routines.
-- corpus_gen.py - generates corpus of prompts
-- setup.py - model handling
-- workflows/single_prompt.py — edit DEFAULT_PROMPTS at the top for quick experiments. Runs --hooks resid_post attn_out mlp_out by default, generating the hook comparison plot automatically. Use --save-data to write results for later multi-model comparison.
-- workflows/entropy_analysis.py — drops in as a replacement for the old corpus mode in residual_stream_entropy.py. Same --corpus and --model flags as before.
-- workflows/wu_subspace_analysis.py - workflow for residual stream SVD 
-- workflows/ablation_analysis.py - workflor for ablation experiments
+## Where to start
 
+The main artifact is the notebook:
+**[`notebooks/residual_stream_dynamics.ipynb`](https://nbviewer.org/github/storyofthewolf/residual-stream-dynamics/blob/main/notebooks/residual_stream_dynamics.ipynb)**
 
-## Quick Start Commands for single prompt
-### Default: gpt2-small, hooks resid_post + attn_out + mlp_out, Shannon + Rényi
-```
-python workflows/single_prompt.py
-```
-### Specify model
-```
-python workflows/single_prompt.py --model pythia-1b
-```
+It renders standalone via nbviewer with all figures embedded — no execution
+required for reading. The notebook walks through the central findings
+of the project, the W_U subspace decomposition, the two ablation stages
+(post-hoc and forward-pass intervention), and the synthesis.
 
-### Only residual stream hooks
-```
-python workflows/single_prompt.py --hooks resid_post resid_pre
-```
+## What this project investigates
 
-### Add resid_mid (GPT-2, Gemma-2, Llama only — not Pythia)
-```
-python workflows/single_prompt.py --hooks resid_pre resid_mid resid_post attn_out mlp_out
-```
+Motivated by my background in numerical climate modeling, I am interested
+in studying the flow of information through LLMs through the lens of 
+physics-based intuitions, with a lean toward the geometrical representations
+of the residual stream.  Beginning with entropy calculations, the driving 
+questions emerged of, *what parts of the residual stream are doing the work
+of next token prediction?* and *what information content is carried by the
+tails of the residual stream energy distributions?*  This project
+develops a workflow for analyzing residual stream geometry and
+unembedding-matrix subspace structure across the GPT-2 (small–XL) and
+Pythia (160M–6.9B) model families using TransformerLens.
 
-### Skip plots, just print summaries
-```
-python workflows/single_prompt.py --no-plots
-```
+#Key findings:
 
-### Save entropy records to disk for later multi-model comparison
-```
-python workflows/single_prompt.py --save-data --output-dir figures/explore
-```
+1. **Anti-correlation of Entropy and Logit Lens Certainty**:  Coherent (base) prompts show *higher* residual stream entropy yet *lower* logit lens entropy than ambiguous (contrast) prompts.  In terms of geometry, this suggests that the residual stream utilizes a larger space in the residual stream for coherent prompts, but converges on a more certain prediction after transformation through the unembedding matrix in the logits.  
+2. **Cross-architecture replication**:  The anti-correlation between residual stream and logit lens entropy holds across GPT-2 (small–XL) and Pythia (160M–6.9B) models of increasing parameter counts, suggesting that this may be general property of transformer architectures.  The idea that the logit lens entropy is lower for base prompts than for contrast prompts is perhaps a tautology, but the elaboration of the residual stream geometry for base prompts elicits the question of, what information is stored in the residual stream for base prompts that is not present for contrast prompts? And how does this information affect the next token-prediction?
+3. **Fragility at 99% explained variance** — To explore the role of the low-rank complement of the unembedding matrix, we performed ablation studies via posthoc ablation of the residual stream before transformation by the unembedding matrix, and by full intervention on the residual stream.  We decompose the unembedding matrix into its principal components via SVD, and ablate the bottom k components.  The next token predictions are surprisingly sensitive to the ablation of the bottom k subspace components.  For example, approximately 20% of prompts change their top-1 predicted token even when ablating only the bottom 1% of explained variance from the residual stream.  This is found both in posthoc and intervention experiments, for both base and contrast prompts.  
+4. **Differential sensitivity**:   Base prompts tend to be more stable compared to contrast prompts with respect to the next token prediction and ablation of the low-rank complement of the unembedding matrix.  This presents an apparent paradox where, while the base prompts contain more information at low-rank (as evidenced by the higher residual stream entropy), they are less sensitive to ablation of the low-rank complement of the unembedding matrix compared to contrast prompts.  
 
 
-## Quick Start commands for corpus run
-```
-python workflows/entropy_analysis.py --corpus corpus.json
-```
-### Different model
-```
-python workflows/entropy_analysis.py --corpus corpus.json --model pythia-2.8b
-```
+This is a pilot-scale methods demonstration on a small corpus (25 base /
+25 contrast prompt pairs), not a finished results paper. See the notebook
+for full discussion and `FutureWork.md` for ongoing directions.
 
-### Multiple hooks (one forward pass per prompt regardless)
-```
-python workflows/entropy_analysis.py --corpus corpus.json \
-    --hooks resid_post attn_out mlp_out
-```
-### Filter to one category
-```
-python workflows/entropy_analysis.py --corpus corpus.json --category pattern
-```
-### Save data for multi-model comparison later
-```
-python workflows/entropy_analysis.py --corpus corpus.json \
-    --save-data --output-dir figures/corpus
-```
+## Reproducing the notebook
 
-## Common Arguments across workflows
-| Option | Default |Description |
-|--------|-------------|--------|
-| `--model` | gpt2-small | Any key from MODEL_CONFIGS in setup.py |
-| `--hooks` | resid_post, attn_out, mlp_out | Space Separate hook types |
-| `--alpha` | 0.5, 1.0, 2.0, 3.0 | Renyi entropy alpha values |
-| `--norm` | energy, abs, softmax | Normalization methods |
-| `--output-dir-plots` | figures/workflows | Where figures land |
-| `--output-dir-data` | figures/data | Where .npz data files land |
-| `--no-plots` | off | Skip plotting routines |
-| `--save-data` | off | Write .npz for multi-model comparisons |
-| `--run-tag` | None | Tag to append to file names to avoid collisions |
-### See specific workflow scripts for unique arguments
+The precomputed `.npz` data files are included in `data/` (~77 MB total),
+so the notebook can be re-executed without first running the workflow
+scripts. To regenerate the data from scratch for additional models or
+corpora, run the scripts in `workflows/` (see "Running the workflows"
+below for usage). Workflow execution requires GPU access and the
+TransformerLens library.
 
-## Project Structure
-```
+## Project structure
 .
-├── corpus/                      # json files for corpus of prompts
-├── data/                        # Saved .npz results (gitignored)
-├── figures/                     # Generated plots (gitignored)
-    ├── workflows                # Figures auto-generated from workflows
-    └── notebooks                # Figures generated from post-processing .npz files 
-├── workflows/                   # Workflows driving core *_compute.py and *_plots.py pathways
-    ├── entropy_analysis.py      # Residual stream and logit lens entropy experiments: corpus driven
-    ├── ablation_analysis.py     # Ablation experiments; post-hoc and intervention; corpus driven
-    ├── wu_subspace_analysis.py  # Decomposition of residual stream @ unembedding matrix; corpus driven
-    └── single_prompt.py         # Single prompt entropy
-├── Notebooks/                   # Juypter Notebooks of results
-├── utils/                       # common utility functions and scripts
-├── entropy_compute.py           # EntropyRecord dataclass and entropy calc functions
-├── entropy_plots.py             # Entropy multiplot visualization
-├── ablation_compute.py          # AblationRecord dataclass and ablation calc functions 
-├── ablation_plots.py            # Ablation multiplot visualization 
+├── corpus/                      # JSON files for corpus of prompts
+├── data/                        # Precomputed .npz results (committed for reproducibility)
+├── figures/                     # Generated plots
+│   ├── workflows/               # Auto-generated from workflow scripts
+│   └── notebooks/               # Generated by post-processing .npz files
+├── notebooks/                   # Jupyter notebooks of results
+├── workflows/                   # Driver scripts for *_compute.py and *_plots.py
+│   ├── entropy_analysis.py      # Residual stream and logit lens entropy experiments
+│   ├── ablation_analysis.py     # Post-hoc and intervention ablation experiments
+│   ├── wu_subspace_analysis.py  # SVD decomposition of residual stream @ W_U
+│   └── single_prompt.py         # Single-prompt entropy probe
+├── utils/                       # Utility functions
+│   ├── npz_quicklook.py         # Quick inspection of .npz file contents
+│   └── npz_utils.py             # Loading and manipulation of .npz data
 ├── extraction.py                # ActivationRecord dataclass and forward pass
+├── entropy_compute.py           # EntropyRecord dataclass and entropy calculations
+├── entropy_plots.py             # Entropy visualization
+├── ablation_compute.py          # AblationRecord dataclass and ablation calculations
+├── ablation_plots.py            # Ablation visualization
+├── post_process_plots.py        # Plotting from stored .npz files (used in notebooks)
 ├── corpus_gen.py                # Corpus generation
 └── setup.py                     # Model registry, loading, and introspection
 
+
+
+## Running the workflows
+
+Each workflow script in `workflows/` is a standalone driver that calls
+into the core `*_compute.py` and `*_plots.py` modules. Run any script
+with `--help` for full argument documentation. Example invocations:
+
+**Single-prompt entropy probe:**
+```bash
+python workflows/single_prompt.py --model gpt2-small
 ```
 
-## Information on hooks 
-- hook_resid_pre = residual stream before the attention operation at this layer
-- hook_attn_out = the output of the attention sub-layer alone (the delta)
-- hook_resid_mid = resid_pre + attn_out (residual stream after attention, before MLP)
-- hook_mlp_out = the output of the MLP sub-layer alone (the delta)
-- hook_resid_post = resid_mid + mlp_out = resid_pre + attn_out + mlp_out
+**Corpus-driven entropy analysis:**
+```bash
+python workflows/entropy_analysis.py \
+    --corpus corpus/base_vs_contrast_n50.json \
+    --model gpt2-small \
+    --logit-lens \
+    --save-data
+```
+
+**W_U subspace analysis:**
+```bash
+python workflows/wu_subspace_analysis.py \
+    --corpus corpus/base_vs_contrast_n50.json \
+    --model gpt2-small \
+    --also-residual --also-logit-lens \
+    --save-data
+```
+
+**Ablation experiments (post-hoc and intervention):**
+```bash
+python workflows/ablation_analysis.py \
+    --corpus corpus/base_vs_contrast_n50.json \
+    --model gpt2-small \
+    --ev-thresholds 0.1 0.25 0.50 0.75 0.90 0.95 0.99 0.999 1.0 \
+    --stage2 \
+    --save-data
+```
+
+Common arguments shared across workflows include `--model`, `--hooks`,
+`--alpha`, `--norm`, `--save-data`, and `--run-tag`. See individual script
+`--help` output for the full list.
+
+## Hardware notes
+
+Development was done on a MacBook Pro M3 Max (36 GB unified memory) with
+MPS acceleration via PyTorch. All eight tested models (GPT-2 small through
+XL, Pythia 160M through 6.9B) run on this hardware with the small pilot
+corpus. Larger corpora and larger models are bounded by memory rather
+than compute.  In particular, ablation_analysis.py --stage2 --intervention-stride 1 
+experiments for Pythia-6.9 consumes must of my memory and takes ~4 hours to complete
+for our pilot corpus.
+
+## Status and roadmap
+
+Current state: pilot-scale workflow demonstration with results summarized
+in the main notebook. Active and planned directions are tracked in
+`FutureWork.md`, including:
+
+- Corpus expansion beyond the n=50 pilot
+- Compute per-direction logit influence spectrum analysis (c_k = σ_k · (r · v_k))
+- Dynamical-systems framing of the residual stream as a discrete-time
+  trajectory, with layer-wise Jacobians and finite-time Lyapunov exponents
+
+This repository will continue to evolve as the project develops.
+
+---
+
+*Eric T. Wolf — University of Colorado, Laboratory for Atmospheric and Space Physics*
