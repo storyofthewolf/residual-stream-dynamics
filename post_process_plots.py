@@ -591,7 +591,8 @@ def plot_ablation_heatmap_tripanel(
 
     im1 = ax_base.imshow(    base_mat,     cmap="Blues",  vmin=0,          vmax=1,         **im_kw)
     im2 = ax_contrast.imshow(contrast_mat, cmap="Blues",  vmin=0,          vmax=1,         **im_kw)
-    im3 = ax_diff.imshow(    diff_mat,     cmap="RdBu_r", vmin=-vmax_diff, vmax=vmax_diff, **im_kw)
+#    im3 = ax_diff.imshow(    diff_mat,     cmap="RdBu_r", vmin=-vmax_diff, vmax=vmax_diff, **im_kw)
+    im3 = ax_diff.imshow(    diff_mat,     cmap="RdBu_r", vmin=-0.6, vmax=0.6, **im_kw)
 
     ax_base.set_title("Base prompts",      fontsize=10)
     ax_contrast.set_title("Contrast prompts", fontsize=10)
