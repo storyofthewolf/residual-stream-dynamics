@@ -21,6 +21,7 @@ Typical notebook cell:
                                       model_name="gpt2-small")
 """
 
+sys.path.insert(0, '/utils')
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
