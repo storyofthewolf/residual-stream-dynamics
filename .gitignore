@@ -21,6 +21,7 @@ __pycache__/
 
 # result files
 *.npz
+*.pdf
 
 data/*
 !data/.gitkeep
