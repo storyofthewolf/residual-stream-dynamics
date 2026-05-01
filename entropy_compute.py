@@ -69,6 +69,11 @@ W_U subspace helpers (used by workflow layer):
     compute_wu_svd(W_U)                         — SVD wrapper, returns Vh
     wu_explained_variance(W_U, k_values)        — diagnostic: fraction of
                                                   W_U Frobenius norm per k
+
+c_k spectrum (re-exported for backward compatibility):
+    CkRecord, compute_ck_spectrum, compute_wu_svd_full,
+    save_ck_records, load_ck_records
+    — canonical definitions now live in ck_spectrum_compute.py
 """
 
 from __future__ import annotations
@@ -86,6 +91,13 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
+from ck_spectrum_compute import (  # noqa: F401 — re-exported for backward compat
+    CkRecord,
+    compute_wu_svd_full,
+    compute_ck_spectrum,
+    save_ck_records,
+    load_ck_records,
+)
 
 
 # ============================================================================
@@ -466,6 +478,7 @@ def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
     return Vh
 
 
+
 def wu_explained_variance(W_U: torch.Tensor, k_values: list) -> dict:
     """
     Fraction of W_U's Frobenius norm captured by the top-k singular directions.
@@ -675,6 +688,7 @@ def save_entropy_records(records: list, path) -> None:
         n_layers_a[i] = nl
 
     prompts     = np.array([r.prompt     for r in records], dtype=object)
+    str_tokens  = np.array([r.str_tokens for r in records], dtype=object)
     model_names = np.array([r.model_name for r in records], dtype=object)
     hook_types  = np.array([r.hook_type  for r in records], dtype=object)
     norm_keys   = np.array([r.norm_key   for r in records], dtype=object)
@@ -690,6 +704,7 @@ def save_entropy_records(records: list, path) -> None:
         seq_lens    = seq_lens,
         n_layers    = n_layers_a,
         prompts     = prompts,
+        str_tokens  = str_tokens,
         model_names = model_names,
         hook_types  = hook_types,
         norm_keys   = norm_keys,
@@ -714,6 +729,7 @@ def load_entropy_records(path) -> list:
     n = len(d["prompts"])
 
     has_shape_info = "seq_lens" in d and "n_layers" in d
+    has_str_tokens = "str_tokens" in d
 
     records = []
     for i in range(n):
@@ -725,7 +741,7 @@ def load_entropy_records(path) -> list:
 
         records.append(EntropyRecord(
             prompt     = str(d["prompts"][i]),
-            str_tokens = [],
+            str_tokens = list(d["str_tokens"][i]) if has_str_tokens else [],
             model_name = str(d["model_names"][i]),
             hook_type  = str(d["hook_types"][i]),
             norm_key   = str(d["norm_keys"][i]),
@@ -786,3 +802,4 @@ def print_summary(
                   f"min=L{min_layer}({mean[min_layer]:.2f})")
             print(f"      {' '.join(f'{v:.1f}' for v in mean)}")
     print()
+

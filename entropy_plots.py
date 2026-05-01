@@ -40,7 +40,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from entropy_compute import EntropyRecord, NORM_LABELS, filter_records
-from extraction import HOOK_LABELS
+from extraction import HOOK_LABELS, BOS_TOKENS
 
 
 # ============================================================================
@@ -88,7 +88,7 @@ def _save(fig, path: Path, filename: str) -> None:
 
 def _bos_slice(surface: np.ndarray, str_tokens: list, skip_bos: bool):
     """Return (surface_slice, token_labels) with optional BOS removal."""
-    if skip_bos and len(str_tokens) > 0 and str_tokens[0] == '<|endoftext|>':
+    if skip_bos and len(str_tokens) > 0 and str_tokens[0] in BOS_TOKENS:
         return surface[:, 1:], str_tokens[1:]
     return surface, str_tokens
 

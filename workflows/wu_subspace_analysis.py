@@ -55,7 +55,8 @@ import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens")
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_PROJECT_ROOT))
 
 from setup import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_corpus, HOOK_TYPES
@@ -448,11 +449,13 @@ def main():
                         help="Filter to a single corpus category")
                         
     # ── Output ──
-    parser.add_argument("--output-dir-plots", type=str, default="figures/workflows/wu_subspace",
+    parser.add_argument("--output-dir-plots", type=str,
+                        default=str(_PROJECT_ROOT / "figures" / "workflows" / "wu_subspace"),
                         help="Directory for saved plots")
     parser.add_argument("--no-plots", action="store_true",
                         help="Skip plot generation")
-    parser.add_argument("--output-dir-data", type=str, default="data",
+    parser.add_argument("--output-dir-data", type=str,
+                        default=str(_PROJECT_ROOT / "data"),
                         help="Directory for saved data")
     parser.add_argument("--save-data", action="store_true",
                         help="Save EntropyRecords to .npz for later analysis")

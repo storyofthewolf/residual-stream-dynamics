@@ -650,14 +650,15 @@ def plot_entropy_vs_layer(
             if cat not in agg or k not in agg[cat]:
                 continue
             d = agg[cat][k]
-            ax.plot(layers, d["ent_full_mean"], label=label, **style)
+            ax.plot(layers, d["ent_full_mean"],
+                    label=f"{label} (full)", **style)
             ax.fill_between(layers,
                             d["ent_full_mean"] - d["ent_full_sem"],
                             d["ent_full_mean"] + d["ent_full_sem"],
                             color=style["color"], alpha=BAND_ALPHA)
 
-            ax.plot(layers, d["ent_abl_mean"], label=label, **(style | {"linestyle": "--"}))
-            #ax.plot(layers, d["ent_abl_mean"], label=label, **style)
+            ax.plot(layers, d["ent_abl_mean"],
+                    label=f"{label} (ablated)", **(style | {"linestyle": "--"}))
             ax.fill_between(layers,
                             d["ent_abl_mean"] - d["ent_abl_sem"],
                             d["ent_abl_mean"] + d["ent_abl_sem"],

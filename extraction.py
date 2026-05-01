@@ -89,6 +89,13 @@ HOOK_LABELS = {
 RESIDUAL_STREAM_HOOKS = {"resid_pre", "resid_mid", "resid_post", "attn_out", "mlp_out"}
 MLP_INTERNAL_HOOKS    = {"mlp_pre", "mlp_post"}
 
+# BOS token string labels as returned by model.to_str_tokens().
+# Used by token_slice() and entropy_plots._bos_slice() to identify position 0.
+#   GPT-2, Pythia : '<|endoftext|>'
+#   Llama         : '<s>'
+#   Gemma         : '<bos>'
+BOS_TOKENS = {"<|endoftext|>", "<s>", "<bos>"}
+
 
 # ============================================================================
 # ACTIVATION RECORD
@@ -147,9 +154,9 @@ class ActivationRecord:
     def token_slice(self, skip_bos: bool = True) -> tuple:
         """
         Return (activations_slice, str_tokens_slice) with optional BOS removal.
-        BOS is position 0 and identified by the '<|endoftext|>' token label.
+        BOS is position 0 and identified by membership in BOS_TOKENS.
         """
-        if skip_bos and self.str_tokens[0] == '<|endoftext|>':
+        if skip_bos and self.str_tokens[0] in BOS_TOKENS:
             return self.activations[:, 1:, :], self.str_tokens[1:]
         return self.activations, self.str_tokens
 
@@ -158,46 +165,81 @@ class ActivationRecord:
 # SERIALIZATION
 # ActivationRecords can be saved to / loaded from .npz files for
 # later multi-model comparison plotting without re-running forward passes.
+# Variable seq_len across prompts is handled by NaN-padding activations to a
+# common shape; original dimensions are recovered on load via stored n_layers
+# and seq_lens arrays. Mirrors the pattern used by save_entropy_records and
+# save_ablation_records in their respective compute modules.
 # ============================================================================
 
-def save_activation_record(record: ActivationRecord, path) -> None:
-    """Save an ActivationRecord to a .npz file."""
+def save_activation_records(records: list, path) -> None:
+    """Save a list of ActivationRecords to a single .npz file.
+
+    All records must share the same hook_type and d_model (i.e. come from
+    the same hook across a corpus). Variable seq_len and n_layers are handled
+    by NaN-padding activations to a common [max_layers, max_seq_len, d_model]
+    shape; originals are recovered on load.
+    """
+    n = len(records)
+    if n == 0:
+        print("  No records to save.")
+        return
+
+    max_layers  = max(r.n_layers for r in records)
+    max_seq_len = max(r.seq_len  for r in records)
+    d_model     = records[0].d_model
+
+    padded = np.full((n, max_layers, max_seq_len, d_model), np.nan, dtype=np.float32)
+    n_layers_arr = np.zeros(n, dtype=np.int32)
+    seq_lens_arr = np.zeros(n, dtype=np.int32)
+
+    for i, r in enumerate(records):
+        padded[i, :r.n_layers, :r.seq_len, :] = r.activations
+        n_layers_arr[i] = r.n_layers
+        seq_lens_arr[i] = r.seq_len
+
     np.savez(
         path,
-        activations  = record.activations,
-        prompt       = record.prompt,
-        str_tokens   = np.array(record.str_tokens, dtype=object),
-        model_name   = record.model_name,
-        hook_type    = record.hook_type,
-        hook_pattern = record.hook_pattern,
-        d_model      = record.d_model,
-        n_layers     = record.n_layers,
-        seq_len      = record.seq_len,
-        has_resid_mid= record.has_resid_mid,
-        pair_id      = record.pair_id  if record.pair_id  else "",
-        role         = record.role     if record.role     else "",
-        category     = record.category if record.category else "",
+        activations   = padded,
+        n_layers      = n_layers_arr,
+        seq_lens      = seq_lens_arr,
+        prompts       = np.array([r.prompt       for r in records], dtype=object),
+        str_tokens    = np.array([r.str_tokens   for r in records], dtype=object),
+        model_names   = np.array([r.model_name   for r in records], dtype=object),
+        hook_types    = np.array([r.hook_type    for r in records], dtype=object),
+        hook_patterns = np.array([r.hook_pattern for r in records], dtype=object),
+        d_models      = np.array([r.d_model      for r in records], dtype=np.int32),
+        has_resid_mid = np.array([r.has_resid_mid for r in records], dtype=bool),
+        pair_ids      = np.array([r.pair_id   or "" for r in records], dtype=object),
+        roles         = np.array([r.role       or "" for r in records], dtype=object),
+        categories    = np.array([r.category   or "" for r in records], dtype=object),
     )
+    print(f"  Saved {n} ActivationRecords to {path}")
 
 
-def load_activation_record(path) -> ActivationRecord:
-    """Load an ActivationRecord from a .npz file."""
+def load_activation_records(path) -> list:
+    """Load a list of ActivationRecords from a .npz file."""
     d = np.load(path, allow_pickle=True)
-    return ActivationRecord(
-        activations   = d["activations"],
-        prompt        = str(d["prompt"]),
-        str_tokens    = list(d["str_tokens"]),
-        model_name    = str(d["model_name"]),
-        hook_type     = str(d["hook_type"]),
-        hook_pattern  = str(d["hook_pattern"]),
-        d_model       = int(d["d_model"]),
-        n_layers      = int(d["n_layers"]),
-        seq_len       = int(d["seq_len"]),
-        has_resid_mid = bool(d["has_resid_mid"]),
-        pair_id       = str(d["pair_id"])   or None,
-        role          = str(d["role"])      or None,
-        category      = str(d["category"]) or None,
-    )
+    n = len(d["prompts"])
+    records = []
+    for i in range(n):
+        nl = int(d["n_layers"][i])
+        sl = int(d["seq_lens"][i])
+        records.append(ActivationRecord(
+            activations   = d["activations"][i, :nl, :sl, :],
+            prompt        = str(d["prompts"][i]),
+            str_tokens    = list(d["str_tokens"][i]),
+            model_name    = str(d["model_names"][i]),
+            hook_type     = str(d["hook_types"][i]),
+            hook_pattern  = str(d["hook_patterns"][i]),
+            d_model       = int(d["d_models"][i]),
+            n_layers      = nl,
+            seq_len       = sl,
+            has_resid_mid = bool(d["has_resid_mid"][i]),
+            pair_id       = str(d["pair_ids"][i])   or None,
+            role          = str(d["roles"][i])       or None,
+            category      = str(d["categories"][i]) or None,
+        ))
+    return records
 
 
 # ============================================================================

@@ -27,7 +27,7 @@ Two ablation stages, both producing AblationRecords:
 
 SVD utilities (called from the workflow layer, not from ablation functions):
     compute_wu_svd(W_U)                         — returns Vh
-    wu_explained_variance(Vh, W_U, k_values)    — returns {k: fraction}
+    wu_explained_variance(W_U, k_values)         — returns {k: fraction}
 
 Validation:
     validate_ablation(W_U, Vh, d_model)         — linear algebra checks
@@ -131,7 +131,6 @@ def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
 
 
 def wu_explained_variance(
-    Vh:       torch.Tensor,
     W_U:      torch.Tensor,
     k_values: list[int],
 ) -> dict:
@@ -140,7 +139,6 @@ def wu_explained_variance(
     directions, for each k in k_values.
 
     Args:
-        Vh:       precomputed right singular vectors from compute_wu_svd
         W_U:      original unembedding matrix [d_model, vocab_size]
         k_values: list of rank values to evaluate
 
@@ -585,17 +583,21 @@ def save_ablation_records(records: list, path) -> None:
     max_len = max(len(r.kl_divergence) for r in records)
 
     # Pad each array to max_len with NaN
-    kl_padded   = np.full((n, max_len), np.nan, dtype=np.float64)
-    ent_padded  = np.full((n, max_len), np.nan, dtype=np.float64)
-    top1_padded = np.full((n, max_len), False)
-    arr_lens    = np.zeros(n, dtype=np.int32)
+    kl_padded        = np.full((n, max_len), np.nan, dtype=np.float64)
+    ent_padded       = np.full((n, max_len), np.nan, dtype=np.float64)
+    ent_full_padded  = np.full((n, max_len), np.nan, dtype=np.float64)
+    ent_abl_padded   = np.full((n, max_len), np.nan, dtype=np.float64)
+    top1_padded      = np.full((n, max_len), False)
+    arr_lens         = np.zeros(n, dtype=np.int32)
 
     for i, r in enumerate(records):
         length = len(r.kl_divergence)
-        kl_padded[i, :length]   = r.kl_divergence
-        ent_padded[i, :length]  = r.entropy_change
-        top1_padded[i, :length] = r.top1_preserved
-        arr_lens[i]             = length
+        kl_padded[i, :length]       = r.kl_divergence
+        ent_padded[i, :length]      = r.entropy_change
+        ent_full_padded[i, :length] = r.entropy_full
+        ent_abl_padded[i, :length]  = r.entropy_ablated
+        top1_padded[i, :length]     = r.top1_preserved
+        arr_lens[i]                 = length
 
     ks                = np.array([r.k                  for r in records], dtype=np.int32)
     ablation_types    = np.array([r.ablation_type       for r in records], dtype=object)
@@ -611,6 +613,8 @@ def save_ablation_records(records: list, path) -> None:
         path,
         kl_divergence      = kl_padded,
         entropy_change     = ent_padded,
+        entropy_full       = ent_full_padded,
+        entropy_ablated    = ent_abl_padded,
         top1_preserved     = top1_padded,
         arr_lens           = arr_lens,
         ks                 = ks,
@@ -626,17 +630,31 @@ def save_ablation_records(records: list, path) -> None:
 
 
 def load_ablation_records(path) -> list:
-    """Load a list of AblationRecords from a .npz file."""
+    """Load a list of AblationRecords from a .npz file.
+
+    Backward-compatible: files saved before entropy_full/entropy_ablated were
+    added will load with those fields as NaN arrays of the correct length.
+    """
     d = np.load(path, allow_pickle=True)
     n = len(d["prompts"])
+    has_entropy_fields = "entropy_full" in d and "entropy_ablated" in d
     records = []
     for i in range(n):
         length = int(d["arr_lens"][i])
         int_lyr = int(d["intervention_lyrs"][i])
 
+        if has_entropy_fields:
+            ent_full    = d["entropy_full"][i, :length]
+            ent_ablated = d["entropy_ablated"][i, :length]
+        else:
+            ent_full    = np.full(length, np.nan, dtype=np.float64)
+            ent_ablated = np.full(length, np.nan, dtype=np.float64)
+
         records.append(AblationRecord(
             kl_divergence      = d["kl_divergence"][i, :length],
             entropy_change     = d["entropy_change"][i, :length],
+            entropy_full       = ent_full,
+            entropy_ablated    = ent_ablated,
             top1_preserved     = d["top1_preserved"][i, :length],
             k                  = int(d["ks"][i]),
             ablation_type      = str(d["ablation_types"][i]),

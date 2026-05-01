@@ -22,7 +22,7 @@ Two stages, run independently or together:
 Pipeline:
     extraction.extract_corpus()                    -> dict[hook, list[ActivationRecord]]
     ablation_compute.compute_wu_svd(W_U)                   -> Vh (one-time)
-    ablation_compute.wu_explained_variance(Vh, W_U, ks)    -> diagnostic table
+    ablation_compute.wu_explained_variance(W_U, ks)         -> diagnostic table
     ablation_compute.validate_ablation(W_U, Vh, d_model)   -> sanity checks
     _run_posthoc_corpus()                          -> list[AblationRecord]
     _run_intervention_corpus()  (optional)         -> list[AblationRecord]
@@ -80,10 +80,11 @@ import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens")
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_PROJECT_ROOT))
 
 from setup import load_model_and_sae, MODEL_CONFIGS
-from extraction import extract_corpus, HOOK_TYPES
+from extraction import extract_corpus, HOOK_TYPES, save_activation_records
 from ablation_compute import (
     AblationRecord,
     compute_wu_svd,
@@ -256,11 +257,13 @@ def main():
                         help="Filter to a single corpus category")
 
     # ── Output ──
-    parser.add_argument("--output-dir-plots", type=str, default="figures/workflows/ablation_analysis",
+    parser.add_argument("--output-dir-plots", type=str,
+                        default=str(_PROJECT_ROOT / "figures" / "workflows" / "ablation_analysis"),
                         help="Directory for saved plots")
     parser.add_argument("--no-plots", action="store_true",
                         help="Skip plot generation")
-    parser.add_argument("--output-dir-data", type=str, default="data",
+    parser.add_argument("--output-dir-data", type=str,
+                        default=str(_PROJECT_ROOT / "data"),
                         help="Directory for saved data")
     parser.add_argument("--save-data", action="store_true",
                         help="Save AblationRecords to .npz for later analysis")
@@ -388,7 +391,7 @@ def main():
     Vh = compute_wu_svd(W_U)
     print(f"  Vh shape: {list(Vh.shape)}")
 
-    ev_dict = wu_explained_variance(Vh, W_U, k_values)
+    ev_dict = wu_explained_variance(W_U, k_values)
     print(f"\n  Explained variance by top-k singular directions:")
     for k in k_values:
         print(f"    k={k:4d}: {ev_dict[k]:.4f} ({ev_dict[k]:.1%})")
@@ -491,6 +494,9 @@ def main():
     if args.save_data:
         data_path = output_dir_data / f"ablation_records_{args.model}_{corpus_tag}{run_tag}.npz"
         save_ablation_records(all_ablation_records, data_path)
+        for ht in hook_types:
+            data_path = output_dir_data / f"activation_records_{args.model}_{corpus_tag}_{ht}{run_tag}.npz"
+            save_activation_records(activation_dict[ht], data_path)
 
     # ── Plots ──
     if not args.no_plots:
