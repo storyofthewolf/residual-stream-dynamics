@@ -126,7 +126,8 @@ def main():
     )
 
     # ── Required ──
-    parser.add_argument("--corpus", type=str, required=True,
+    parser.add_argument("--corpus", type=str,
+                        default=str(_PROJECT_ROOT / "corpus" / "base_vs_contrast_n50.json"),
                         help="Path to corpus JSON from corpus_gen.py")
 
     # ── Model and hooks ──
@@ -196,6 +197,7 @@ def main():
     with open(corpus_path) as f:
         corpus = json.load(f)
     print(f"\nLoaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
+    print(f"  Corpus file:  {corpus_path.name}")
 
     # ── Load model ────────────────────────────────────────────────────────────
     print(f"\nLoading model '{args.model}'...")

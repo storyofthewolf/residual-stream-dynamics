@@ -5,6 +5,8 @@ Tabs:
     2. WU Subspace      — W_U projection entropy (r‖ and r⊥)
     3. Ablation         — posthoc curves and intervention heatmap
     4. C_k Spectra      — c_k spectrum at a selected layer
+    5. Mechanics        — residual stream trajectory mechanics (speed, acceleration,
+                          cosine similarities) base vs contrast
 
 No computation or figure construction lives here.
 Callbacks do exactly: call loader → call viz → return figure.
@@ -15,6 +17,8 @@ Usage:
 """
 
 import argparse
+import sys
+from pathlib import Path
 
 import gradio as gr
 
@@ -125,6 +129,19 @@ def update_intervention_plot(model):
 def _ck_models():
     return loader.available_ck_models()
 
+
+# ── Tab 5: Mechanics ───────────────────────────────────────────────────────────
+
+def _mech_models():
+    return loader.available_mechanics_models()
+
+def update_mechanics_plot(model):
+    if not model:
+        return viz.plot_mechanics_curves({}, {}, "—")
+    base     = loader.query_mechanics(model, "base")
+    contrast = loader.query_mechanics(model, "contrast")
+    return viz.plot_mechanics_curves(base, contrast, model)
+
 def update_ck_layer_slider(model):
     n = loader.max_n_layers("ck", model) if model else 12
     return gr.update(maximum=max(n - 1, 0), value=min(6, max(n - 1, 0)))
@@ -146,6 +163,7 @@ def build_demo() -> gr.Blocks:
     wu_models        = _wu_models()
     ablation_models  = _ablation_models()
     ck_models        = _ck_models()
+    mech_models      = _mech_models()
 
     def _e_nk(m):  return loader.available_norm_keys("entropy", m) if m else []
     def _e_al(m):  return _alpha_choices(loader.available_alphas("entropy", m)) if m else []
@@ -153,10 +171,11 @@ def build_demo() -> gr.Blocks:
     def _wu_al(m): return _alpha_choices(loader.available_alphas("wu_subspace", m)) if m else []
     def _ab_k(m):  return [str(k) for k in loader.available_k_values("ablation", m)] if m else []
 
-    e_m0  = _first(entropy_models)
-    wu_m0 = _first(wu_models)
-    ab_m0 = _first(ablation_models)
-    ck_m0 = _first(ck_models)
+    e_m0   = _first(entropy_models)
+    wu_m0  = _first(wu_models)
+    ab_m0  = _first(ablation_models)
+    ck_m0  = _first(ck_models)
+    mech_m0 = _first(mech_models)
 
     with gr.Blocks(title="Residual Stream Dynamics") as demo:
         gr.Markdown("# Residual Stream Dynamics — Analysis Dashboard")
@@ -358,6 +377,34 @@ def build_demo() -> gr.Blocks:
                         outputs=ck_plot,
                     )
 
+            # ── Tab 5: Mechanics ───────────────────────────────────────────
+            with gr.Tab("Mechanics"):
+                with gr.Row():
+                    with gr.Column(scale=1):
+                        if mech_models:
+                            mech_model = gr.Dropdown(
+                                choices=mech_models,
+                                value=mech_m0,
+                                label="Model",
+                            )
+                            mech_btn = gr.Button("Update Plot", variant="primary")
+                        else:
+                            gr.Markdown(
+                                "**No mechanics data found.**\n\n"
+                                "Generate mechanics records with:\n"
+                                "```\npython workflows/mechanics_analysis.py "
+                                "--save-data\n```"
+                            )
+                    with gr.Column(scale=4):
+                        mech_plot = gr.Plot(label="Mechanics curves")
+
+                if mech_models:
+                    mech_btn.click(
+                        update_mechanics_plot,
+                        inputs=[mech_model],
+                        outputs=mech_plot,
+                    )
+
     return demo
 
 
@@ -370,13 +417,21 @@ if __name__ == "__main__":
     parser.add_argument("--data-root", default="data",
                         help="Root directory containing entropy/, wu_subspace/, "
                              "ablation/, ck/ subdirectories")
-    parser.add_argument("--port", type=int, default=7860)
+    parser.add_argument("--port", type=int, default=None,
+                        help="Port to serve on (default: auto-select a free port)")
     parser.add_argument("--share", action="store_true",
                         help="Create a public Gradio share link")
     args = parser.parse_args()
 
-    print(f"\nLoading data from '{args.data_root}'...")
-    loader = loader_mod.DashboardLoader(args.data_root)
+    data_root = Path(args.data_root)
+    if not data_root.exists():
+        print(f"\nError: data directory not found: {data_root.resolve()}")
+        print("Create it and populate it by running the analysis workflows with --save-data,")
+        print("or point --data-root at an existing data directory.")
+        sys.exit(1)
+
+    print(f"\nLoading data from '{data_root}'...")
+    loader = loader_mod.DashboardLoader(str(data_root))
 
     demo = build_demo()
     demo.queue()

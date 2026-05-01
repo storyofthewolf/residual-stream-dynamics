@@ -39,6 +39,13 @@ ablation_compute.py      COMPUTATION — SVD utilities and ablation experiments 
                          ActivationRecords. Produces AblationRecords. Stage 1 (posthoc) needs
                          no forward pass; Stage 2 (intervention) requires a live model passed in.
 
+mechanics_compute.py     COMPUTATION — residual stream trajectory mechanics over ActivationRecords.
+                         Produces MechanicsRecords. Pure numpy; no model access; no forward pass.
+                         Interprets the residual stream as a discrete particle trajectory:
+                         speed (||ΔX_l||₂), acceleration magnitude (||ΔV_l||₂), and three
+                         cosine similarity curves (state-state, update-state, update-update).
+                         save_mechanics_records / load_mechanics_records in this module.
+
 workflows/               ORCHESTRATION — argument parsing, corpus iteration, save/load,
                          calls into compute modules, calls into plot modules. No computation
                          or plotting logic belongs here.
@@ -47,21 +54,30 @@ workflows/               ORCHESTRATION — argument parsing, corpus iteration, s
   ablation_analysis.py   — ablation corpus workflow; saves AblationRecords + ActivationRecords
   ck_analysis.py         — c_k spectrum workflow; saves CkRecords + ActivationRecords
   wu_subspace_analysis.py— W_U subspace entropy workflow
+  mechanics_analysis.py  — mechanics corpus workflow; saves MechanicsRecords to data/mechanics/
   single_prompt.py       — exploratory single-prompt workflow; saves ActivationRecords
 
 entropy_plots.py         VISUALIZATION — workflow-layer figures produced by entropy_analysis.py.
 ablation_plots.py        VISUALIZATION — workflow-layer figures produced by ablation_analysis.py.
 ck_spectrum_plots.py     VISUALIZATION — figures produced by ck_analysis.py. All _plot_*
                          functions for CkRecords live here; none belong in the workflow.
+mechanics_plots.py       VISUALIZATION — figures produced by mechanics_analysis.py.
+                         plot_mechanics_overview() and plot_mechanics_category().
 post_process_plots.py    VISUALIZATION — curated notebook figures. Accepts pre-filtered profiles
                          (list of np.ndarray); does not run extraction or computation.
 
 dashboard_loader.py      DASHBOARD DATA — NPZ discovery, loading, caching, and index building
                          for the interactive dashboard. No computation; no plotting; no torch.
+                         Loads mechanics/ subdirectory alongside entropy/, wu_subspace/,
+                         ablation/, ck/. query_mechanics(model, role) returns all five
+                         trimmed curve lists. available_mechanics_models() for discovery.
 dashboard_viz.py         DASHBOARD VISUALIZATION — matplotlib figure functions for the dashboard.
                          All functions take numpy arrays and return Figure. No file I/O.
-dashboard.py             DASHBOARD APP — Gradio Blocks app. Tabs, widgets, and callbacks only.
-                         Callbacks call loader → viz → return figure. Nothing else.
+                         Includes plot_mechanics_curves() for the Mechanics tab.
+dashboard.py             DASHBOARD APP — Gradio Blocks app. Five tabs: Entropy, WU Subspace,
+                         Ablation, C_k Spectra, Mechanics. Callbacks call loader → viz →
+                         return figure. Nothing else. --data-root must exist or the app
+                         exits with a clear error. --port defaults to None (auto-select).
 
 utils/npz_utils.py       DATA ACCESS — load and filter .npz files. No computation; no plotting.
 setup.py                 MODEL LOADING — TransformerLens model loader and MODEL_CONFIGS registry.
@@ -101,6 +117,19 @@ Stores ablation results for one `(prompt, k, ablation_type)` combination.
 - `intervention_layer`: `None` for posthoc; layer index for intervention
 - `entropy_full` / `entropy_ablated`: per-layer entropy arrays, now serialized in `.npz`
   (backward-compat: old files without these fields restore `np.nan` arrays)
+
+### MechanicsRecord  (mechanics_compute.py)
+Stores five scalar mechanical curves for one prompt at the final token position.
+- `speed`: `np.ndarray` shape `[n_layers-1]` — ||ΔX_l||₂
+- `acceleration_magnitude`: `np.ndarray` shape `[n_layers-2]` — ||ΔV_l||₂
+- `cosine_sim_state`: `np.ndarray` shape `[n_layers-1]` — cos(X_l, X_{l+1})
+- `cosine_sim_update_state`: `np.ndarray` shape `[n_layers-1]` — cos(ΔX_l, X_l)
+- `cosine_sim_update_update`: `np.ndarray` shape `[n_layers-2]` — cos(ΔX_l, ΔX_{l+1})
+- Standard metadata: `prompt`, `model_name`, `pair_id`, `role`, `category`
+- All arrays are pure numpy float64. No model access required — computed entirely
+  from `record.activations[:, token_pos, :]`.
+- Batch serialization: `save_mechanics_records` / `load_mechanics_records` in
+  `mechanics_compute.py`. Saves to `data/mechanics/` for dashboard discovery.
 
 ### CkRecord  (ck_spectrum_compute.py)
 Stores the c_k spectrum for one prompt: `c_k = σ_k · (r · v_k)`, an exact decomposition
@@ -238,6 +267,83 @@ is not argument-parsing or I/O belongs in a compute module.
 - **No plot-triggering `.change()` callbacks in `dashboard.py`.** Plots fire only from
   `.click()` on an explicit "Update Plot" button. Dropdown `.change()` callbacks are
   reserved for chaining dependent selectors (norm key, alpha, k) only.
+
+---
+
+## Next steps
+
+### Clean up the project root directory
+The project root is getting too busy. The next session should reorganise the top-level
+files into subdirectories without breaking any imports. Candidates for relocation:
+
+- `corpus_gen.py` → `corpus/corpus_gen.py` (or a `scripts/` directory)
+- `post_process_plots.py` → `notebooks/post_process_plots.py` (used only by notebooks)
+- `residual_stream_dynamics.py` — sandbox reference; can be deleted now that
+  `mechanics_compute.py`, `mechanics_plots.py`, and `workflows/mechanics_analysis.py`
+  replace it entirely
+- `setup.py` — consider moving to a `utils/` or `config/` subdirectory
+
+Before any move: grep all imports of the file being moved, update `sys.path.insert`
+calls in workflows if needed, and verify nothing in the notebooks breaks.
+
+---
+
+## Session changelog (2026-05-01)
+
+### New: mechanics analysis group
+
+**`mechanics_compute.py`** (new)
+`MechanicsRecord` dataclass and five pure-numpy compute functions that interpret the
+residual stream as a discrete particle trajectory: `_compute_velocity`, `_compute_speed`,
+`_compute_acceleration_magnitude`, `_compute_cosine_sim_state`,
+`_compute_cosine_sim_update_state`, `_compute_cosine_sim_update_update`. Public entry
+point: `compute_mechanics(record, token_pos=-1) -> MechanicsRecord`. No torch, no model
+access. `save_mechanics_records` / `load_mechanics_records` follow the NaN-padding
+conventions established in `entropy_compute.py`.
+
+**`mechanics_plots.py`** (new)
+Two corpus-level plot functions: `plot_mechanics_overview` (five-panel mean ± 1σ across
+all pairs, base vs. contrast) and `plot_mechanics_category` (same five panels for one
+category, individual pair curves as faint lines behind the bold mean). Style mirrors
+`entropy_plots.plot_overall_mean` and `plot_category`. `_save()` helper creates parent
+directories and uses dpi=150 consistently.
+
+**`workflows/mechanics_analysis.py`** (new)
+CLI workflow following `entropy_analysis.py` conventions exactly. Args: `--corpus`
+(default: `corpus/base_vs_contrast_n50.json`), `--model`, `--category`, `--output-dir-plots`,
+`--output-dir-data`, `--save-data`, `--no-plots`, `--run-tag`, `--device`. Saves
+MechanicsRecords to `data/mechanics/` (the subdirectory the dashboard loader expects).
+Does not save ActivationRecords — mechanics are already downstream scalars.
+
+### Dashboard: Mechanics tab added
+
+**`dashboard_loader.py`**
+Added `_MECHANICS_REQUIRED_KEYS`, `_load_mechanics_file()`, `"mechanics"` entry in
+`_SUBDIRS` (discovers `data/mechanics/`), `query_mechanics(model, role)` returning all
+five trimmed curve lists, and `available_mechanics_models()`.
+
+**`dashboard_viz.py`**
+Added `plot_mechanics_curves(base, contrast, model_name)` — five-panel figure (speed,
+acceleration magnitude, three cosine similarities), mean ± SEM per role. Cosine panels
+include y-limits ±1.05 and a zero reference line.
+
+**`dashboard.py`**
+Added Tab 5 "Mechanics" with model dropdown and "Update Plot" button. Both roles are
+always plotted together (no role selector) since the comparison is the point. Includes
+"no data" fallback message with the generation command. Added `--data-root` existence
+check with a clear error and `sys.exit(1)` before loading. Changed `--port` default
+from 7860 to `None` so Gradio auto-selects a free port.
+
+### Quality-of-life improvements
+
+**Default `--corpus` in all workflows**
+All five `workflows/*_analysis.py` scripts now default `--corpus` to
+`corpus/base_vs_contrast_n50.json` (resolved via `_PROJECT_ROOT`) instead of
+requiring it. `required=True` removed.
+
+**Corpus filename printed after loading**
+All five workflow scripts now print `  Corpus file:  <filename>` on the line after
+`Loaded corpus: N prompts (M pairs)` to make it easy to confirm which corpus is active.
 
 ---
 

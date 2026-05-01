@@ -99,7 +99,8 @@ def main():
         description="c_k spectrum analysis of the residual stream"
     )
 
-    parser.add_argument("--corpus", type=str, required=True,
+    parser.add_argument("--corpus", type=str,
+                        default=str(_PROJECT_ROOT / "corpus" / "base_vs_contrast_n50.json"),
                         help="Path to corpus JSON from corpus_gen.py")
     parser.add_argument("--model", type=str, default="gpt2-small",
                         help="Model name (must be in setup.py MODEL_CONFIGS)")
@@ -165,6 +166,7 @@ def main():
     with open(corpus_path) as f:
         corpus = json.load(f)
     print(f"\nLoaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
+    print(f"  Corpus file:  {corpus_path.name}")
 
     # ── Fast path: load precomputed records ──────────────────────────────────
     if args.load_data is not None:

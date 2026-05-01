@@ -10,6 +10,7 @@ Record types and their subdirectories:
     wu_subspace  data/wu_subspace/
     ablation     data/ablation/
     ck           data/ck/
+    mechanics    data/mechanics/
 
 Usage:
     loader = DashboardLoader("data")
@@ -40,6 +41,11 @@ _CK_REQUIRED_KEYS = {
     "ck_spectrum", "singular_values", "n_layers", "seq_lens",
     "prompts", "model_names", "hook_types", "d_models",
     "roles", "categories",
+}
+_MECHANICS_REQUIRED_KEYS = {
+    "speed", "acceleration_magnitude", "cosine_sim_state",
+    "cosine_sim_update_state", "cosine_sim_update_update",
+    "n_trans", "n_accel", "prompts", "model_names", "roles", "categories",
 }
 
 
@@ -136,6 +142,31 @@ def _load_ablation_file(path: Path) -> dict | None:
         return None
 
 
+def _load_mechanics_file(path: Path) -> dict | None:
+    try:
+        d = np.load(path, allow_pickle=True)
+        if not _MECHANICS_REQUIRED_KEYS.issubset(set(d.keys())):
+            return None
+        return {
+            "speed":                    d["speed"].astype(np.float64),
+            "acceleration_magnitude":   d["acceleration_magnitude"].astype(np.float64),
+            "cosine_sim_state":         d["cosine_sim_state"].astype(np.float64),
+            "cosine_sim_update_state":  d["cosine_sim_update_state"].astype(np.float64),
+            "cosine_sim_update_update": d["cosine_sim_update_update"].astype(np.float64),
+            "n_trans":      d["n_trans"].astype(np.int32),
+            "n_accel":      d["n_accel"].astype(np.int32),
+            "prompts":      _str_arr(d["prompts"]),
+            "model_names":  _str_arr(d["model_names"]),
+            "roles":        _str_arr(d["roles"]),
+            "categories":   _str_arr(d["categories"]),
+            "pair_ids":     _str_arr(d["pair_ids"]) if "pair_ids" in d else
+                            np.array([""] * len(d["prompts"]), dtype=object),
+        }
+    except Exception as e:
+        print(f"  [loader] Warning: could not load {path}: {e}")
+        return None
+
+
 def _load_ck_file(path: Path) -> dict | None:
     try:
         d = np.load(path, allow_pickle=True)
@@ -173,6 +204,7 @@ class DashboardLoader:
         "wu_subspace": ("wu_subspace", _load_entropy_file),   # same schema
         "ablation":    ("ablation",    _load_ablation_file),
         "ck":          ("ck",          _load_ck_file),
+        "mechanics":   ("mechanics",   _load_mechanics_file),
     }
 
     def __init__(self, data_root: str = "data"):
@@ -462,6 +494,70 @@ class DashboardLoader:
             "k_values":      k_values,
             "layer_indices": layer_indices,
         }
+
+    # ── Query: mechanics ──────────────────────────────────────────────────────
+
+    def query_mechanics(self, model: str, role: str) -> dict:
+        """
+        Return all five mechanical scalar curves for a given (model, role).
+
+        Each array in the returned lists is trimmed to its true length using
+        n_trans / n_accel so callers never see NaN padding.
+
+        Returns
+        -------
+        dict with keys:
+            "speed"                    : list of 1D arrays [n_trans_i]
+            "acceleration_magnitude"   : list of 1D arrays [n_accel_i]
+            "cosine_sim_state"         : list of 1D arrays [n_trans_i]
+            "cosine_sim_update_state"  : list of 1D arrays [n_trans_i]
+            "cosine_sim_update_update" : list of 1D arrays [n_accel_i]
+            "categories"               : object array
+        """
+        d = self._idx("mechanics")
+        empty = {
+            "speed": [], "acceleration_magnitude": [],
+            "cosine_sim_state": [], "cosine_sim_update_state": [],
+            "cosine_sim_update_update": [], "categories": np.array([]),
+        }
+        if not d:
+            return empty
+
+        mask    = (d["model_names"] == model) & (d["roles"] == role)
+        indices = np.where(mask)[0]
+        if len(indices) == 0:
+            return empty
+
+        def _trim_trans(i):
+            nt = int(d["n_trans"][i])
+            return {
+                "speed":                   d["speed"][i, :nt].copy(),
+                "cosine_sim_state":        d["cosine_sim_state"][i, :nt].copy(),
+                "cosine_sim_update_state": d["cosine_sim_update_state"][i, :nt].copy(),
+            }
+
+        def _trim_accel(i):
+            na = int(d["n_accel"][i])
+            return {
+                "acceleration_magnitude":   d["acceleration_magnitude"][i, :na].copy(),
+                "cosine_sim_update_update": d["cosine_sim_update_update"][i, :na].copy(),
+            }
+
+        out = {k: [] for k in empty if k != "categories"}
+        for i in indices:
+            t = _trim_trans(i)
+            a = _trim_accel(i)
+            out["speed"].append(t["speed"])
+            out["cosine_sim_state"].append(t["cosine_sim_state"])
+            out["cosine_sim_update_state"].append(t["cosine_sim_update_state"])
+            out["acceleration_magnitude"].append(a["acceleration_magnitude"])
+            out["cosine_sim_update_update"].append(a["cosine_sim_update_update"])
+
+        out["categories"] = d["categories"][indices]
+        return out
+
+    def available_mechanics_models(self) -> list[str]:
+        return self.available_models("mechanics")
 
     # ── Query: c_k spectrum ────────────────────────────────────────────────────
 

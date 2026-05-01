@@ -283,6 +283,68 @@ def plot_ablation_heatmap(
     return fig
 
 
+def plot_mechanics_curves(
+    base: dict,
+    contrast: dict,
+    model_name: str,
+) -> Figure:
+    """
+    Five-panel figure: one subplot per mechanical quantity, base vs contrast.
+
+    Each panel shows mean ± SEM across prompts.
+
+    Parameters
+    ----------
+    base     : dict returned by DashboardLoader.query_mechanics(..., role="base")
+    contrast : dict returned by DashboardLoader.query_mechanics(..., role="contrast")
+    model_name : displayed in title
+    """
+    has_data = any(base.get(k) for k in ("speed",)) or any(contrast.get(k) for k in ("speed",))
+    if not has_data:
+        return _empty_fig(
+            f"No mechanics records found for {model_name}\n"
+            "(run workflows/mechanics_analysis.py --save-data to generate mechanics/ files)"
+        )
+
+    plt.close('all')
+    fig, axes = plt.subplots(1, 5, figsize=(25, 5), dpi=DPI)
+    fig.suptitle(
+        f"Residual Stream Mechanics — {model_name}  ·  mean ± SEM  ·  final token",
+        fontsize=11,
+    )
+
+    panels = [
+        ("speed",                    "Layer transition", "||ΔX_l||₂",         "Speed"),
+        ("acceleration_magnitude",   "Layer transition", "||ΔV_l||₂",         "Acceleration magnitude"),
+        ("cosine_sim_state",         "Layer transition", "cos(X_l, X_{l+1})", "State cosine similarity"),
+        ("cosine_sim_update_state",  "Layer transition", "cos(ΔX_l, X_l)",    "Update–state alignment"),
+        ("cosine_sim_update_update", "Layer transition", "cos(ΔX_l, ΔX_{l+1})", "Update coherence"),
+    ]
+    cosine_keys = {"cosine_sim_state", "cosine_sim_update_state", "cosine_sim_update_update"}
+
+    for ax, (key, xlabel, ylabel, title) in zip(axes, panels):
+        for role_data, label, color in [
+            (base,     f"Base (n={len(base.get(key, []))})",     COLOR_BASE),
+            (contrast, f"Contrast (n={len(contrast.get(key, []))})", COLOR_CONTRAST),
+        ]:
+            profiles = role_data.get(key, [])
+            if not profiles:
+                continue
+            x, mean, sem = _mean_sem(profiles)
+            ax.plot(x, mean, color=color, linewidth=1.8, label=label)
+            ax.fill_between(x, mean - sem, mean + sem, color=color, alpha=BAND_ALPHA)
+
+        ax.set_title(title, fontsize=9)
+        _style_ax(ax, xlabel=xlabel, ylabel=ylabel)
+        if key in cosine_keys:
+            ax.set_ylim(-1.05, 1.05)
+            ax.axhline(0.0, color="#888888", linewidth=0.7, linestyle="--")
+
+    axes[0].legend(fontsize=8)
+    plt.tight_layout()
+    return fig
+
+
 def plot_ck_spectrum(
     ck_mean: np.ndarray | None,
     ck_sem: np.ndarray | None,
