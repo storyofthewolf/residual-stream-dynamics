@@ -38,9 +38,11 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(_PROJECT_ROOT))
+sys.path.insert(0, str(_PROJECT_ROOT / "src"))
+sys.path.insert(0, str(_PROJECT_ROOT / "utils"))
+sys.path.insert(0, str(_PROJECT_ROOT / "plotting"))
 
-from setup import load_model_and_sae, MODEL_CONFIGS
+from model_loader import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_corpus, HOOK_TYPES, save_activation_records
 from ck_spectrum_compute import (
     compute_wu_svd_full,
@@ -103,7 +105,7 @@ def main():
                         default=str(_PROJECT_ROOT / "corpus" / "base_vs_contrast_n50.json"),
                         help="Path to corpus JSON from corpus_gen.py")
     parser.add_argument("--model", type=str, default="gpt2-small",
-                        help="Model name (must be in setup.py MODEL_CONFIGS)")
+                        help="Model name (must be in utils/model_loader.py MODEL_CONFIGS)")
     parser.add_argument("--hooks", type=str, nargs="+", default=DEFAULT_HOOKS,
                         help=f"Hook types to extract. Choices: {sorted(HOOK_TYPES.keys())}")
     parser.add_argument("--layer", type=int, default=None,
@@ -163,15 +165,23 @@ def main():
         print(f"Corpus not found: {args.corpus}")
         return 1
 
-    with open(corpus_path) as f:
-        corpus = json.load(f)
+    try:
+        with open(corpus_path) as f:
+            corpus = json.load(f)
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"Error reading corpus file '{corpus_path}': {e}")
+        return 1
     print(f"\nLoaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
     print(f"  Corpus file:  {corpus_path.name}")
 
     # ── Fast path: load precomputed records ──────────────────────────────────
     if args.load_data is not None:
         print(f"\nLoading precomputed CkRecords from {args.load_data}...")
-        all_ck_records = load_ck_records(args.load_data)
+        try:
+            all_ck_records = load_ck_records(args.load_data)
+        except (FileNotFoundError, OSError, ValueError) as e:
+            print(f"Error loading data file '{args.load_data}': {e}")
+            return 1
         print(f"  Loaded {len(all_ck_records)} records.")
         model_name = all_ck_records[0].model_name if all_ck_records else args.model
         n_layers   = all_ck_records[0].n_layers   if all_ck_records else 12
@@ -227,7 +237,11 @@ def main():
 
     # ── Full path: load model, extract, compute, plot ─────────────────────────
     print(f"\nLoading model '{args.model}'...")
-    model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device)
+    try:
+        model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device)
+    except (ValueError, RuntimeError) as e:
+        print(f"Error loading model '{args.model}': {e}")
+        return 1
     n_layers = model.cfg.n_layers
     d_model  = model.cfg.d_model
     print(f"  Model ready on {cfg['device']}")

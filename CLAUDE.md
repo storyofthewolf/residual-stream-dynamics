@@ -17,71 +17,78 @@ computationally meaningful content that differs systematically between prompt ty
 ## Pipeline architecture
 
 ```
-extraction.py            EXTRACTION — runs forward passes; produces ActivationRecord dicts.
-                         One forward pass per prompt; all hook types extracted simultaneously.
-                         Exports BOS_TOKENS (set) and save/load_activation_records (batch).
+src/math_utils.py             SHARED MATH — stateless mathematical utilities used by more than one
+                              compute module. No model access, no file I/O, no plotting.
+                              renyi_entropy(probs, alpha) — Rényi entropy in bits; Shannon at alpha=1.
+                              compute_wu_svd(W_U) — SVD of W_U returning Vh; forces .cpu() for MPS
+                              stability. Both re-exported by entropy_compute and ablation_compute.
 
-entropy_compute.py       COMPUTATION — entropy and metric computation over ActivationRecords.
-                         Produces EntropyRecords. No forward passes; no live model required
-                         (except W_U / ln_final passed in for logit lens and subspace paths).
-                         Key functions: compute_wu_svd() [Vh only],
-                         wu_explained_variance(W_U, k_values) [2-arg].
-                         Re-exports CkRecord, compute_wu_svd_full, compute_ck_spectrum,
-                         save_ck_records, load_ck_records from ck_spectrum_compute.py for
-                         backward compatibility.
+src/extraction.py             EXTRACTION — runs forward passes; produces ActivationRecord dicts.
+                              One forward pass per prompt; all hook types extracted simultaneously.
+                              Exports BOS_TOKENS (set) and save/load_activation_records (batch).
 
-ck_spectrum_compute.py   COMPUTATION — c_k spectrum computation over ActivationRecords.
-                         Produces CkRecords. Canonical home for CkRecord dataclass,
-                         compute_wu_svd_full() [S, Vh], compute_ck_spectrum(),
-                         save_ck_records / load_ck_records.
+src/entropy_compute.py        COMPUTATION — entropy and metric computation over ActivationRecords.
+                              Produces EntropyRecords. No forward passes; no live model required
+                              (except W_U / ln_final passed in for logit lens and subspace paths).
+                              Key functions: wu_explained_variance(W_U, k_values) [2-arg].
+                              Re-exports compute_wu_svd from math_utils, and CkRecord,
+                              compute_wu_svd_full, compute_ck_spectrum, save_ck_records,
+                              load_ck_records from ck_spectrum_compute.py for backward compatibility.
 
-ablation_compute.py      COMPUTATION — SVD utilities and ablation experiments over
-                         ActivationRecords. Produces AblationRecords. Stage 1 (posthoc) needs
-                         no forward pass; Stage 2 (intervention) requires a live model passed in.
+src/ck_spectrum_compute.py    COMPUTATION — c_k spectrum computation over ActivationRecords.
+                              Produces CkRecords. Canonical home for CkRecord dataclass,
+                              compute_wu_svd_full() [S, Vh], compute_ck_spectrum(),
+                              save_ck_records / load_ck_records.
 
-mechanics_compute.py     COMPUTATION — residual stream trajectory mechanics over ActivationRecords.
-                         Produces MechanicsRecords. Pure numpy; no model access; no forward pass.
-                         Interprets the residual stream as a discrete particle trajectory:
-                         speed (||ΔX_l||₂), acceleration magnitude (||ΔV_l||₂), and three
-                         cosine similarity curves (state-state, update-state, update-update).
-                         save_mechanics_records / load_mechanics_records in this module.
+src/ablation_compute.py       COMPUTATION — ablation experiments over ActivationRecords.
+                              Produces AblationRecords. Stage 1 (posthoc) needs no forward pass;
+                              Stage 2 (intervention) requires a live model passed in.
+                              Re-exports compute_wu_svd from math_utils.
 
-workflows/               ORCHESTRATION — argument parsing, corpus iteration, save/load,
-                         calls into compute modules, calls into plot modules. No computation
-                         or plotting logic belongs here.
+src/mechanics_compute.py      COMPUTATION — residual stream trajectory mechanics over ActivationRecords.
+                              Produces MechanicsRecords. Pure numpy; no model access; no forward pass.
+                              Interprets the residual stream as a discrete particle trajectory:
+                              speed (||ΔX_l||₂), acceleration magnitude (||ΔV_l||₂), and three
+                              cosine similarity curves (state-state, update-state, update-update).
+                              save_mechanics_records / load_mechanics_records in this module.
 
-  entropy_analysis.py    — entropy corpus workflow; saves EntropyRecords + ActivationRecords
-  ablation_analysis.py   — ablation corpus workflow; saves AblationRecords + ActivationRecords
-  ck_analysis.py         — c_k spectrum workflow; saves CkRecords + ActivationRecords
-  wu_subspace_analysis.py— W_U subspace entropy workflow
-  mechanics_analysis.py  — mechanics corpus workflow; saves MechanicsRecords to data/mechanics/
-  single_prompt.py       — exploratory single-prompt workflow; saves ActivationRecords
+workflows/                    ORCHESTRATION — argument parsing, corpus iteration, save/load,
+                              calls into compute modules, calls into plot modules. No computation
+                              or plotting logic belongs here.
 
-entropy_plots.py         VISUALIZATION — workflow-layer figures produced by entropy_analysis.py.
-ablation_plots.py        VISUALIZATION — workflow-layer figures produced by ablation_analysis.py.
-ck_spectrum_plots.py     VISUALIZATION — figures produced by ck_analysis.py. All _plot_*
-                         functions for CkRecords live here; none belong in the workflow.
-mechanics_plots.py       VISUALIZATION — figures produced by mechanics_analysis.py.
-                         plot_mechanics_overview() and plot_mechanics_category().
-post_process_plots.py    VISUALIZATION — curated notebook figures. Accepts pre-filtered profiles
-                         (list of np.ndarray); does not run extraction or computation.
+  entropy_analysis.py         — entropy corpus workflow; saves EntropyRecords + ActivationRecords
+  ablation_analysis.py        — ablation corpus workflow; saves AblationRecords + ActivationRecords
+  ck_analysis.py              — c_k spectrum workflow; saves CkRecords + ActivationRecords
+  wu_subspace_analysis.py     — W_U subspace entropy workflow
+  mechanics_analysis.py       — mechanics corpus workflow; saves MechanicsRecords to data/mechanics/
+  single_prompt.py            — exploratory single-prompt workflow; saves ActivationRecords
 
-dashboard_loader.py      DASHBOARD DATA — NPZ discovery, loading, caching, and index building
-                         for the interactive dashboard. No computation; no plotting; no torch.
-                         Loads mechanics/ subdirectory alongside entropy/, wu_subspace/,
-                         ablation/, ck/. query_mechanics(model, role) returns all five
-                         trimmed curve lists. available_mechanics_models() for discovery.
-dashboard_viz.py         DASHBOARD VISUALIZATION — matplotlib figure functions for the dashboard.
-                         All functions take numpy arrays and return Figure. No file I/O.
-                         Includes plot_mechanics_curves() for the Mechanics tab.
-dashboard.py             DASHBOARD APP — Gradio Blocks app. Five tabs: Entropy, WU Subspace,
-                         Ablation, C_k Spectra, Mechanics. Callbacks call loader → viz →
-                         return figure. Nothing else. --data-root must exist or the app
-                         exits with a clear error. --port defaults to None (auto-select).
+plotting/entropy_plots.py     VISUALIZATION — workflow-layer figures produced by entropy_analysis.py.
+plotting/ablation_plots.py    VISUALIZATION — workflow-layer figures produced by ablation_analysis.py.
+plotting/ck_spectrum_plots.py VISUALIZATION — figures produced by ck_analysis.py. All _plot_*
+                              functions for CkRecords live here; none belong in the workflow.
+plotting/mechanics_plots.py   VISUALIZATION — figures produced by mechanics_analysis.py.
+                              plot_mechanics_overview() and plot_mechanics_category().
+plotting/post_process_plots.py VISUALIZATION — curated notebook figures. Accepts pre-filtered
+                              profiles (list of np.ndarray); does not run extraction or computation.
 
-utils/npz_utils.py       DATA ACCESS — load and filter .npz files. No computation; no plotting.
-setup.py                 MODEL LOADING — TransformerLens model loader and MODEL_CONFIGS registry.
-corpus_gen.py            CORPUS — generates base/contrast prompt pairs as JSON.
+dashboard/dashboard_loader.py DASHBOARD DATA — NPZ discovery, loading, caching, and index building
+                              for the interactive dashboard. No computation; no plotting; no torch.
+                              Loads mechanics/ subdirectory alongside entropy/, wu_subspace/,
+                              ablation/, ck/. query_mechanics(model, role) returns all five
+                              trimmed curve lists. available_mechanics_models() for discovery.
+dashboard/dashboard_viz.py    DASHBOARD VISUALIZATION — matplotlib figure functions for the dashboard.
+                              All functions take numpy arrays and return Figure. No file I/O.
+                              Includes plot_mechanics_curves() for the Mechanics tab.
+dashboard/dashboard.py        DASHBOARD APP — Gradio Blocks app. Five tabs: Entropy, WU Subspace,
+                              Ablation, C_k Spectra, Mechanics. Callbacks call loader → viz →
+                              return figure. Nothing else. --data-root must exist or the app
+                              exits with a clear error. --port defaults to None (auto-select).
+                              Entry point: python dashboard/dashboard.py --data-root data/
+
+utils/npz_utils.py            DATA ACCESS — load and filter .npz files. No computation; no plotting.
+utils/model_loader.py         MODEL LOADING — TransformerLens model loader and MODEL_CONFIGS registry.
+corpus/corpus_gen.py          CORPUS — generates base/contrast prompt pairs as JSON.
 ```
 
 ---
@@ -149,16 +156,17 @@ of logits via the SVD of W_U. Produced by `compute_ck_spectrum()`.
 
 - **Hook types** always use short names (`"resid_post"`) as dict keys and as the
   `hook_type` field on records. Full TransformerLens patterns (`"blocks.{layer}.hook_resid_post"`)
-  live in `HOOK_TYPES` in `extraction.py` — nowhere else.
+  live in `HOOK_TYPES` in `src/extraction.py` — nowhere else.
 - **Norm keys** always use `"energy"`, `"abs"`, `"softmax"`, `"logit_lens"` as strings.
-  The single source of truth is `NORM_METHODS` in `entropy_compute.py`.
+  The single source of truth is `NORM_METHODS` in `src/entropy_compute.py`.
 - **Dataclass convention**: `ActivationRecord`, `EntropyRecord`, `AblationRecord`, `CkRecord`
   are the canonical pipeline data structures. Each record type lives in its own compute module
-  alongside its compute functions and serialization pair. Add new analysis types by creating a
-  new `*_compute.py` / `*_plots.py` pair — do not add new Record classes to existing modules.
-- **Module pair pattern**: every analysis type has a matched pair — `*_compute.py` (dataclass,
-  compute functions, save/load) and `*_plots.py` (all visualization, no file I/O). The workflow
-  script in `workflows/` is the only caller of both.
+  (`src/`) alongside its compute functions and serialization pair. Add new analysis types by
+  creating a new `src/*_compute.py` / `plotting/*_plots.py` pair — do not add new Record
+  classes to existing modules.
+- **Module pair pattern**: every analysis type has a matched pair — `src/*_compute.py`
+  (dataclass, compute functions, save/load) and `plotting/*_plots.py` (all visualization,
+  no file I/O). The workflow script in `workflows/` is the only caller of both.
 - **Serialization**: every Record type has a `save_*/load_*` pair in its compute module.
   Use `.npz` for all persistence. NaN-padding is used for variable-length arrays.
 - **Corpus metadata** (`pair_id`, `role`, `category`) flows through all Record types
@@ -176,12 +184,12 @@ They do not contain computation, filtering logic, or matplotlib calls beyond
 |---|---|
 | `load_entropy_npz(...)` calls | Loading and filtering logic (`npz_utils.py`) |
 | `get_final_token_profiles(...)` calls | Statistical helpers (`_mean_and_ci`, etc.) |
-| `plot_*(...)` calls | Plotting functions (`post_process_plots.py`) |
+| `plot_*(...)` calls | Plotting functions (`plotting/post_process_plots.py`) |
 | Parameter choices (k, alpha, model) | Compute loops and entropy math |
 | `fig.show()` / `plt.savefig()` | `save_path` handled inside plot functions |
 
 **No inline matplotlib in notebooks** — all figure construction belongs in
-`post_process_plots.py`. Notebooks pass pre-filtered profile lists to plot functions
+`plotting/post_process_plots.py`. Notebooks pass pre-filtered profile lists to plot functions
 and display the returned `fig`.
 
 **No logic in workflow scripts** — `workflows/` scripts parse arguments, call
@@ -204,9 +212,9 @@ is not argument-parsing or I/O belongs in a compute module.
   (`activations[layer, -1, :]`). This is a deliberate design choice for next-token
   prediction analysis. Entropy surfaces are computed over all token positions.
 - **BOS token**: BOS detection is centralized in `BOS_TOKENS = {"<|endoftext|>", "<s>", "<bos>"}`
-  exported from `extraction.py`. `ActivationRecord.token_slice()` and `entropy_plots._bos_slice()`
+  exported from `src/extraction.py`. `ActivationRecord.token_slice()` and `plotting/entropy_plots._bos_slice()`
   both import this set. GPT-2/Pythia, Llama, and Gemma are all covered. Do not hardcode BOS
-  strings elsewhere — add new model families to `BOS_TOKENS` in `extraction.py` only.
+  strings elsewhere — add new model families to `BOS_TOKENS` in `src/extraction.py` only.
 - **MPS stability**: `torch.linalg.svd` on large matrices is unstable on MPS. The
   canonical `compute_wu_svd()` forces `.cpu()` before decomposition. Do not remove this.
 - **Single forward pass**: `extract_activations()` runs exactly one forward pass
@@ -223,7 +231,7 @@ is not argument-parsing or I/O belongs in a compute module.
 - **Device**: default `cpu`; MPS is usable for forward passes but not for
   `torch.linalg.svd` on large matrices. All SVD computations force `.cpu()`.
 - **Model zoo**: GPT-2 (small/medium/large/XL) and Pythia (160m, 1b, 2.8b, 6.9b)
-  are the primary test models. `setup.py` contains `MODEL_CONFIGS` for each.
+  are the primary test models. `utils/model_loader.py` contains `MODEL_CONFIGS` for each.
   Gemma-2 and Llama support is partial (`has_resid_mid` detection works; BOS token
   handling in `token_slice()` requires model-specific attention).
 - **Data format**: all persistent results are `.npz` (NumPy compressed). Variable-length
@@ -235,7 +243,7 @@ is not argument-parsing or I/O belongs in a compute module.
 ## What NOT to do
 
 - **No inline matplotlib in notebooks.** Put all figure construction in
-  `post_process_plots.py`. Notebooks call plot functions and display `fig`.
+  `plotting/post_process_plots.py`. Notebooks call plot functions and display `fig`.
 - **No logic in workflow scripts** (`workflows/`) that belongs in compute modules.
   Argument parsing, path resolution, and I/O are the only things that belong in workflows.
 - **No premature abstraction.** Do not create a base `Record` class or a unified
@@ -245,8 +253,8 @@ is not argument-parsing or I/O belongs in a compute module.
   across all models in MODEL_CONFIGS. MLP-internal hooks (`mlp_pre`, `mlp_post`) have
   d_model = 4× the residual stream width — this propagates through d_model fields on
   the record and must not be passed to logit lens or ablation functions.
-- **Do not run forward passes inside compute modules.** Only `extraction.py` and the
-  intervention path of `ablation_compute.py` (which requires a live model explicitly
+- **Do not run forward passes inside compute modules.** Only `src/extraction.py` and the
+  intervention path of `src/ablation_compute.py` (which requires a live model explicitly
   passed in) are allowed to call `model.run_with_cache` or `model.run_with_hooks`.
 - **Do not save figures using `plt.savefig` directly in compute or workflow scripts.**
   All saving goes through the `_save(fig, save_path)` helper in plot modules, which
@@ -260,11 +268,12 @@ is not argument-parsing or I/O belongs in a compute module.
   Always derive paths from `Path(__file__).resolve()` so scripts work from any working
   directory.
 - **No torch, no TransformerLens, no model loading in the dashboard modules.**
-  `dashboard_loader.py`, `dashboard_viz.py`, and `dashboard.py` are pure numpy + matplotlib
-  + Gradio. Any computation that requires a live model belongs in a compute module, not here.
-- **No inline matplotlib in `dashboard.py`.** All figure construction belongs in
-  `dashboard_viz.py`. Dashboard callbacks do exactly: call loader → call viz → return figure.
-- **No plot-triggering `.change()` callbacks in `dashboard.py`.** Plots fire only from
+  `dashboard/dashboard_loader.py`, `dashboard/dashboard_viz.py`, and `dashboard/dashboard.py`
+  are pure numpy + matplotlib + Gradio. Any computation that requires a live model belongs
+  in a compute module, not here.
+- **No inline matplotlib in `dashboard/dashboard.py`.** All figure construction belongs in
+  `dashboard/dashboard_viz.py`. Dashboard callbacks do exactly: call loader → call viz → return figure.
+- **No plot-triggering `.change()` callbacks in `dashboard/dashboard.py`.** Plots fire only from
   `.click()` on an explicit "Update Plot" button. Dropdown `.change()` callbacks are
   reserved for chaining dependent selectors (norm key, alpha, k) only.
 
@@ -272,19 +281,66 @@ is not argument-parsing or I/O belongs in a compute module.
 
 ## Next steps
 
-### Clean up the project root directory
-The project root is getting too busy. The next session should reorganise the top-level
-files into subdirectories without breaking any imports. Candidates for relocation:
+### Clean up the project root directory — COMPLETED (2026-05-02)
+Root reorganization is done. All Python files are now in named subdirectories:
+- `src/` — extraction + compute modules
+- `plotting/` — all visualization modules (including post_process_plots.py)
+- `dashboard/` — dashboard app, loader, and viz
+- `utils/` — model_loader.py (renamed from setup.py) + npz_utils.py
+- `corpus/` — corpus_gen.py + data
+- `workflows/` — CLI scripts (updated sys.path + imports)
+- `notebooks/` — notebook only
+- `sandbox/` — exploratory scripts (imports updated)
+- `tests/` — deleted (test_wu_subspace.py referenced a module that no longer exists)
 
-- `corpus_gen.py` → `corpus/corpus_gen.py` (or a `scripts/` directory)
-- `post_process_plots.py` → `notebooks/post_process_plots.py` (used only by notebooks)
-- `residual_stream_dynamics.py` — sandbox reference; can be deleted now that
-  `mechanics_compute.py`, `mechanics_plots.py`, and `workflows/mechanics_analysis.py`
-  replace it entirely
-- `setup.py` — consider moving to a `utils/` or `config/` subdirectory
+---
 
-Before any move: grep all imports of the file being moved, update `sys.path.insert`
-calls in workflows if needed, and verify nothing in the notebooks breaks.
+## Session changelog (2026-05-02)
+
+### Repo reorganization — all Python moved out of project root
+
+All 15 Python files moved from the project root into named subdirectories. Zero Python
+files remain at the root. Import strategy uses `sys.path.insert` (the project's existing
+convention) so no module names changed — only file locations.
+
+- `src/` — `extraction.py`, `entropy_compute.py`, `ck_spectrum_compute.py`,
+  `ablation_compute.py`, `mechanics_compute.py`
+- `plotting/` — `entropy_plots.py`, `ck_spectrum_plots.py`, `ablation_plots.py`,
+  `mechanics_plots.py`, `post_process_plots.py`
+- `dashboard/` — `dashboard.py`, `dashboard_loader.py`, `dashboard_viz.py`
+- `utils/` — `model_loader.py` (renamed from `setup.py`), `npz_utils.py`, `npz_quicklook.py`
+- `corpus/` — `corpus_gen.py` + data files
+- `tests/` — deleted (`test_wu_subspace.py` imported a module that no longer exists)
+
+All 6 workflow scripts updated: `sys.path` now inserts `src/`, `utils/`, and `plotting/`
+explicitly. All sandbox scripts updated: `from setup import` → `from model_loader import`.
+Notebook sys.path cell updated to point at `../plotting` and `../utils`.
+
+### New: `src/math_utils.py` — shared mathematical utilities
+
+Created `src/math_utils.py` as a home for stateless mathematical functions used by more
+than one compute module. No model access, no file I/O, no plotting.
+
+**`renyi_entropy(probs, alpha)`** — moved from `src/entropy_compute.py`. Rényi entropy
+in bits; Shannon limit at `alpha=1.0`. Previously duplicated implicitly via import.
+
+**`compute_wu_svd(W_U)`** — consolidated from two divergent definitions:
+- `src/entropy_compute.py` had a version that did NOT force `.cpu()` (MPS-unsafe)
+- `src/ablation_compute.py` had the canonical version with `.cpu()`
+The canonical (`.cpu()`) version now lives only in `src/math_utils.py`. Both compute
+modules re-export it via `from math_utils import compute_wu_svd` for backward compatibility.
+
+### Other quality-of-life improvements
+
+- `requirements.txt` created at project root (torch, transformer_lens, sae_lens, numpy,
+  matplotlib, gradio, huggingface_hub with minimum version pins).
+- `--help` text in all 6 workflows updated: `"must be in setup.py MODEL_CONFIGS"` →
+  `"must be in utils/model_loader.py MODEL_CONFIGS"`.
+- Error handling added to all 6 workflow `main()` functions: bad corpus path, bad JSON,
+  unknown model name, and bad `--load-data` path all now print a clean message and
+  `return 1` instead of raising a raw traceback.
+- Duplicate `from pathlib import Path` imports removed from `plotting/entropy_plots.py`,
+  `plotting/mechanics_plots.py`, and `plotting/post_process_plots.py`.
 
 ---
 
@@ -392,7 +448,7 @@ executable line. All handle the zero-records case with an informative empty figu
 Gradio `Blocks` app with four tabs (Entropy, WU Subspace, Ablation, C_k Spectra).
 Each tab has an "Update Plot" button; plots fire only from `.click()`, never from
 `.change()`. Model dropdowns chain-update dependent selectors via `.change()`.
-Run with `python dashboard.py --data-root data/`.
+Run with `python dashboard/dashboard.py --data-root data/`.
 
 ---
 

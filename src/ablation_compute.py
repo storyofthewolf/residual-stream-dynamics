@@ -58,7 +58,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
-from entropy_compute import renyi_entropy
+from math_utils import compute_wu_svd, renyi_entropy  # noqa: F401 — re-exported for callers
 
 
 # ============================================================================
@@ -102,32 +102,6 @@ class AblationRecord:
     category:           Optional[str] # corpus category e.g. "pattern", "factual"
                                       # (matches ActivationRecord.category)
     hook_type:          str           # hook used during extraction (matches ActivationRecord)
-
-
-# ============================================================================
-# SVD UTILITIES
-# Precomputed once per model in the workflow layer, passed into ablation
-# functions. These are NOT called inside the ablation functions themselves.
-# ============================================================================
-
-def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
-    """
-    Compute SVD of W_U and return right singular vectors Vh.
-
-    Args:
-        W_U: unembedding matrix, shape [d_model, vocab_size]
-
-    Returns:
-        Vh: right singular vectors, shape [d_model, d_model]
-            rows are ordered by descending singular value
-            i.e. Vh[0] is the direction W_U is most sensitive to
-
-    Note: computed on CPU regardless of W_U device, due to MPS
-    instability with torch.linalg.svd on large matrices.
-
-    """
-    U, S, Vh = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
-    return Vh    # shape [d_model, d_model]
 
 
 def wu_explained_variance(

@@ -12,9 +12,9 @@ compare internal model states between prompts that share a stem but
 diverge in expected predictability.
 
 Usage:
-    python corpus_gen.py                        # saves to corpus.json
-    python corpus_gen.py --output my_corpus.json
-    python corpus_gen.py --list-categories
+    python corpus/corpus_gen.py                        # saves to corpus.json
+    python corpus/corpus_gen.py --output my_corpus.json
+    python corpus/corpus_gen.py --list-categories
 """
 
 import json

@@ -6,10 +6,10 @@ Subsequent loads are fast (loads from cache).
 
 Usage:
     # List available models
-    python setup.py --list
-    
+    python utils/model_loader.py --list
+
     # Check what's cached locally
-    python setup.py --list-cache
+    python utils/model_loader.py --list-cache
 """
 
 import argparse

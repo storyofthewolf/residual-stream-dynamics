@@ -23,12 +23,11 @@ Typical notebook cell:
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent / "utils"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "utils"))
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from pathlib import Path
 
 # ── Color palette ──────────────────────────────────────────────────────────────
 BASE_COLOR     = "#2166ac"   # blue

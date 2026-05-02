@@ -91,6 +91,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
+from math_utils import compute_wu_svd, renyi_entropy  # noqa: F401 — re-exported for callers
 from ck_spectrum_compute import (  # noqa: F401 — re-exported for backward compat
     CkRecord,
     compute_wu_svd_full,
@@ -156,23 +157,6 @@ RESIDUAL_NORM_KEYS = [key for key, _, fn in NORM_METHODS if fn is not None]
 # ============================================================================
 # ENTROPY FORMULA
 # ============================================================================
-
-def renyi_entropy(probs: torch.Tensor, alpha: float) -> float:
-    """Renyi entropy of order alpha.
-
-    H_alpha = (1/(1-alpha)) * log2(sum p_i^alpha)
-
-    Special case alpha -> 1.0: Shannon entropy H = -sum p_i log2(p_i)
-
-    Args:
-        probs: valid probability distribution (non-negative, sums to 1)
-        alpha: order parameter
-    Returns:
-        entropy in bits
-    """
-    if abs(alpha - 1.0) < 1e-6:
-        return -(probs * probs.log2()).sum().item()
-    return (1.0 / (1.0 - alpha)) * (probs.pow(alpha).sum().log2().item())
 
 
 # ============================================================================
@@ -453,31 +437,6 @@ def compute_logit_lens_entropy(
 # Produces EntropyRecords with norm_keys like "wu_parallel_k50",
 # "wu_orthogonal_k50".
 # ============================================================================
-
-def compute_wu_svd(W_U: torch.Tensor) -> torch.Tensor:
-    """
-    Compute the right singular vectors of W_U for subspace decomposition.
-
-    W_U has shape [d_model, vocab_size].  We take the SVD of W_U.T
-    (shape [vocab_size, d_model]) to get the right singular vectors Vh,
-    whose rows are orthonormal basis vectors for d_model space, ordered
-    by how much variance in W_U each direction explains.
-
-    Args:
-        W_U:  unembedding matrix, shape [d_model, vocab_size]
-              obtained from model.W_U.detach() in the workflow layer
-
-    Returns:
-        Vh:   right singular vectors, shape [d_model, d_model]
-              (or [min(vocab, d_model), d_model] — but vocab >> d_model
-               so this is always [d_model, d_model])
-              Row i is the i-th principal direction of W_U, ordered by
-              decreasing singular value.
-    """
-    _, _, Vh = torch.linalg.svd(W_U.T.float(), full_matrices=False)
-    return Vh
-
-
 
 def wu_explained_variance(W_U: torch.Tensor, k_values: list) -> dict:
     """

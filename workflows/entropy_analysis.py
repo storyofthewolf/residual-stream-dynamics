@@ -36,9 +36,11 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(_PROJECT_ROOT))
+sys.path.insert(0, str(_PROJECT_ROOT / "src"))
+sys.path.insert(0, str(_PROJECT_ROOT / "utils"))
+sys.path.insert(0, str(_PROJECT_ROOT / "plotting"))
 
-from setup import load_model_and_sae, MODEL_CONFIGS
+from model_loader import load_model_and_sae, MODEL_CONFIGS
 from extraction import extract_corpus, HOOK_TYPES, save_activation_records
 from entropy_compute import (
     compute_residual_stream_entropy,
@@ -132,7 +134,7 @@ def main():
 
     # ── Model and hooks ──
     parser.add_argument("--model", type=str, default="gpt2-small",
-                        help="Model name (must be in setup.py MODEL_CONFIGS)")
+                        help="Model name (must be in utils/model_loader.py MODEL_CONFIGS)")
     parser.add_argument("--hooks", type=str, nargs="+", default=DEFAULT_HOOKS,
                         help=f"Hook types to extract. Choices: {sorted(HOOK_TYPES.keys())}")
     
@@ -194,14 +196,22 @@ def main():
         print(f"Corpus not found: {args.corpus}")
         return 1
 
-    with open(corpus_path) as f:
-        corpus = json.load(f)
+    try:
+        with open(corpus_path) as f:
+            corpus = json.load(f)
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"Error reading corpus file '{corpus_path}': {e}")
+        return 1
     print(f"\nLoaded corpus: {len(corpus)} prompts ({len(corpus)//2} pairs)")
     print(f"  Corpus file:  {corpus_path.name}")
 
     # ── Load model ────────────────────────────────────────────────────────────
     print(f"\nLoading model '{args.model}'...")
-    model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device)
+    try:
+        model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device)
+    except (ValueError, RuntimeError) as e:
+        print(f"Error loading model '{args.model}': {e}")
+        return 1
     print(f"  Model ready on {cfg['device']}")
     print(f"  Layers: {model.cfg.n_layers}")
     print(f"  Hooks:  {hook_types}")
