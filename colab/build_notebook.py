@@ -157,29 +157,42 @@ Add `--run-tag <name>` to keep successive runs from overwriting each other.
 
     md("### Entropy analysis"),
     code("""
-!python workflows/entropy_analysis.py --model gpt2-small --save-data
+!python workflows/entropy_analysis.py --model gpt2-small \\
+    --corpus corpus/base_vs_contrast_n216.json --save-data
 """),
 
     md("### Ablation analysis (the primary experiment)"),
     code("""
 !python workflows/ablation_analysis.py --model gpt2-small \\
+    --corpus corpus/base_vs_contrast_n216.json \\
     --ev-thresholds 0.50 0.75 0.90 0.95 0.99 \\
     --save-data
 """),
 
-    md("### c_k spectrum analysis"),
+    md("""
+### c_k spectrum analysis
+
+`--last-token-only` stores `[n_layers, 1, d_model]` instead of the full token
+axis, shrinking the `.npz` by roughly the sequence length. Eight of the nine
+c_k figures use only the final token, so this discards nothing they need; the
+all-tokens heatmap is skipped automatically.
+"""),
     code("""
-!python workflows/ck_analysis.py --model gpt2-small --save-data
+!python workflows/ck_analysis.py --model gpt2-small \\
+    --corpus corpus/base_vs_contrast_n216.json \\
+    --last-token-only --save-data
 """),
 
     md("### W_U subspace analysis"),
     code("""
-!python workflows/wu_subspace_analysis.py --model gpt2-small --save-data
+!python workflows/wu_subspace_analysis.py --model gpt2-small \\
+    --corpus corpus/base_vs_contrast_n216.json --save-data
 """),
 
     md("### Mechanics analysis"),
     code("""
-!python workflows/mechanics_analysis.py --model gpt2-small --save-data
+!python workflows/mechanics_analysis.py --model gpt2-small \\
+    --corpus corpus/base_vs_contrast_n216.json --save-data
 """),
 
     md("""
@@ -198,6 +211,7 @@ MODELS = ["gpt2-small", "gpt2-medium", "gpt2-large", "pythia-160m", "pythia-1b"]
 for m in MODELS:
     print(f"\\n{'='*70}\\n  {m}\\n{'='*70}")
     !python workflows/ablation_analysis.py --model {m} \\
+        --corpus corpus/base_vs_contrast_n216.json \\
         --ev-thresholds 0.50 0.75 0.90 0.95 0.99 --save-data --no-plots
 """),
 
@@ -208,6 +222,7 @@ Run these individually and restart the runtime between them to release VRAM.
 """),
     code("""
 !python workflows/ablation_analysis.py --model pythia-2.8b \\
+    --corpus corpus/base_vs_contrast_n216.json \\
     --ev-thresholds 0.50 0.90 0.99 --save-data --no-plots
 """),
 

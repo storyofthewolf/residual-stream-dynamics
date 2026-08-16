@@ -89,6 +89,11 @@ dashboard/dashboard.py        DASHBOARD APP — Gradio Blocks app. Five tabs: En
 utils/npz_utils.py            DATA ACCESS — load and filter .npz files. No computation; no plotting.
 utils/model_loader.py         MODEL LOADING — TransformerLens model loader and MODEL_CONFIGS registry.
 corpus/corpus_gen.py          CORPUS — generates base/contrast prompt pairs as JSON.
+                              108 pairs / 216 prompts across 5 categories x 4 contrast_types.
+                              --legacy regenerates the original 25-pair corpus byte-for-byte
+                              on every original field. --stats prints the design matrix.
+                              validate_corpus() runs on every invocation and fails closed on
+                              duplicate descriptions (which would make --legacy ambiguous).
 ```
 
 ---
@@ -141,8 +146,15 @@ Stores five scalar mechanical curves for one prompt at the final token position.
 ### CkRecord  (ck_spectrum_compute.py)
 Stores the c_k spectrum for one prompt: `c_k = σ_k · (r · v_k)`, an exact decomposition
 of logits via the SVD of W_U. Produced by `compute_ck_spectrum()`.
-- `ck_spectrum`: `np.ndarray` shape `[n_layers, seq_len, d_model]`
+- `ck_spectrum`: `np.ndarray` shape `[n_layers, seq_len, d_model]`, or
+  `[n_layers, 1, d_model]` when computed with `last_token_only=True`
 - `singular_values`: `np.ndarray` shape `[d_model]`, descending σ_k
+- `last_token_only`: bool — True when only the final token position was
+  retained (`--last-token-only`). Eight of the nine functions in
+  `ck_spectrum_plots.py` slice `[:, -1, :]` and are unaffected;
+  `plot_heatmap_alltokens()` and `CkRecord.layer_spectrum()` raise on such
+  records rather than silently averaging over one token. Serialized in the
+  `.npz`; old files without the key load as `False`.
 - `str_tokens`: list of token strings; persisted in `.npz`
 - Standard metadata: `prompt`, `model_name`, `hook_type`, `n_layers`, `seq_len`, `d_model`,
   `pair_id`, `role`, `category`
@@ -171,6 +183,12 @@ of logits via the SVD of W_U. Produced by `compute_ck_spectrum()`.
   Use `.npz` for all persistence. NaN-padding is used for variable-length arrays.
 - **Corpus metadata** (`pair_id`, `role`, `category`) flows through all Record types
   unchanged from ActivationRecord. It is `None` for single-prompt exploratory runs.
+- **`contrast_type` is corpus-only.** The corpus JSON carries a fourth field
+  (`abstract` / `concrete` / `in_domain` / `swap`) controlling the abstract-noun
+  confound, but `extraction.py` reads only `pair_id` / `role` / `category`, so it
+  does not reach the Record types. Stratified analysis joins back to the corpus
+  file on `prompt` or `pair_id`. Threading it through is a listed FutureWork item —
+  do not add it to one Record type in isolation.
 
 ---
 

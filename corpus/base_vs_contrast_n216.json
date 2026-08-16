@@ -1,0 +1,1730 @@
+[
+  {
+    "pair_id": 0,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "number sequence vs color intrusion",
+    "role": "base",
+    "prompt": "one two three four"
+  },
+  {
+    "pair_id": 0,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "number sequence vs color intrusion",
+    "role": "contrast",
+    "prompt": "one two three purple"
+  },
+  {
+    "pair_id": 1,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "weekday sequence vs noun intrusion",
+    "role": "base",
+    "prompt": "Monday Tuesday Wednesday Thursday"
+  },
+  {
+    "pair_id": 1,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "weekday sequence vs noun intrusion",
+    "role": "contrast",
+    "prompt": "Monday Tuesday Wednesday coffee"
+  },
+  {
+    "pair_id": 2,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "month sequence vs abstract noun intrusion",
+    "role": "base",
+    "prompt": "January February March April"
+  },
+  {
+    "pair_id": 2,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "month sequence vs abstract noun intrusion",
+    "role": "contrast",
+    "prompt": "January February March democracy"
+  },
+  {
+    "pair_id": 3,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "letter sequence vs digit intrusion",
+    "role": "base",
+    "prompt": "A B C D"
+  },
+  {
+    "pair_id": 3,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "letter sequence vs digit intrusion",
+    "role": "contrast",
+    "prompt": "A B C seven"
+  },
+  {
+    "pair_id": 4,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "color alternation vs abstract intrusion",
+    "role": "base",
+    "prompt": "red blue red blue red"
+  },
+  {
+    "pair_id": 4,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "color alternation vs abstract intrusion",
+    "role": "contrast",
+    "prompt": "red blue red blue philosophy"
+  },
+  {
+    "pair_id": 5,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "counting by tens vs noun intrusion",
+    "role": "base",
+    "prompt": "10 20 30 40"
+  },
+  {
+    "pair_id": 5,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "counting by tens vs noun intrusion",
+    "role": "contrast",
+    "prompt": "10 20 30 banana"
+  },
+  {
+    "pair_id": 6,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "number sequence vs out-of-order number",
+    "role": "base",
+    "prompt": "one two three four"
+  },
+  {
+    "pair_id": 6,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "number sequence vs out-of-order number",
+    "role": "contrast",
+    "prompt": "one two three seven"
+  },
+  {
+    "pair_id": 7,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "weekday sequence vs out-of-order weekday",
+    "role": "base",
+    "prompt": "Monday Tuesday Wednesday Thursday"
+  },
+  {
+    "pair_id": 7,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "weekday sequence vs out-of-order weekday",
+    "role": "contrast",
+    "prompt": "Monday Tuesday Wednesday Saturday"
+  },
+  {
+    "pair_id": 8,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "month sequence vs out-of-order month",
+    "role": "base",
+    "prompt": "January February March April"
+  },
+  {
+    "pair_id": 8,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "month sequence vs out-of-order month",
+    "role": "contrast",
+    "prompt": "January February March October"
+  },
+  {
+    "pair_id": 9,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "letter sequence vs out-of-order letter",
+    "role": "base",
+    "prompt": "A B C D"
+  },
+  {
+    "pair_id": 9,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "letter sequence vs out-of-order letter",
+    "role": "contrast",
+    "prompt": "A B C Q"
+  },
+  {
+    "pair_id": 10,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "counting by tens vs off-pattern number",
+    "role": "base",
+    "prompt": "10 20 30 40"
+  },
+  {
+    "pair_id": 10,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "counting by tens vs off-pattern number",
+    "role": "contrast",
+    "prompt": "10 20 30 37"
+  },
+  {
+    "pair_id": 11,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "ordinal sequence vs out-of-order ordinal",
+    "role": "base",
+    "prompt": "first second third fourth"
+  },
+  {
+    "pair_id": 11,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "ordinal sequence vs out-of-order ordinal",
+    "role": "contrast",
+    "prompt": "first second third ninth"
+  },
+  {
+    "pair_id": 12,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "number sequence vs common noun",
+    "role": "base",
+    "prompt": "one two three four"
+  },
+  {
+    "pair_id": 12,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "number sequence vs common noun",
+    "role": "contrast",
+    "prompt": "one two three table"
+  },
+  {
+    "pair_id": 13,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "season sequence vs common noun",
+    "role": "base",
+    "prompt": "spring summer autumn winter"
+  },
+  {
+    "pair_id": 13,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "season sequence vs common noun",
+    "role": "contrast",
+    "prompt": "spring summer autumn bread"
+  },
+  {
+    "pair_id": 14,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "compass sequence vs common noun",
+    "role": "base",
+    "prompt": "north south east west"
+  },
+  {
+    "pair_id": 14,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "compass sequence vs common noun",
+    "role": "contrast",
+    "prompt": "north south east water"
+  },
+  {
+    "pair_id": 15,
+    "category": "pattern",
+    "contrast_type": "swap",
+    "description": "number sequence vs shuffled same numbers",
+    "role": "base",
+    "prompt": "one two three four"
+  },
+  {
+    "pair_id": 15,
+    "category": "pattern",
+    "contrast_type": "swap",
+    "description": "number sequence vs shuffled same numbers",
+    "role": "contrast",
+    "prompt": "three one four two"
+  },
+  {
+    "pair_id": 16,
+    "category": "pattern",
+    "contrast_type": "swap",
+    "description": "weekday sequence vs shuffled same weekdays",
+    "role": "base",
+    "prompt": "Monday Tuesday Wednesday Thursday"
+  },
+  {
+    "pair_id": 16,
+    "category": "pattern",
+    "contrast_type": "swap",
+    "description": "weekday sequence vs shuffled same weekdays",
+    "role": "contrast",
+    "prompt": "Wednesday Monday Thursday Tuesday"
+  },
+  {
+    "pair_id": 17,
+    "category": "pattern",
+    "contrast_type": "swap",
+    "description": "letter sequence vs shuffled same letters",
+    "role": "base",
+    "prompt": "A B C D"
+  },
+  {
+    "pair_id": 17,
+    "category": "pattern",
+    "contrast_type": "swap",
+    "description": "letter sequence vs shuffled same letters",
+    "role": "contrast",
+    "prompt": "C A D B"
+  },
+  {
+    "pair_id": 18,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "season sequence vs abstract noun",
+    "role": "base",
+    "prompt": "spring summer autumn winter"
+  },
+  {
+    "pair_id": 18,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "season sequence vs abstract noun",
+    "role": "contrast",
+    "prompt": "spring summer autumn philosophy"
+  },
+  {
+    "pair_id": 19,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "compass sequence vs abstract noun",
+    "role": "base",
+    "prompt": "north south east west"
+  },
+  {
+    "pair_id": 19,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "compass sequence vs abstract noun",
+    "role": "contrast",
+    "prompt": "north south east democracy"
+  },
+  {
+    "pair_id": 20,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "ordinal sequence vs technical term",
+    "role": "base",
+    "prompt": "first second third fourth"
+  },
+  {
+    "pair_id": 20,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "ordinal sequence vs technical term",
+    "role": "contrast",
+    "prompt": "first second third calculus"
+  },
+  {
+    "pair_id": 21,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "solfege sequence vs mathematical term",
+    "role": "base",
+    "prompt": "do re mi fa"
+  },
+  {
+    "pair_id": 21,
+    "category": "pattern",
+    "contrast_type": "abstract",
+    "description": "solfege sequence vs mathematical term",
+    "role": "contrast",
+    "prompt": "do re mi theorem"
+  },
+  {
+    "pair_id": 22,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "solfege sequence vs out-of-order solfege",
+    "role": "base",
+    "prompt": "do re mi fa"
+  },
+  {
+    "pair_id": 22,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "solfege sequence vs out-of-order solfege",
+    "role": "contrast",
+    "prompt": "do re mi la"
+  },
+  {
+    "pair_id": 23,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "even sequence vs odd number",
+    "role": "base",
+    "prompt": "2 4 6 8"
+  },
+  {
+    "pair_id": 23,
+    "category": "pattern",
+    "contrast_type": "in_domain",
+    "description": "even sequence vs odd number",
+    "role": "contrast",
+    "prompt": "2 4 6 nine"
+  },
+  {
+    "pair_id": 24,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "even sequence vs animal noun",
+    "role": "base",
+    "prompt": "2 4 6 8"
+  },
+  {
+    "pair_id": 24,
+    "category": "pattern",
+    "contrast_type": "concrete",
+    "description": "even sequence vs animal noun",
+    "role": "contrast",
+    "prompt": "2 4 6 elephant"
+  },
+  {
+    "pair_id": 25,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "concrete location vs abstract noun",
+    "role": "base",
+    "prompt": "The cat sat on the"
+  },
+  {
+    "pair_id": 25,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "concrete location vs abstract noun",
+    "role": "contrast",
+    "prompt": "The cat sat on democracy"
+  },
+  {
+    "pair_id": 26,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "coherent continuation stem vs abrupt abstract",
+    "role": "base",
+    "prompt": "She opened the door and"
+  },
+  {
+    "pair_id": 26,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "coherent continuation stem vs abrupt abstract",
+    "role": "contrast",
+    "prompt": "She opened the door philosophy"
+  },
+  {
+    "pair_id": 27,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "plausible object vs number",
+    "role": "base",
+    "prompt": "The dog barked at the"
+  },
+  {
+    "pair_id": 27,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "plausible object vs number",
+    "role": "contrast",
+    "prompt": "The dog barked at seventeen"
+  },
+  {
+    "pair_id": 28,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "adjective before concrete noun vs abstract noun",
+    "role": "base",
+    "prompt": "He picked up the heavy"
+  },
+  {
+    "pair_id": 28,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "adjective before concrete noun vs abstract noun",
+    "role": "contrast",
+    "prompt": "He picked up the heavy equation"
+  },
+  {
+    "pair_id": 29,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "directional completion vs technical noun",
+    "role": "base",
+    "prompt": "The sun rises in the"
+  },
+  {
+    "pair_id": 29,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "directional completion vs technical noun",
+    "role": "contrast",
+    "prompt": "The sun rises in the algorithm"
+  },
+  {
+    "pair_id": 30,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "adjective before concrete vs discipline name",
+    "role": "base",
+    "prompt": "They walked into the dark"
+  },
+  {
+    "pair_id": 30,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "adjective before concrete vs discipline name",
+    "role": "contrast",
+    "prompt": "They walked into the dark calculus"
+  },
+  {
+    "pair_id": 31,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "plausible location vs implausible concrete object",
+    "role": "base",
+    "prompt": "The cat sat on the"
+  },
+  {
+    "pair_id": 31,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "plausible location vs implausible concrete object",
+    "role": "contrast",
+    "prompt": "The cat sat on the bread"
+  },
+  {
+    "pair_id": 32,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "adjective before concrete vs mass noun",
+    "role": "base",
+    "prompt": "He picked up the heavy"
+  },
+  {
+    "pair_id": 32,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "adjective before concrete vs mass noun",
+    "role": "contrast",
+    "prompt": "He picked up the heavy water"
+  },
+  {
+    "pair_id": 33,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "directional completion vs concrete place",
+    "role": "base",
+    "prompt": "The sun rises in the"
+  },
+  {
+    "pair_id": 33,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "directional completion vs concrete place",
+    "role": "contrast",
+    "prompt": "The sun rises in the kitchen"
+  },
+  {
+    "pair_id": 34,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "container completion vs landform",
+    "role": "base",
+    "prompt": "She poured the milk into the"
+  },
+  {
+    "pair_id": 34,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "container completion vs landform",
+    "role": "contrast",
+    "prompt": "She poured the milk into the mountain"
+  },
+  {
+    "pair_id": 35,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "landscape completion vs small object",
+    "role": "base",
+    "prompt": "The bird flew over the"
+  },
+  {
+    "pair_id": 35,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "landscape completion vs small object",
+    "role": "contrast",
+    "prompt": "The bird flew over the spoon"
+  },
+  {
+    "pair_id": 36,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "cat-mat sentence vs reversed word order",
+    "role": "base",
+    "prompt": "The cat sat on the mat"
+  },
+  {
+    "pair_id": 36,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "cat-mat sentence vs reversed word order",
+    "role": "contrast",
+    "prompt": "Mat the on sat cat the"
+  },
+  {
+    "pair_id": 37,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "door sentence vs reversed word order",
+    "role": "base",
+    "prompt": "She opened the door slowly"
+  },
+  {
+    "pair_id": 37,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "door sentence vs reversed word order",
+    "role": "contrast",
+    "prompt": "Slowly door the opened she"
+  },
+  {
+    "pair_id": 38,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "dog-mailman sentence vs reversed word order",
+    "role": "base",
+    "prompt": "The dog barked at the mailman"
+  },
+  {
+    "pair_id": 38,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "dog-mailman sentence vs reversed word order",
+    "role": "contrast",
+    "prompt": "Mailman the at barked dog the"
+  },
+  {
+    "pair_id": 39,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "book sentence vs reversed word order",
+    "role": "base",
+    "prompt": "He read the book quietly"
+  },
+  {
+    "pair_id": 39,
+    "category": "syntactic",
+    "contrast_type": "swap",
+    "description": "book sentence vs reversed word order",
+    "role": "contrast",
+    "prompt": "Quietly book the read he"
+  },
+  {
+    "pair_id": 40,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "concrete location vs abstract in valid slot",
+    "role": "base",
+    "prompt": "The cat sat on the"
+  },
+  {
+    "pair_id": 40,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "concrete location vs abstract in valid slot",
+    "role": "contrast",
+    "prompt": "The cat sat on the idea"
+  },
+  {
+    "pair_id": 41,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "dark-noun completion vs abstract in valid slot",
+    "role": "base",
+    "prompt": "They walked into the dark"
+  },
+  {
+    "pair_id": 41,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "dark-noun completion vs abstract in valid slot",
+    "role": "contrast",
+    "prompt": "They walked into the dark silence"
+  },
+  {
+    "pair_id": 42,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "flew-over completion vs abstract in valid slot",
+    "role": "base",
+    "prompt": "The bird flew over the"
+  },
+  {
+    "pair_id": 42,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "flew-over completion vs abstract in valid slot",
+    "role": "contrast",
+    "prompt": "The bird flew over the memory"
+  },
+  {
+    "pair_id": 43,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "container completion vs mathematical term",
+    "role": "base",
+    "prompt": "She poured the milk into the"
+  },
+  {
+    "pair_id": 43,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "container completion vs mathematical term",
+    "role": "contrast",
+    "prompt": "She poured the milk into the theorem"
+  },
+  {
+    "pair_id": 44,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "landscape completion vs abstract noun",
+    "role": "base",
+    "prompt": "The bird flew over the"
+  },
+  {
+    "pair_id": 44,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "landscape completion vs abstract noun",
+    "role": "contrast",
+    "prompt": "The bird flew over the philosophy"
+  },
+  {
+    "pair_id": 45,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "topic completion vs technical term",
+    "role": "base",
+    "prompt": "He read the book about the"
+  },
+  {
+    "pair_id": 45,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "topic completion vs technical term",
+    "role": "contrast",
+    "prompt": "He read the book about the calculus"
+  },
+  {
+    "pair_id": 46,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "surface completion vs abstract noun",
+    "role": "base",
+    "prompt": "The teacher wrote on the"
+  },
+  {
+    "pair_id": 46,
+    "category": "syntactic",
+    "contrast_type": "abstract",
+    "description": "surface completion vs abstract noun",
+    "role": "contrast",
+    "prompt": "The teacher wrote on the democracy"
+  },
+  {
+    "pair_id": 47,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "surface completion vs landform",
+    "role": "base",
+    "prompt": "The teacher wrote on the"
+  },
+  {
+    "pair_id": 47,
+    "category": "syntactic",
+    "contrast_type": "concrete",
+    "description": "surface completion vs landform",
+    "role": "contrast",
+    "prompt": "The teacher wrote on the river"
+  },
+  {
+    "pair_id": 48,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "topic completion vs bare number",
+    "role": "base",
+    "prompt": "He read the book about the"
+  },
+  {
+    "pair_id": 48,
+    "category": "syntactic",
+    "contrast_type": "in_domain",
+    "description": "topic completion vs bare number",
+    "role": "contrast",
+    "prompt": "He read the book about the seventeen"
+  },
+  {
+    "pair_id": 49,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "Shakespeare completion vs verb substitution",
+    "role": "base",
+    "prompt": "To be or not to"
+  },
+  {
+    "pair_id": 49,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "Shakespeare completion vs verb substitution",
+    "role": "contrast",
+    "prompt": "To be or not to dance"
+  },
+  {
+    "pair_id": 50,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "fairy tale opener vs mathematical term",
+    "role": "base",
+    "prompt": "Once upon a"
+  },
+  {
+    "pair_id": 50,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "fairy tale opener vs mathematical term",
+    "role": "contrast",
+    "prompt": "Once upon a theorem"
+  },
+  {
+    "pair_id": 51,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "Genesis opener vs technical term",
+    "role": "base",
+    "prompt": "In the beginning"
+  },
+  {
+    "pair_id": 51,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "Genesis opener vs technical term",
+    "role": "contrast",
+    "prompt": "In the beginning calculus"
+  },
+  {
+    "pair_id": 52,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "gothic fiction stem vs math term",
+    "role": "base",
+    "prompt": "It was a dark and stormy"
+  },
+  {
+    "pair_id": 52,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "gothic fiction stem vs math term",
+    "role": "contrast",
+    "prompt": "It was a dark and stormy equation"
+  },
+  {
+    "pair_id": 53,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "pangram completion vs abstract noun",
+    "role": "base",
+    "prompt": "The quick brown fox jumps over the lazy"
+  },
+  {
+    "pair_id": 53,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "pangram completion vs abstract noun",
+    "role": "contrast",
+    "prompt": "The quick brown fox jumps over the lazy theorem"
+  },
+  {
+    "pair_id": 54,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "fairy tale opener vs concrete noun",
+    "role": "base",
+    "prompt": "Once upon a"
+  },
+  {
+    "pair_id": 54,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "fairy tale opener vs concrete noun",
+    "role": "contrast",
+    "prompt": "Once upon a bicycle"
+  },
+  {
+    "pair_id": 55,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "gothic stem vs plausible-but-wrong noun",
+    "role": "base",
+    "prompt": "It was a dark and stormy"
+  },
+  {
+    "pair_id": 55,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "gothic stem vs plausible-but-wrong noun",
+    "role": "contrast",
+    "prompt": "It was a dark and stormy morning"
+  },
+  {
+    "pair_id": 56,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "pangram completion vs different animal",
+    "role": "base",
+    "prompt": "The quick brown fox jumps over the lazy"
+  },
+  {
+    "pair_id": 56,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "pangram completion vs different animal",
+    "role": "contrast",
+    "prompt": "The quick brown fox jumps over the lazy rabbit"
+  },
+  {
+    "pair_id": 57,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "rhyme completion vs wrong color",
+    "role": "base",
+    "prompt": "Roses are red violets are"
+  },
+  {
+    "pair_id": 57,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "rhyme completion vs wrong color",
+    "role": "contrast",
+    "prompt": "Roses are red violets are green"
+  },
+  {
+    "pair_id": 58,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "thousand-words idiom vs concrete noun",
+    "role": "base",
+    "prompt": "A picture is worth a thousand"
+  },
+  {
+    "pair_id": 58,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "thousand-words idiom vs concrete noun",
+    "role": "contrast",
+    "prompt": "A picture is worth a thousand rocks"
+  },
+  {
+    "pair_id": 59,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "idiom completion vs adverb",
+    "role": "base",
+    "prompt": "Better late than"
+  },
+  {
+    "pair_id": 59,
+    "category": "predictability",
+    "contrast_type": "in_domain",
+    "description": "idiom completion vs adverb",
+    "role": "contrast",
+    "prompt": "Better late than sideways"
+  },
+  {
+    "pair_id": 60,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "practice idiom vs concrete noun",
+    "role": "base",
+    "prompt": "Practice makes"
+  },
+  {
+    "pair_id": 60,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "practice idiom vs concrete noun",
+    "role": "contrast",
+    "prompt": "Practice makes bread"
+  },
+  {
+    "pair_id": 61,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "idiom completion vs technical term",
+    "role": "base",
+    "prompt": "The early bird catches the"
+  },
+  {
+    "pair_id": 61,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "idiom completion vs technical term",
+    "role": "contrast",
+    "prompt": "The early bird catches the algorithm"
+  },
+  {
+    "pair_id": 62,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "early-bird idiom vs concrete noun",
+    "role": "base",
+    "prompt": "The early bird catches the"
+  },
+  {
+    "pair_id": 62,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "early-bird idiom vs concrete noun",
+    "role": "contrast",
+    "prompt": "The early bird catches the sandwich"
+  },
+  {
+    "pair_id": 63,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "actions idiom vs abstract noun",
+    "role": "base",
+    "prompt": "Actions speak louder than"
+  },
+  {
+    "pair_id": 63,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "actions idiom vs abstract noun",
+    "role": "contrast",
+    "prompt": "Actions speak louder than philosophy"
+  },
+  {
+    "pair_id": 64,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "actions idiom vs concrete noun",
+    "role": "base",
+    "prompt": "Actions speak louder than"
+  },
+  {
+    "pair_id": 64,
+    "category": "predictability",
+    "contrast_type": "concrete",
+    "description": "actions idiom vs concrete noun",
+    "role": "contrast",
+    "prompt": "Actions speak louder than pancakes"
+  },
+  {
+    "pair_id": 65,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "Rome idiom vs abstract noun",
+    "role": "base",
+    "prompt": "Rome was not built in a"
+  },
+  {
+    "pair_id": 65,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "Rome idiom vs abstract noun",
+    "role": "contrast",
+    "prompt": "Rome was not built in a democracy"
+  },
+  {
+    "pair_id": 66,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "rhyme completion vs technical term",
+    "role": "base",
+    "prompt": "Roses are red violets are"
+  },
+  {
+    "pair_id": 66,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "rhyme completion vs technical term",
+    "role": "contrast",
+    "prompt": "Roses are red violets are calculus"
+  },
+  {
+    "pair_id": 67,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "idiom completion vs mathematical term",
+    "role": "base",
+    "prompt": "Practice makes"
+  },
+  {
+    "pair_id": 67,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "idiom completion vs mathematical term",
+    "role": "contrast",
+    "prompt": "Practice makes theorem"
+  },
+  {
+    "pair_id": 68,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "Shakespeare completion vs abstract noun",
+    "role": "base",
+    "prompt": "To be or not to"
+  },
+  {
+    "pair_id": 68,
+    "category": "predictability",
+    "contrast_type": "abstract",
+    "description": "Shakespeare completion vs abstract noun",
+    "role": "contrast",
+    "prompt": "To be or not to democracy"
+  },
+  {
+    "pair_id": 69,
+    "category": "predictability",
+    "contrast_type": "swap",
+    "description": "fairy tale opener vs reversed",
+    "role": "base",
+    "prompt": "Once upon a time"
+  },
+  {
+    "pair_id": 69,
+    "category": "predictability",
+    "contrast_type": "swap",
+    "description": "fairy tale opener vs reversed",
+    "role": "contrast",
+    "prompt": "Time a upon once"
+  },
+  {
+    "pair_id": 70,
+    "category": "predictability",
+    "contrast_type": "swap",
+    "description": "idiom vs reversed",
+    "role": "base",
+    "prompt": "Better late than never"
+  },
+  {
+    "pair_id": 70,
+    "category": "predictability",
+    "contrast_type": "swap",
+    "description": "idiom vs reversed",
+    "role": "contrast",
+    "prompt": "Never than late better"
+  },
+  {
+    "pair_id": 71,
+    "category": "predictability",
+    "contrast_type": "swap",
+    "description": "idiom vs reordered same words",
+    "role": "base",
+    "prompt": "Practice makes perfect"
+  },
+  {
+    "pair_id": 71,
+    "category": "predictability",
+    "contrast_type": "swap",
+    "description": "idiom vs reordered same words",
+    "role": "contrast",
+    "prompt": "Perfect makes practice"
+  },
+  {
+    "pair_id": 72,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "arithmetic expression vs noun after operator",
+    "role": "base",
+    "prompt": "1 + 1 ="
+  },
+  {
+    "pair_id": 72,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "arithmetic expression vs noun after operator",
+    "role": "contrast",
+    "prompt": "1 + 1 philosophy"
+  },
+  {
+    "pair_id": 73,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "arithmetic expression vs concrete noun",
+    "role": "base",
+    "prompt": "2 + 2 ="
+  },
+  {
+    "pair_id": 73,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "arithmetic expression vs concrete noun",
+    "role": "contrast",
+    "prompt": "2 + 2 river"
+  },
+  {
+    "pair_id": 74,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "multiplication vs abstract noun",
+    "role": "base",
+    "prompt": "3 x 3 ="
+  },
+  {
+    "pair_id": 74,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "multiplication vs abstract noun",
+    "role": "contrast",
+    "prompt": "3 x 3 democracy"
+  },
+  {
+    "pair_id": 75,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "subtraction vs weekday",
+    "role": "base",
+    "prompt": "10 - 5 ="
+  },
+  {
+    "pair_id": 75,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "subtraction vs weekday",
+    "role": "contrast",
+    "prompt": "10 - 5 Thursday"
+  },
+  {
+    "pair_id": 76,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "addition vs animal",
+    "role": "base",
+    "prompt": "5 + 3 ="
+  },
+  {
+    "pair_id": 76,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "addition vs animal",
+    "role": "contrast",
+    "prompt": "5 + 3 elephant"
+  },
+  {
+    "pair_id": 77,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "expression vs operator-first reordering",
+    "role": "base",
+    "prompt": "1 + 1 ="
+  },
+  {
+    "pair_id": 77,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "expression vs operator-first reordering",
+    "role": "contrast",
+    "prompt": "+ 1 = 1"
+  },
+  {
+    "pair_id": 78,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "expression vs reversed token order",
+    "role": "base",
+    "prompt": "2 + 2 ="
+  },
+  {
+    "pair_id": 78,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "expression vs reversed token order",
+    "role": "contrast",
+    "prompt": "= 2 2 +"
+  },
+  {
+    "pair_id": 79,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "multiplication vs scrambled operators",
+    "role": "base",
+    "prompt": "3 x 3 ="
+  },
+  {
+    "pair_id": 79,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "multiplication vs scrambled operators",
+    "role": "contrast",
+    "prompt": "x = 3 3"
+  },
+  {
+    "pair_id": 80,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "subtraction vs scrambled operators",
+    "role": "base",
+    "prompt": "10 - 5 ="
+  },
+  {
+    "pair_id": 80,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "subtraction vs scrambled operators",
+    "role": "contrast",
+    "prompt": "- = 10 5"
+  },
+  {
+    "pair_id": 81,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "addition vs scrambled operators",
+    "role": "base",
+    "prompt": "7 + 2 ="
+  },
+  {
+    "pair_id": 81,
+    "category": "arithmetic",
+    "contrast_type": "swap",
+    "description": "addition vs scrambled operators",
+    "role": "contrast",
+    "prompt": "+ = 7 2"
+  },
+  {
+    "pair_id": 82,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "1+1 vs bare number replacing =",
+    "role": "base",
+    "prompt": "1 + 1 ="
+  },
+  {
+    "pair_id": 82,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "1+1 vs bare number replacing =",
+    "role": "contrast",
+    "prompt": "1 + 1 7"
+  },
+  {
+    "pair_id": 83,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "2+2 vs bare number replacing =",
+    "role": "base",
+    "prompt": "2 + 2 ="
+  },
+  {
+    "pair_id": 83,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "2+2 vs bare number replacing =",
+    "role": "contrast",
+    "prompt": "2 + 2 9"
+  },
+  {
+    "pair_id": 84,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "multiplication vs spelled number",
+    "role": "base",
+    "prompt": "6 x 7 ="
+  },
+  {
+    "pair_id": 84,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "multiplication vs spelled number",
+    "role": "contrast",
+    "prompt": "6 x 7 four"
+  },
+  {
+    "pair_id": 85,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "subtraction vs spelled number",
+    "role": "base",
+    "prompt": "12 - 4 ="
+  },
+  {
+    "pair_id": 85,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "subtraction vs spelled number",
+    "role": "contrast",
+    "prompt": "12 - 4 nineteen"
+  },
+  {
+    "pair_id": 86,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "addition vs spelled number",
+    "role": "base",
+    "prompt": "9 + 6 ="
+  },
+  {
+    "pair_id": 86,
+    "category": "arithmetic",
+    "contrast_type": "in_domain",
+    "description": "addition vs spelled number",
+    "role": "contrast",
+    "prompt": "9 + 6 thirty"
+  },
+  {
+    "pair_id": 87,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "multiplication vs common noun",
+    "role": "base",
+    "prompt": "6 x 7 ="
+  },
+  {
+    "pair_id": 87,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "multiplication vs common noun",
+    "role": "contrast",
+    "prompt": "6 x 7 bread"
+  },
+  {
+    "pair_id": 88,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "subtraction vs common noun",
+    "role": "base",
+    "prompt": "12 - 4 ="
+  },
+  {
+    "pair_id": 88,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "subtraction vs common noun",
+    "role": "contrast",
+    "prompt": "12 - 4 window"
+  },
+  {
+    "pair_id": 89,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "addition vs technical term",
+    "role": "base",
+    "prompt": "9 + 6 ="
+  },
+  {
+    "pair_id": 89,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "addition vs technical term",
+    "role": "contrast",
+    "prompt": "9 + 6 calculus"
+  },
+  {
+    "pair_id": 90,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "addition vs mathematical term",
+    "role": "base",
+    "prompt": "7 + 2 ="
+  },
+  {
+    "pair_id": 90,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "addition vs mathematical term",
+    "role": "contrast",
+    "prompt": "7 + 2 theorem"
+  },
+  {
+    "pair_id": 91,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "division vs abstract noun",
+    "role": "base",
+    "prompt": "8 / 2 ="
+  },
+  {
+    "pair_id": 91,
+    "category": "arithmetic",
+    "contrast_type": "abstract",
+    "description": "division vs abstract noun",
+    "role": "contrast",
+    "prompt": "8 / 2 philosophy"
+  },
+  {
+    "pair_id": 92,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "division vs common noun",
+    "role": "base",
+    "prompt": "8 / 2 ="
+  },
+  {
+    "pair_id": 92,
+    "category": "arithmetic",
+    "contrast_type": "concrete",
+    "description": "division vs common noun",
+    "role": "contrast",
+    "prompt": "8 / 2 table"
+  },
+  {
+    "pair_id": 93,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "pure repetition vs noun break",
+    "role": "base",
+    "prompt": "the the the the"
+  },
+  {
+    "pair_id": 93,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "pure repetition vs noun break",
+    "role": "contrast",
+    "prompt": "the the the philosophy"
+  },
+  {
+    "pair_id": 94,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "verb repetition vs abstract noun",
+    "role": "base",
+    "prompt": "go go go go"
+  },
+  {
+    "pair_id": 94,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "verb repetition vs abstract noun",
+    "role": "contrast",
+    "prompt": "go go go democracy"
+  },
+  {
+    "pair_id": 95,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "affirmation repetition vs technical term",
+    "role": "base",
+    "prompt": "yes yes yes yes"
+  },
+  {
+    "pair_id": 95,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "affirmation repetition vs technical term",
+    "role": "contrast",
+    "prompt": "yes yes yes calculus"
+  },
+  {
+    "pair_id": 96,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "pure repetition vs different article",
+    "role": "base",
+    "prompt": "the the the the"
+  },
+  {
+    "pair_id": 96,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "pure repetition vs different article",
+    "role": "contrast",
+    "prompt": "the the the a"
+  },
+  {
+    "pair_id": 97,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "verb repetition vs different verb",
+    "role": "base",
+    "prompt": "go go go go"
+  },
+  {
+    "pair_id": 97,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "verb repetition vs different verb",
+    "role": "contrast",
+    "prompt": "go go go run"
+  },
+  {
+    "pair_id": 98,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "affirmation repetition vs negation",
+    "role": "base",
+    "prompt": "yes yes yes yes"
+  },
+  {
+    "pair_id": 98,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "affirmation repetition vs negation",
+    "role": "contrast",
+    "prompt": "yes yes yes no"
+  },
+  {
+    "pair_id": 99,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "noun repetition vs different animal",
+    "role": "base",
+    "prompt": "cat cat cat cat"
+  },
+  {
+    "pair_id": 99,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "noun repetition vs different animal",
+    "role": "contrast",
+    "prompt": "cat cat cat dog"
+  },
+  {
+    "pair_id": 100,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "color repetition vs different color",
+    "role": "base",
+    "prompt": "blue blue blue blue"
+  },
+  {
+    "pair_id": 100,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "color repetition vs different color",
+    "role": "contrast",
+    "prompt": "blue blue blue green"
+  },
+  {
+    "pair_id": 101,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "number repetition vs different number",
+    "role": "base",
+    "prompt": "one one one one"
+  },
+  {
+    "pair_id": 101,
+    "category": "repetition",
+    "contrast_type": "in_domain",
+    "description": "number repetition vs different number",
+    "role": "contrast",
+    "prompt": "one one one two"
+  },
+  {
+    "pair_id": 102,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "noun repetition vs unrelated concrete noun",
+    "role": "base",
+    "prompt": "cat cat cat cat"
+  },
+  {
+    "pair_id": 102,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "noun repetition vs unrelated concrete noun",
+    "role": "contrast",
+    "prompt": "cat cat cat bread"
+  },
+  {
+    "pair_id": 103,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "color repetition vs concrete noun",
+    "role": "base",
+    "prompt": "blue blue blue blue"
+  },
+  {
+    "pair_id": 103,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "color repetition vs concrete noun",
+    "role": "contrast",
+    "prompt": "blue blue blue table"
+  },
+  {
+    "pair_id": 104,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "number repetition vs mass noun",
+    "role": "base",
+    "prompt": "one one one one"
+  },
+  {
+    "pair_id": 104,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "number repetition vs mass noun",
+    "role": "contrast",
+    "prompt": "one one one water"
+  },
+  {
+    "pair_id": 105,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "verb repetition vs concrete noun",
+    "role": "base",
+    "prompt": "run run run run"
+  },
+  {
+    "pair_id": 105,
+    "category": "repetition",
+    "contrast_type": "concrete",
+    "description": "verb repetition vs concrete noun",
+    "role": "contrast",
+    "prompt": "run run run window"
+  },
+  {
+    "pair_id": 106,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "noun repetition vs mathematical term",
+    "role": "base",
+    "prompt": "cat cat cat cat"
+  },
+  {
+    "pair_id": 106,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "noun repetition vs mathematical term",
+    "role": "contrast",
+    "prompt": "cat cat cat theorem"
+  },
+  {
+    "pair_id": 107,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "run repetition vs abstract noun",
+    "role": "base",
+    "prompt": "run run run run"
+  },
+  {
+    "pair_id": 107,
+    "category": "repetition",
+    "contrast_type": "abstract",
+    "description": "run repetition vs abstract noun",
+    "role": "contrast",
+    "prompt": "run run run democracy"
+  }
+]

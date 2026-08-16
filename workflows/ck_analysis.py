@@ -74,6 +74,7 @@ def _run_ck_corpus(
     activation_records: list,
     S:                  "torch.Tensor",
     Vh:                 "torch.Tensor",
+    last_token_only:    bool = False,
 ) -> list:
     """
     Iterate compute_ck_spectrum() over a list of ActivationRecords.
@@ -82,6 +83,7 @@ def _run_ck_corpus(
         activation_records: list of ActivationRecord (same hook type)
         S:   singular values from compute_wu_svd_full()
         Vh:  right singular vectors from compute_wu_svd_full()
+        last_token_only: store only the final token position
 
     Returns:
         list of CkRecord, one per prompt
@@ -89,7 +91,7 @@ def _run_ck_corpus(
     all_records = []
     n = len(activation_records)
     for i, record in enumerate(activation_records):
-        ck_rec = compute_ck_spectrum(record, S, Vh)
+        ck_rec = compute_ck_spectrum(record, S, Vh, last_token_only)
         all_records.append(ck_rec)
         if (i + 1) % 10 == 0 or (i + 1) == n:
             print(f"    c_k spectrum: {i+1}/{n} prompts...")
@@ -137,6 +139,13 @@ def main():
     parser.add_argument("--summary-layers", type=int, nargs="+", default=[1, 3, 6, 9, 11],
                         help="Layer indices for cumulative power fraction subplots "
                              "(default: [1, 3, 6, 9, 11])")
+    parser.add_argument("--last-token-only", action="store_true",
+                        help="Store only the final token position in each CkRecord "
+                             "([n_layers, 1, d_model] instead of "
+                             "[n_layers, seq_len, d_model]). Shrinks the .npz by a "
+                             "factor of seq_len and avoids NaN-padding to the "
+                             "corpus max_seq_len. Eight of the nine c_k figures use "
+                             "the last token only; --heatmap-alltokens is skipped.")
     parser.add_argument("--skip-layer0", action=argparse.BooleanOptionalAction, default=True,
                         help="Drop layer 0 from heatmaps and summary plots (default: True; "
                              "use --no-skip-layer0 to include layer 0)")
@@ -149,6 +158,14 @@ def main():
                              "models on CUDA which use float16 to fit in VRAM.")
 
     args = parser.parse_args()
+
+    # --last-token-only keeps a single token position, so any token index other
+    # than the default (-1, the final token) has nothing to address. Fail here
+    # rather than midway through a corpus run.
+    if args.last_token_only and args.token not in (-1, 0):
+        print(f"--token {args.token} is incompatible with --last-token-only "
+              f"(only the final token is stored; use --token -1).")
+        return 1
 
     output_dir_plots = Path(args.output_dir_plots)
     output_dir_plots.mkdir(parents=True, exist_ok=True)
@@ -207,10 +224,14 @@ def main():
                 all_ck_records, model_name, skip_layer0=args.skip_layer0,
                 save_path=str(output_dir_plots / f"{base_stem}_heatmap_lasttoken.png"),
             )
-            plot_heatmap_alltokens(
-                all_ck_records, model_name, skip_layer0=args.skip_layer0,
-                save_path=str(output_dir_plots / f"{base_stem}_heatmap_alltokens_nolayer0.png"),
-            )
+            # Needs the full token axis; skipped when only the last token was stored.
+            if not any(getattr(r, "last_token_only", False) for r in all_ck_records):
+                plot_heatmap_alltokens(
+                    all_ck_records, model_name, skip_layer0=args.skip_layer0,
+                    save_path=str(output_dir_plots / f"{base_stem}_heatmap_alltokens_nolayer0.png"),
+                )
+            else:
+                print("  Skipping all-tokens heatmap (records are last-token only).")
             plot_com_vs_layer(
                 all_ck_records, model_name, skip_layer0=args.skip_layer0,
                 save_path=str(output_dir_plots / f"{base_stem}_com_vs_layer.png"),
@@ -280,7 +301,7 @@ def main():
     for ht in hook_types:
         act_records = activation_dict[ht]
         print(f"\n  Hook '{ht}' ({len(act_records)} prompts):")
-        ck_records = _run_ck_corpus(act_records, S, Vh)
+        ck_records = _run_ck_corpus(act_records, S, Vh, args.last_token_only)
         all_ck_records.extend(ck_records)
 
     print(f"\n  Total CkRecords: {len(all_ck_records)}")
@@ -315,10 +336,14 @@ def main():
                 ht_records, args.model, skip_layer0=args.skip_layer0,
                 save_path=str(output_dir_plots / f"{base_stem}_heatmap_lasttoken.png"),
             )
-            plot_heatmap_alltokens(
-                ht_records, args.model, skip_layer0=args.skip_layer0,
-                save_path=str(output_dir_plots / f"{base_stem}_heatmap_alltokens_nolayer0.png"),
-            )
+            # Needs the full token axis; skipped when only the last token was stored.
+            if not args.last_token_only:
+                plot_heatmap_alltokens(
+                    ht_records, args.model, skip_layer0=args.skip_layer0,
+                    save_path=str(output_dir_plots / f"{base_stem}_heatmap_alltokens_nolayer0.png"),
+                )
+            else:
+                print("  Skipping all-tokens heatmap (--last-token-only).")
             plot_com_vs_layer(
                 ht_records, args.model, skip_layer0=args.skip_layer0,
                 save_path=str(output_dir_plots / f"{base_stem}_com_vs_layer.png"),
