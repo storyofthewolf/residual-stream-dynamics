@@ -58,7 +58,12 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
-from math_utils import compute_wu_svd, renyi_entropy  # noqa: F401 — re-exported for callers
+from math_utils import (  # noqa: F401 — compute_wu_svd/renyi_entropy re-exported for callers
+    compute_wu_svd,
+    renyi_entropy,
+    svd_device,
+    compute_device,
+)
 
 
 # ============================================================================
@@ -124,7 +129,7 @@ def wu_explained_variance(
     (e.g. k corresponding to 50%, 75%, 90%, 95%, 99% explained variance).
 
     """
-    _, S, _ = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
+    _, S, _ = torch.linalg.svd(svd_device(W_U.T.float()), full_matrices=False)
     total = (S**2).sum()
     return {k: ((S[:k]**2).sum() / total).item() for k in k_values}
 
@@ -253,8 +258,12 @@ def compute_posthoc_ablation(
     n_layers = record.n_layers
     d_model  = record.d_model
 
-    W_U_cpu = W_U.float().cpu()
-    Vh_cpu  = Vh.float().cpu()
+    # Device policy: on MPS these pin to CPU (unchanged local behavior); on
+    # CUDA they stay on the GPU so W_U, Vh, and the activations are
+    # co-resident and no per-layer host round-trip is needed.
+    W_U_dev = compute_device(W_U.float())
+    Vh_dev  = compute_device(Vh.float())
+    dev     = W_U_dev.device
 
     # ------------------------------------------------------------------
     # Step 1: Compute full baseline at every layer (k = d_model, no ablation)
@@ -268,10 +277,10 @@ def compute_posthoc_ablation(
         for layer in range(n_layers):
             r_full = torch.from_numpy(
                 record.activations[layer, -1, :]
-            ).float()                                       # [d_model]
+            ).float().to(dev)                               # [d_model]
 
-            normed_full = ln_final(r_full).cpu()            # [d_model]
-            logits_full = normed_full @ W_U_cpu             # [vocab_size]
+            normed_full = ln_final(r_full)                  # [d_model]
+            logits_full = normed_full @ W_U_dev             # [vocab_size]
             pf = torch.softmax(logits_full, dim=-1).clamp(min=1e-12)
 
             probs_full[layer] = pf
@@ -284,7 +293,7 @@ def compute_posthoc_ablation(
     results = []
 
     for k in k_values:
-        Q_k = Vh_cpu[:k, :].T.contiguous()   # [d_model, k]
+        Q_k = Vh_dev[:k, :].T.contiguous()   # [d_model, k]
 
         kl_div     = np.zeros(n_layers, dtype=np.float64)
         ent_change = np.zeros(n_layers, dtype=np.float64)
@@ -296,7 +305,7 @@ def compute_posthoc_ablation(
             for layer in range(n_layers):
                 r = torch.from_numpy(
                     record.activations[layer, -1, :]
-                ).float()                                   # [d_model]
+                ).float().to(dev)                           # [d_model]
 
                 # can also try reversing the order
                 # Posthoc: project the post-LN vector, since W_U acts on post-LN vectors
@@ -307,8 +316,8 @@ def compute_posthoc_ablation(
                 
                 # Project into top-k W_U subspace: keep r‖, zero r⊥
                 r_ablated = Q_k @ (Q_k.T @ r)              # [d_model]
-                normed_abl = ln_final(r_ablated).cpu()      # [d_model]
-                logits_abl = normed_abl @ W_U_cpu           # [vocab_size]
+                normed_abl = ln_final(r_ablated)            # [d_model]
+                logits_abl = normed_abl @ W_U_dev           # [vocab_size]
                 probs_abl  = torch.softmax(logits_abl, dim=-1).clamp(min=1e-12)
                 top1_abl   = probs_abl.argmax().item()
                 H_abl      = renyi_entropy(probs_abl, alpha)
@@ -512,7 +521,7 @@ def k_values_from_ev_thresholds(
     Returns:
         sorted list of unique k values (one per threshold, deduplicated)
     """
-    _, S, _ = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
+    _, S, _ = torch.linalg.svd(svd_device(W_U.T.float()), full_matrices=False)
     cumvar = (S**2).cumsum(dim=0) / (S**2).sum()
 
     k_values = set()

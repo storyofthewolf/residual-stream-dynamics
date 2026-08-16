@@ -216,7 +216,20 @@ is not argument-parsing or I/O belongs in a compute module.
   both import this set. GPT-2/Pythia, Llama, and Gemma are all covered. Do not hardcode BOS
   strings elsewhere — add new model families to `BOS_TOKENS` in `src/extraction.py` only.
 - **MPS stability**: `torch.linalg.svd` on large matrices is unstable on MPS. The
-  canonical `compute_wu_svd()` forces `.cpu()` before decomposition. Do not remove this.
+  canonical `compute_wu_svd()` pins to `.cpu()` before decomposition on MPS.
+  Do not remove this. It is now expressed through `math_utils.svd_device()`
+  rather than an unconditional `.cpu()` call, so CUDA (where svd is stable and
+  much faster) keeps the tensor on device. On CPU and MPS the behavior is
+  unchanged from the original unconditional version.
+- **Device policy lives in `math_utils`**: `svd_device(t)` and `compute_device(t)`
+  are the single source of truth for where linear algebra runs. Both are
+  identity on CPU/CUDA and `.cpu()` on MPS. Use them instead of hardcoding
+  `.cpu()` in a compute module.
+- **Not every loop belongs on the GPU.** `compute_wu_subspace_entropy()` stays
+  on CPU deliberately: its inner loop is (layer × token × k × alpha) and each
+  iteration ends in `renyi_entropy(...).item()`, a device sync that costs more
+  than the small `[d_model, k]` matmul it guards. The logit-lens and c_k paths
+  are the opposite case — one large matmul per sync — and do run on device.
 - **Single forward pass**: `extract_activations()` runs exactly one forward pass
   regardless of how many hook types are requested. All hook types share the same
   forward pass. Never call `run_with_cache` inside a compute module.
@@ -228,8 +241,19 @@ is not argument-parsing or I/O belongs in a compute module.
 - **TransformerLens** (`HookedTransformer`): all forward passes, hook registration,
   and model weight access use TransformerLens. `model.W_U`, `model.ln_final`,
   `model.cfg`, and `model.run_with_hooks()` are the primary interfaces.
-- **Device**: default `cpu`; MPS is usable for forward passes but not for
-  `torch.linalg.svd` on large matrices. All SVD computations force `.cpu()`.
+- **Device**: workflows default `--device None` (auto-detect: CUDA if available,
+  else CPU; MPS is downgraded to CPU in `model_loader.py`). MPS is usable for
+  forward passes but not for `torch.linalg.svd` on large matrices, so SVD pins
+  to CPU there via `math_utils.svd_device()`.
+- **Dtype**: `--dtype` defaults to float32. On CUDA, models flagged
+  `large_on_16gb` in `MODEL_CONFIGS` (pythia-2.8b, pythia-6.9b, gpt2-xl,
+  llama-3.2-3b) auto-select float16 so they fit a 16GB card. fp16 is forced
+  back to float32 on CPU and MPS. `W_U` is upcast with `.float()` before SVD
+  regardless, so fp16 weights never reach the decomposition.
+- **Google Colab**: `colab/residual_stream_dynamics_colab.ipynb` runs the
+  corpus workflows on a free-tier T4. Regenerate it with
+  `python colab/build_notebook.py` — do not hand-edit the `.ipynb`.
+  pythia-6.9b does not fit in 16GB and is not runnable on the free tier.
 - **Model zoo**: GPT-2 (small/medium/large/XL) and Pythia (160m, 1b, 2.8b, 6.9b)
   are the primary test models. `utils/model_loader.py` contains `MODEL_CONFIGS` for each.
   Gemma-2 and Llama support is partial (`has_resid_mid` detection works; BOS token

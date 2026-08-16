@@ -125,6 +125,34 @@ Each workflow script in `workflows/` is a standalone driver that calls into the
 core `*_compute.py` and `*_plots.py` modules. Run any script with `--help` for
 full argument documentation.
 
+### Device and dtype
+
+`--device` defaults to auto-detect: CUDA when available, otherwise CPU. (MPS is
+downgraded to CPU — `torch.linalg.svd` is unstable there for large matrices.)
+Pass `--device cpu` to force CPU even on a GPU machine.
+
+`--dtype` defaults to float32. On CUDA, the larger models (pythia-2.8b,
+pythia-6.9b, gpt2-xl, llama-3.2-3b) auto-select float16 so they fit a 16GB
+card; override with `--dtype float32`. fp16 is ignored on CPU and MPS, where it
+is not a win. The unembedding matrix is always upcast to float32 before SVD.
+
+### Running on Google Colab
+
+`colab/residual_stream_dynamics_colab.ipynb` runs the corpus workflows on a
+free-tier T4, with `data/` and `figures/` symlinked into Google Drive so results
+survive runtime recycling. Open it in Colab, set **Runtime → Change runtime type
+→ T4 GPU**, and run the setup cells in order.
+
+Everything up to **pythia-2.8b** fits in the free tier's 16GB. **pythia-6.9b
+does not** and needs a larger card.
+
+The notebook is generated, not hand-edited — change `colab/build_notebook.py`
+and regenerate:
+
+```bash
+python colab/build_notebook.py
+```
+
 ### Single-prompt entropy probe
 
 ```bash

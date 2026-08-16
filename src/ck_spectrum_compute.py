@@ -55,6 +55,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
+from math_utils import svd_device, compute_device
 
 
 # ============================================================================
@@ -75,7 +76,7 @@ def compute_wu_svd_full(W_U: torch.Tensor) -> tuple:
         Vh:   right singular vectors, shape [d_model, d_model]
               Row k is the k-th principal direction of W_U (v_k).
     """
-    _, S, Vh = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
+    _, S, Vh = torch.linalg.svd(svd_device(W_U.T.float()), full_matrices=False)
     return S, Vh
 
 
@@ -167,8 +168,14 @@ def compute_ck_spectrum(
     seq_len  = record.seq_len
     d_model  = record.d_model
 
-    S_cpu  = S.float().cpu()
-    Vh_cpu = Vh.float().cpu()
+    # Device note: one [d_model, d_model] @ [d_model, seq_len] matmul per
+    # layer with a single transfer back per layer — no per-element sync — so
+    # this path benefits from CUDA. On MPS it pins to CPU as before.
+    S_dev  = compute_device(S.float())
+    Vh_dev = compute_device(Vh.float())
+    dev    = Vh_dev.device
+
+    S_cpu = S.float().cpu()   # kept on CPU for the returned record
 
     ck = np.zeros((n_layers, seq_len, d_model), dtype=np.float32)
 
@@ -177,16 +184,16 @@ def compute_ck_spectrum(
             # r_mat: [seq_len, d_model] → transpose to [d_model, seq_len]
             r_mat = torch.from_numpy(
                 record.activations[layer, :, :]
-            ).float().T                                    # [d_model, seq_len]
+            ).float().T.to(dev)                            # [d_model, seq_len]
 
             # coeffs: [d_model, seq_len] — projection of each token onto each v_k
-            coeffs = Vh_cpu @ r_mat                        # [d_model, seq_len]
+            coeffs = Vh_dev @ r_mat                        # [d_model, seq_len]
 
             # c_k: scale each row k by σ_k
-            ck_layer = S_cpu.unsqueeze(1) * coeffs         # [d_model, seq_len]
+            ck_layer = S_dev.unsqueeze(1) * coeffs         # [d_model, seq_len]
 
             # store as [seq_len, d_model]
-            ck[layer] = ck_layer.T.numpy()
+            ck[layer] = ck_layer.T.cpu().numpy()
 
     return CkRecord(
         ck_spectrum     = ck,

@@ -140,7 +140,13 @@ def main():
     parser.add_argument("--skip-layer0", action=argparse.BooleanOptionalAction, default=True,
                         help="Drop layer 0 from heatmaps and summary plots (default: True; "
                              "use --no-skip-layer0 to include layer 0)")
-    parser.add_argument("--device", type=str, default="cpu")
+    parser.add_argument("--device", type=str, default=None,
+                        help="Compute device: cuda, cpu, or mps. "
+                             "Default None = auto-detect (cuda if available, else cpu).")
+    parser.add_argument("--dtype", type=str, default=None,
+                        choices=["float32", "float16"],
+                        help="Model dtype. Default None = float32, except large "
+                             "models on CUDA which use float16 to fit in VRAM.")
 
     args = parser.parse_args()
 
@@ -238,7 +244,8 @@ def main():
     # ── Full path: load model, extract, compute, plot ─────────────────────────
     print(f"\nLoading model '{args.model}'...")
     try:
-        model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device)
+        model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device,
+                                            dtype=args.dtype)
     except (ValueError, RuntimeError) as e:
         print(f"Error loading model '{args.model}': {e}")
         return 1
