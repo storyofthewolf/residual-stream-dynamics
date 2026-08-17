@@ -55,6 +55,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
+from math_utils import svd_device, compute_device
 
 
 # ============================================================================
@@ -75,7 +76,7 @@ def compute_wu_svd_full(W_U: torch.Tensor) -> tuple:
         Vh:   right singular vectors, shape [d_model, d_model]
               Row k is the k-th principal direction of W_U (v_k).
     """
-    _, S, Vh = torch.linalg.svd(W_U.T.float().cpu(), full_matrices=False)
+    _, S, Vh = torch.linalg.svd(svd_device(W_U.T.float()), full_matrices=False)
     return S, Vh
 
 
@@ -122,12 +123,30 @@ class CkRecord:
     role:        Optional[str] = None
     category:    Optional[str] = None
 
+    # True when only the final token position was retained (seq_len == 1 on
+    # the stored cube). Eight of the nine plot functions in ck_spectrum_plots
+    # use ck_spectrum[:, -1, :] only, so this discards nothing they need — but
+    # plot_heatmap_alltokens() and layer_spectrum() become meaningless, and
+    # check their input rather than silently averaging over one token.
+    last_token_only: bool = False
+
     def final_token_spectrum(self) -> np.ndarray:
         """c_k spectrum at the final token, all layers. Shape: [n_layers, d_model]."""
         return self.ck_spectrum[:, -1, :]
 
     def layer_spectrum(self, layer: int) -> np.ndarray:
-        """c_k spectrum at a fixed layer, all token positions. Shape: [seq_len, d_model]."""
+        """c_k spectrum at a fixed layer, all token positions. Shape: [seq_len, d_model].
+
+        Raises:
+            ValueError: if the record stores only the final token, in which
+                case there is no token axis to slice.
+        """
+        if self.last_token_only:
+            raise ValueError(
+                "layer_spectrum() needs all token positions, but this record was "
+                "computed with last_token_only=True. Re-run the c_k workflow "
+                "without --last-token-only to get the full cube."
+            )
         return self.ck_spectrum[layer, :, :]
 
 
@@ -136,9 +155,10 @@ class CkRecord:
 # ============================================================================
 
 def compute_ck_spectrum(
-    record: ActivationRecord,
-    S:      torch.Tensor,
-    Vh:     torch.Tensor,
+    record:          ActivationRecord,
+    S:               torch.Tensor,
+    Vh:              torch.Tensor,
+    last_token_only: bool = False,
 ) -> CkRecord:
     """
     Compute the c_k spectrum for all layers and token positions.
@@ -159,34 +179,53 @@ def compute_ck_spectrum(
         S:      singular values, shape [d_model], from compute_wu_svd_full()
         Vh:     right singular vectors, shape [d_model, d_model],
                 from compute_wu_svd_full(). Row k = v_k.
+        last_token_only: retain only the final token position, giving a
+                cube of shape [n_layers, 1, d_model]. The projection is still
+                computed for every token (it is one matmul either way); only
+                the stored result is sliced. Cuts the .npz by a factor of
+                seq_len, which also avoids NaN-padding every record out to the
+                corpus-wide max_seq_len on save.
 
     Returns:
-        CkRecord with ck_spectrum of shape [n_layers, seq_len, d_model]
+        CkRecord with ck_spectrum of shape [n_layers, seq_len, d_model],
+        or [n_layers, 1, d_model] when last_token_only=True.
     """
     n_layers = record.n_layers
     seq_len  = record.seq_len
     d_model  = record.d_model
 
-    S_cpu  = S.float().cpu()
-    Vh_cpu = Vh.float().cpu()
+    # Number of token positions actually stored.
+    n_store = 1 if last_token_only else seq_len
 
-    ck = np.zeros((n_layers, seq_len, d_model), dtype=np.float32)
+    # Device note: one [d_model, d_model] @ [d_model, seq_len] matmul per
+    # layer with a single transfer back per layer — no per-element sync — so
+    # this path benefits from CUDA. On MPS it pins to CPU as before.
+    S_dev  = compute_device(S.float())
+    Vh_dev = compute_device(Vh.float())
+    dev    = Vh_dev.device
+
+    S_cpu = S.float().cpu()   # kept on CPU for the returned record
+
+    ck = np.zeros((n_layers, n_store, d_model), dtype=np.float32)
 
     with torch.no_grad():
         for layer in range(n_layers):
             # r_mat: [seq_len, d_model] → transpose to [d_model, seq_len]
             r_mat = torch.from_numpy(
                 record.activations[layer, :, :]
-            ).float().T                                    # [d_model, seq_len]
+            ).float().T.to(dev)                            # [d_model, seq_len]
 
             # coeffs: [d_model, seq_len] — projection of each token onto each v_k
-            coeffs = Vh_cpu @ r_mat                        # [d_model, seq_len]
+            coeffs = Vh_dev @ r_mat                        # [d_model, seq_len]
 
             # c_k: scale each row k by σ_k
-            ck_layer = S_cpu.unsqueeze(1) * coeffs         # [d_model, seq_len]
+            ck_layer = S_dev.unsqueeze(1) * coeffs         # [d_model, seq_len]
 
-            # store as [seq_len, d_model]
-            ck[layer] = ck_layer.T.numpy()
+            # store as [seq_len, d_model], or just the final token
+            if last_token_only:
+                ck[layer] = ck_layer[:, -1:].T.cpu().numpy()
+            else:
+                ck[layer] = ck_layer.T.cpu().numpy()
 
     return CkRecord(
         ck_spectrum     = ck,
@@ -196,11 +235,14 @@ def compute_ck_spectrum(
         model_name  = record.model_name,
         hook_type   = record.hook_type,
         n_layers    = n_layers,
-        seq_len     = seq_len,
+        # seq_len records how many token positions are STORED, so that
+        # load_ck_records() trims each record back to its own true width.
+        seq_len     = n_store,
         d_model     = d_model,
         pair_id     = record.pair_id,
         role        = record.role,
         category    = record.category,
+        last_token_only = last_token_only,
     )
 
 
@@ -246,8 +288,10 @@ def save_ck_records(records: list, path) -> None:
         pair_ids         = np.array([r.pair_id  or "" for r in records], dtype=object),
         roles            = np.array([r.role      or "" for r in records], dtype=object),
         categories       = np.array([r.category or "" for r in records], dtype=object),
+        last_token_only  = np.array([r.last_token_only for r in records], dtype=bool),
     )
-    print(f"  Saved {n} CkRecords to {path}")
+    mode = " (last token only)" if all(r.last_token_only for r in records) else ""
+    print(f"  Saved {n} CkRecords to {path}{mode}")
 
 
 def load_ck_records(path) -> list:
@@ -255,6 +299,9 @@ def load_ck_records(path) -> list:
     d = np.load(path, allow_pickle=True)
     n = len(d["prompts"])
     has_str_tokens = "str_tokens" in d
+    # Backward-compat: files written before the last-token storage mode have
+    # no such key, and always held the full token axis.
+    has_lto = "last_token_only" in d
     records = []
     for i in range(n):
         nl = int(d["n_layers"][i])
@@ -272,5 +319,6 @@ def load_ck_records(path) -> list:
             pair_id     = str(d["pair_ids"][i])    or None,
             role        = str(d["roles"][i])        or None,
             category    = str(d["categories"][i])  or None,
+            last_token_only = bool(d["last_token_only"][i]) if has_lto else False,
         ))
     return records

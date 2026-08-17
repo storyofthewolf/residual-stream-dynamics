@@ -59,7 +59,8 @@ MODEL_CONFIGS = {
         "hook_pattern": "blocks.{layer}.hook_resid_post",
         "description": "Pythia 2.8B (deduped)",
         "gated": False,
-        "requires_auth": False
+        "requires_auth": False,
+        "large_on_16gb": True
     },
     "pythia-6.9b": {
         "hf_name": "EleutherAI/pythia-6.9b-deduped",
@@ -68,7 +69,8 @@ MODEL_CONFIGS = {
         "hook_pattern": "blocks.{layer}.hook_resid_post",
         "description": "Pythia 6.9B (deduped)",
         "gated": False,
-        "requires_auth": False
+        "requires_auth": False,
+        "large_on_16gb": True
     },
     "llama-3.2-1b": {
         "hf_name": "meta-llama/Llama-3.2-1B",
@@ -86,7 +88,8 @@ MODEL_CONFIGS = {
         "hook_pattern": "blocks.{layer}.hook_resid_post",
         "description": "Llama 3.2 3B",
         "gated": True,
-        "requires_auth": True
+        "requires_auth": True,
+        "large_on_16gb": True
     },
     "gemma-2b": {
         "hf_name": "google/gemma-2b",
@@ -140,7 +143,8 @@ MODEL_CONFIGS = {
         "hook_pattern": "blocks.{layer}.hook_resid_pre",
         "description": "GPT-2 XL",
         "gated": False,
-        "requires_auth": False
+        "requires_auth": False,
+        "large_on_16gb": True
     },
 }
 
@@ -149,17 +153,28 @@ def load_model_and_sae(
     model_name: str,
     layer: Optional[int] = None,
     device: Optional[str] = None,
-    load_sae: bool = False
+    load_sae: bool = False,
+    dtype: Optional[str] = None,
 ) -> Tuple[HookedTransformer, Optional[SAE], dict]:
-    """Load a model and optionally an SAE."""
-    
+    """Load a model and optionally an SAE.
+
+    Args:
+        model_name: key into MODEL_CONFIGS
+        layer:      SAE layer; defaults to the model's default_layer
+        device:     "cuda", "cpu", or "mps". None = auto-detect.
+        load_sae:   also load the matching pretrained SAE
+        dtype:      "float32" or "float16". None = float32 everywhere except
+                    CUDA, where models >=2.5B params default to float16 so
+                    they fit a 16GB T4 (Colab free tier).
+    """
+
     if model_name not in MODEL_CONFIGS:
         print(f"✗ Model '{model_name}' not found.")
         print(f"Available: {', '.join(MODEL_CONFIGS.keys())}")
         raise ValueError(f"Unknown model: {model_name}")
-    
+
     cfg_dict = MODEL_CONFIGS[model_name]
-    
+
     if device is None:
         if torch.cuda.is_available():
             device = "cuda"
@@ -168,30 +183,66 @@ def load_model_and_sae(
             print("⚠ MPS available but using CPU for stability (MPS has issues with some SAE ops)")
         else:
             device = "cpu"
-    
+
+    # ── dtype policy ──────────────────────────────────────────────────────
+    # float16 is only worth it on CUDA. On CPU it is slower (no native fp16
+    # kernels for most ops) and on MPS it compounds the existing stability
+    # problems, so both stay float32 regardless of what is requested.
+    if dtype is None:
+        big = cfg_dict.get("large_on_16gb", False)
+        if device == "cuda" and big:
+            dtype = "float16"
+            print(f"ℹ {model_name} is large; using float16 on CUDA to fit in VRAM. "
+                  f"Override with --dtype float32.")
+        else:
+            dtype = "float32"
+    elif dtype == "float16" and device != "cuda":
+        print(f"⚠ float16 requested on {device}; forcing float32 "
+              f"(fp16 is only beneficial on CUDA).")
+        dtype = "float32"
+
+    torch_dtype = torch.float16 if dtype == "float16" else torch.float32
+
     sae_layer = layer if layer is not None else cfg_dict["default_layer"]
-    
+
     if load_sae and layer is None:
         print(f"ℹ SAE layer not specified; using default layer {sae_layer} for {model_name}")
-    
+
     hook_name = cfg_dict["hook_pattern"].format(layer=sae_layer)
-    
+
     print("\n" + "="*60)
     print(f"Loading: {cfg_dict['description']}")
     print(f"Device: {device}")
+    print(f"Dtype:  {dtype}")
     mode = "Model + SAE" if load_sae else "Model only (no SAE)"
     print(f"Mode: {mode}")
     print(f"Cache: ~/.cache/huggingface/hub/")
+    if device == "cuda":
+        try:
+            total_gb = torch.cuda.get_device_properties(0).total_memory / 1024**3
+            print(f"GPU:  {torch.cuda.get_device_name(0)} ({total_gb:.1f} GB)")
+        except Exception:
+            pass
     print("="*60)
-    
+
     print("Loading model from HuggingFace...")
     try:
         model = HookedTransformer.from_pretrained(
             cfg_dict["hf_name"],
             device=device,
+            dtype=torch_dtype,
             cache_dir=os.path.expanduser("~/.cache/huggingface/hub/")
         )
         print(f"✓ Model loaded")
+        if device == "cuda":
+            alloc_gb = torch.cuda.memory_allocated(0) / 1024**3
+            print(f"  VRAM in use: {alloc_gb:.2f} GB")
+    except torch.cuda.OutOfMemoryError as e:
+        print(f"✗ Out of GPU memory loading '{model_name}'.")
+        print(f"  Try:  --dtype float16   (if not already)")
+        print(f"  Or:   a smaller model — pythia-2.8b is the practical ceiling")
+        print(f"        for a 16GB T4 on Colab free tier.")
+        raise
     except Exception as e:
         print(f"✗ Error: {e}")
         raise
@@ -230,6 +281,7 @@ def load_model_and_sae(
         "layer": sae_layer,
         "hook_name": hook_name,
         "device": device,
+        "dtype": dtype,
         "sae_release": cfg_dict.get("sae_release"),
         "hf_name": cfg_dict["hf_name"],
         "load_sae": load_sae,

@@ -89,6 +89,11 @@ dashboard/dashboard.py        DASHBOARD APP — Gradio Blocks app. Five tabs: En
 utils/npz_utils.py            DATA ACCESS — load and filter .npz files. No computation; no plotting.
 utils/model_loader.py         MODEL LOADING — TransformerLens model loader and MODEL_CONFIGS registry.
 corpus/corpus_gen.py          CORPUS — generates base/contrast prompt pairs as JSON.
+                              108 pairs / 216 prompts across 5 categories x 4 contrast_types.
+                              --legacy regenerates the original 25-pair corpus byte-for-byte
+                              on every original field. --stats prints the design matrix.
+                              validate_corpus() runs on every invocation and fails closed on
+                              duplicate descriptions (which would make --legacy ambiguous).
 ```
 
 ---
@@ -141,8 +146,15 @@ Stores five scalar mechanical curves for one prompt at the final token position.
 ### CkRecord  (ck_spectrum_compute.py)
 Stores the c_k spectrum for one prompt: `c_k = σ_k · (r · v_k)`, an exact decomposition
 of logits via the SVD of W_U. Produced by `compute_ck_spectrum()`.
-- `ck_spectrum`: `np.ndarray` shape `[n_layers, seq_len, d_model]`
+- `ck_spectrum`: `np.ndarray` shape `[n_layers, seq_len, d_model]`, or
+  `[n_layers, 1, d_model]` when computed with `last_token_only=True`
 - `singular_values`: `np.ndarray` shape `[d_model]`, descending σ_k
+- `last_token_only`: bool — True when only the final token position was
+  retained (`--last-token-only`). Eight of the nine functions in
+  `ck_spectrum_plots.py` slice `[:, -1, :]` and are unaffected;
+  `plot_heatmap_alltokens()` and `CkRecord.layer_spectrum()` raise on such
+  records rather than silently averaging over one token. Serialized in the
+  `.npz`; old files without the key load as `False`.
 - `str_tokens`: list of token strings; persisted in `.npz`
 - Standard metadata: `prompt`, `model_name`, `hook_type`, `n_layers`, `seq_len`, `d_model`,
   `pair_id`, `role`, `category`
@@ -171,6 +183,12 @@ of logits via the SVD of W_U. Produced by `compute_ck_spectrum()`.
   Use `.npz` for all persistence. NaN-padding is used for variable-length arrays.
 - **Corpus metadata** (`pair_id`, `role`, `category`) flows through all Record types
   unchanged from ActivationRecord. It is `None` for single-prompt exploratory runs.
+- **`contrast_type` is corpus-only.** The corpus JSON carries a fourth field
+  (`abstract` / `concrete` / `in_domain` / `swap`) controlling the abstract-noun
+  confound, but `extraction.py` reads only `pair_id` / `role` / `category`, so it
+  does not reach the Record types. Stratified analysis joins back to the corpus
+  file on `prompt` or `pair_id`. Threading it through is a listed FutureWork item —
+  do not add it to one Record type in isolation.
 
 ---
 
@@ -216,7 +234,20 @@ is not argument-parsing or I/O belongs in a compute module.
   both import this set. GPT-2/Pythia, Llama, and Gemma are all covered. Do not hardcode BOS
   strings elsewhere — add new model families to `BOS_TOKENS` in `src/extraction.py` only.
 - **MPS stability**: `torch.linalg.svd` on large matrices is unstable on MPS. The
-  canonical `compute_wu_svd()` forces `.cpu()` before decomposition. Do not remove this.
+  canonical `compute_wu_svd()` pins to `.cpu()` before decomposition on MPS.
+  Do not remove this. It is now expressed through `math_utils.svd_device()`
+  rather than an unconditional `.cpu()` call, so CUDA (where svd is stable and
+  much faster) keeps the tensor on device. On CPU and MPS the behavior is
+  unchanged from the original unconditional version.
+- **Device policy lives in `math_utils`**: `svd_device(t)` and `compute_device(t)`
+  are the single source of truth for where linear algebra runs. Both are
+  identity on CPU/CUDA and `.cpu()` on MPS. Use them instead of hardcoding
+  `.cpu()` in a compute module.
+- **Not every loop belongs on the GPU.** `compute_wu_subspace_entropy()` stays
+  on CPU deliberately: its inner loop is (layer × token × k × alpha) and each
+  iteration ends in `renyi_entropy(...).item()`, a device sync that costs more
+  than the small `[d_model, k]` matmul it guards. The logit-lens and c_k paths
+  are the opposite case — one large matmul per sync — and do run on device.
 - **Single forward pass**: `extract_activations()` runs exactly one forward pass
   regardless of how many hook types are requested. All hook types share the same
   forward pass. Never call `run_with_cache` inside a compute module.
@@ -228,8 +259,21 @@ is not argument-parsing or I/O belongs in a compute module.
 - **TransformerLens** (`HookedTransformer`): all forward passes, hook registration,
   and model weight access use TransformerLens. `model.W_U`, `model.ln_final`,
   `model.cfg`, and `model.run_with_hooks()` are the primary interfaces.
-- **Device**: default `cpu`; MPS is usable for forward passes but not for
-  `torch.linalg.svd` on large matrices. All SVD computations force `.cpu()`.
+- **Device**: workflows default `--device None` (auto-detect: CUDA if available,
+  else CPU; MPS is downgraded to CPU in `model_loader.py`). MPS is usable for
+  forward passes but not for `torch.linalg.svd` on large matrices, so SVD pins
+  to CPU there via `math_utils.svd_device()`.
+- **Dtype**: `--dtype` defaults to float32. On CUDA, models flagged
+  `large_on_16gb` in `MODEL_CONFIGS` (pythia-2.8b, pythia-6.9b, gpt2-xl,
+  llama-3.2-3b) auto-select float16 so they fit a 16GB card. fp16 is forced
+  back to float32 on CPU and MPS. `W_U` is upcast with `.float()` before SVD
+  regardless, so fp16 weights never reach the decomposition.
+- **Google Colab**: `colab/residual_stream_dynamics_colab.ipynb` runs the
+  corpus workflows on a free-tier T4. The `.ipynb` is the source of truth —
+  edit it directly. It was originally emitted by a `build_notebook.py`
+  generator, removed 2026-08-17 because the notebook is edited in Colab and a
+  generator silently reverted those edits on the next build. Do not reintroduce
+  one. pythia-6.9b does not fit in 16GB and is not runnable on the free tier.
 - **Model zoo**: GPT-2 (small/medium/large/XL) and Pythia (160m, 1b, 2.8b, 6.9b)
   are the primary test models. `utils/model_loader.py` contains `MODEL_CONFIGS` for each.
   Gemma-2 and Llama support is partial (`has_resid_mid` detection works; BOS token
@@ -266,7 +310,10 @@ is not argument-parsing or I/O belongs in a compute module.
   it was silently ignored. The function recomputes SVD internally.
 - **Do not use relative `sys.path` inserts** (e.g. `sys.path.insert(0, 'utils')`).
   Always derive paths from `Path(__file__).resolve()` so scripts work from any working
-  directory.
+  directory. Notebooks have no `__file__`; they derive `_PROJECT_ROOT` from
+  `Path.cwd()`, walking up one level if `plotting/` is not present, and raise if
+  the root cannot be located. `DATA_DIR` and `FIGURES_DIR` are built from that
+  root — never from `'../data'`-style literals.
 - **No torch, no TransformerLens, no model loading in the dashboard modules.**
   `dashboard/dashboard_loader.py`, `dashboard/dashboard_viz.py`, and `dashboard/dashboard.py`
   are pure numpy + matplotlib + Gradio. Any computation that requires a live model belongs
@@ -280,6 +327,29 @@ is not argument-parsing or I/O belongs in a compute module.
 ---
 
 ## Next steps
+
+### Session handoff — current state (2026-08-16)
+
+Work lives on branch **`colab-support`**, two commits ahead of `main`, **not yet
+pushed**. `main` does not have any of it.
+
+Ready but not yet run:
+- **The expanded corpus has not been used for any stored result.** Everything in
+  `data/` is from the 25-pair corpus. `base_vs_contrast_n216.json` is validated
+  end-to-end (216/216 prompts extract cleanly) but no analysis has been re-run
+  against it.
+- **`data/ck/` is still empty.** The c_k workflow is complete and tested; a
+  corpus run is the highest-value next action, ideally with `--last-token-only`.
+- **`contrast_type` stratification does not exist yet.** The field is in the
+  corpus JSON but no analysis consumes it.
+
+Untested by necessity: the CUDA code paths. All device changes were verified on
+CPU and by confirming the CPU/MPS branches are unchanged, but no CUDA hardware
+was available. Cell 5 of the Colab notebook is the smoke test — run it before
+committing to a long job.
+
+Before running on Colab: push the branch, and set `BRANCH` in notebook cell 2 to
+match. The clone cell defaults to `"main"`.
 
 ### Clean up the project root directory — COMPLETED (2026-05-02)
 Root reorganization is done. All Python files are now in named subdirectories:

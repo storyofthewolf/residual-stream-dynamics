@@ -277,7 +277,13 @@ def main():
                         help="Optional tag appended to output filenames to prevent collisions")
 
     # ── Device ──
-    parser.add_argument("--device", type=str, default="cpu")
+    parser.add_argument("--device", type=str, default=None,
+                        help="Compute device: cuda, cpu, or mps. "
+                             "Default None = auto-detect (cuda if available, else cpu).")
+    parser.add_argument("--dtype", type=str, default=None,
+                        choices=["float32", "float16"],
+                        help="Model dtype. Default None = float32, except large "
+                             "models on CUDA which use float16 to fit in VRAM.")
 
     args = parser.parse_args()
 
@@ -358,7 +364,8 @@ def main():
     # ── Load model ──
     print(f"\nLoading model '{args.model}'...")
     try:
-        model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device)
+        model, _, cfg = load_model_and_sae(args.model, load_sae=False, device=args.device,
+                                            dtype=args.dtype)
     except (ValueError, RuntimeError) as e:
         print(f"Error loading model '{args.model}': {e}")
         return 1
@@ -400,7 +407,11 @@ def main():
     print(f"  k values: {k_values}")
 
     # ── W_U SVD precomputation (one-time cost) ──
-    W_U      = model.W_U.detach().cpu()
+    # W_U is left on the model's device; the compute layer's device policy
+    # (math_utils.svd_device / compute_device) decides where the SVD and the
+    # ablation matmuls run. Pinning to .cpu() here would strand W_U on the
+    # host while ln_final stayed on the model device, which mismatches on CUDA.
+    W_U      = model.W_U.detach()
     ln_final = model.ln_final
 
     print(f"\nComputing SVD of W_U ({W_U.shape[0]}×{W_U.shape[1]})...")

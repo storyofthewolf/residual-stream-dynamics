@@ -270,7 +270,19 @@ def plot_heatmap_alltokens(
     skip_layer0: bool = True,
     save_path:   str | None = None,
 ) -> plt.Figure:
-    """Heatmap of mean |c_k| averaged over all tokens, log scale, layers 1–end."""
+    """Heatmap of mean |c_k| averaged over all tokens, log scale, layers 1–end.
+
+    Requires records computed with the full token axis. Records stored with
+    last_token_only=True have nothing to average over, and would silently
+    reproduce the last-token heatmap under a misleading title.
+    """
+    if ck_records and any(getattr(r, "last_token_only", False) for r in ck_records):
+        raise ValueError(
+            "plot_heatmap_alltokens() needs all token positions, but these "
+            "CkRecords were computed with --last-token-only. Either re-run "
+            "the c_k workflow without that flag, or use "
+            "plot_heatmap_lasttoken() instead."
+        )
     grid_b, grid_c = _build_heatmap_grids(ck_records, last_token_only=False,
                                            skip_layer0=skip_layer0)
     title = f"c_k spectrum: mean |c_k| all tokens  [{model_name}]"

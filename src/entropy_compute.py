@@ -91,7 +91,12 @@ warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
 from extraction import ActivationRecord
-from math_utils import compute_wu_svd, renyi_entropy  # noqa: F401 — re-exported for callers
+from math_utils import (  # noqa: F401 — compute_wu_svd/renyi_entropy re-exported for callers
+    compute_wu_svd,
+    renyi_entropy,
+    svd_device,
+    compute_device,
+)
 from ck_spectrum_compute import (  # noqa: F401 — re-exported for backward compat
     CkRecord,
     compute_wu_svd_full,
@@ -405,16 +410,17 @@ def compute_logit_lens_entropy(
         for alpha in alphas
     }
 
-    W_U_cpu = W_U.float().cpu()
+    W_U_dev = compute_device(W_U.float())
+    dev     = W_U_dev.device
 
     for layer in range(n_layers):
         resid = torch.from_numpy(
             record.activations[layer, :, :]
-        ).float()                                          # [seq_len, d_model]
+        ).float().to(dev)                                  # [seq_len, d_model]
 
         with torch.no_grad():
-            normed    = ln_final(resid).cpu()              # [seq_len, d_model]
-            logits    = normed @ W_U_cpu                   # [seq_len, vocab_size]
+            normed    = ln_final(resid)                    # [seq_len, d_model]
+            logits    = normed @ W_U_dev                   # [seq_len, vocab_size]
             probs_all = torch.softmax(logits, dim=-1)      # [seq_len, vocab_size]
 
         for t in range(seq_len):
@@ -539,6 +545,14 @@ def compute_wu_subspace_entropy(
     # would use more memory but save a matmul per (layer, token, k). For
     # d_model <= 4096 and a handful of k values this is fine either way;
     # I'll store Q_k and do the two-step projection for clarity.
+    #
+    # Device note: this path stays on CPU deliberately, even on CUDA.
+    # The inner loop is (layer x token x k x alpha) and each iteration does
+    # only small [d_model, k] matmuls before calling renyi_entropy(), which
+    # ends in .item() — a device sync. On GPU the sync cost per iteration
+    # dominates the tiny matmul, making it slower than CPU. The logit-lens
+    # path is the opposite case (one large [seq_len, vocab_size] matmul per
+    # sync) and does run on device.
     Vh_cpu = Vh.float().cpu()
     Q_k_dict = {}
     for k in k_values:
