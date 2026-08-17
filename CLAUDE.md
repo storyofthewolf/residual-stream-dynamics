@@ -323,6 +323,29 @@ is not argument-parsing or I/O belongs in a compute module.
 
 ## Next steps
 
+### Session handoff — current state (2026-08-16)
+
+Work lives on branch **`colab-support`**, two commits ahead of `main`, **not yet
+pushed**. `main` does not have any of it.
+
+Ready but not yet run:
+- **The expanded corpus has not been used for any stored result.** Everything in
+  `data/` is from the 25-pair corpus. `base_vs_contrast_n216.json` is validated
+  end-to-end (216/216 prompts extract cleanly) but no analysis has been re-run
+  against it.
+- **`data/ck/` is still empty.** The c_k workflow is complete and tested; a
+  corpus run is the highest-value next action, ideally with `--last-token-only`.
+- **`contrast_type` stratification does not exist yet.** The field is in the
+  corpus JSON but no analysis consumes it.
+
+Untested by necessity: the CUDA code paths. All device changes were verified on
+CPU and by confirming the CPU/MPS branches are unchanged, but no CUDA hardware
+was available. Cell 5 of the Colab notebook is the smoke test — run it before
+committing to a long job.
+
+Before running on Colab: push the branch, and set `BRANCH` in notebook cell 2 to
+match. The clone cell defaults to `"main"`.
+
 ### Clean up the project root directory — COMPLETED (2026-05-02)
 Root reorganization is done. All Python files are now in named subdirectories:
 - `src/` — extraction + compute modules

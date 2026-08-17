@@ -54,9 +54,11 @@ Pythia (160M–6.9B) model families using TransformerLens.
    apparent paradox — base prompts contain more information at low rank (higher
    residual stream entropy) yet are less sensitive to ablating that complement.
 
-This is a pilot-scale methods demonstration on a small corpus (25 base /
-25 contrast prompt pairs), not a finished results paper. See the notebook
-for full discussion and `FutureWork.md` for ongoing directions.
+This is a pilot-scale methods demonstration, not a finished results paper. The
+published results were computed on a 25-pair corpus; a 108-pair corpus with
+confound controls is now available (see **Corpus** below) but the analyses have
+not yet been re-run against it. See the notebook for full discussion and
+`FutureWork.md` for ongoing directions.
 
 ## Reproducing the notebook
 
@@ -104,7 +106,8 @@ below). Workflow execution for small models can be done on a MacBook Pro with
 │   ├── npz_utils.py             # Loading and filtering of .npz data
 │   └── npz_quicklook.py         # Quick inspection of .npz file contents
 ├── corpus/                      # Prompt corpus files
-│   ├── base_vs_contrast_n50.json
+│   ├── base_vs_contrast_n50.json    # 25 pairs — original, used for published results
+│   ├── base_vs_contrast_n216.json   # 108 pairs — expanded, with confound controls
 │   └── corpus_gen.py            # Corpus generation script
 ├── notebooks/                   # Jupyter notebooks of results
 ├── data/                        # Precomputed .npz results
@@ -139,19 +142,103 @@ is not a win. The unembedding matrix is always upcast to float32 before SVD.
 ### Running on Google Colab
 
 `colab/residual_stream_dynamics_colab.ipynb` runs the corpus workflows on a
-free-tier T4, with `data/` and `figures/` symlinked into Google Drive so results
-survive runtime recycling. Open it in Colab, set **Runtime → Change runtime type
-→ T4 GPU**, and run the setup cells in order.
+free-tier T4 GPU, with `data/` and `figures/` symlinked into Google Drive so
+results survive runtime recycling.
 
-Everything up to **pythia-2.8b** fits in the free tier's 16GB. **pythia-6.9b
-does not** and needs a larger card.
+Colab cannot be driven from a terminal or a script — runtime allocation and the
+Drive OAuth consent both require an interactive browser session. The steps below
+are manual and take a couple of minutes.
 
-The notebook is generated, not hand-edited — change `colab/build_notebook.py`
+**1. Push the branch you want to run.**
+
+Colab clones from GitHub, not from your laptop, so the code must be on the
+remote first:
+
+```bash
+git push -u origin <your-branch>
+```
+
+**2. Open the notebook in Colab.**
+
+In Colab: **File → Open notebook → GitHub**, enter `storyofthewolf/residual-stream-dynamics`,
+select the branch, and choose `colab/residual_stream_dynamics_colab.ipynb`.
+(Uploading the local `.ipynb` works too.)
+
+**3. Attach a GPU: Runtime → Change runtime type → T4 GPU.**
+
+Do this before running anything. Without it every workflow silently falls back
+to CPU — cell 1 checks for this and tells you.
+
+**4. Set `BRANCH` in cell 2** to the branch you pushed in step 1. It defaults to
+`"main"`; leave it once your work is merged. The cell prints the checked-out
+branch and HEAD commit so you can confirm you are running what you think.
+
+**5. Run cells 1–5 in order.** Cell 4 opens the Google Drive OAuth prompt and
+needs a click. Cell 5 is a smoke test — if it prints entropy curves, the GPU
+path works and longer jobs are safe to start.
+
+After that the analysis cells are independent; run whichever you need.
+
+**Persistence.** Outputs land in `MyDrive/residual-stream-dynamics/`. The
+runtime is recycled after roughly 90 minutes idle (12 hours maximum) and
+`/content` is wiped with it, but anything already written to Drive survives. If
+a sweep dies partway, completed models are saved and you can restart from the
+survivors.
+
+**What fits in the free tier.** Everything up to **pythia-2.8b**; the larger
+models load in float16 automatically on CUDA. **pythia-6.9b does not fit** in
+16GB and needs a bigger card. Watch host RAM as well as VRAM — Colab free tier
+gives about 12GB, and activations are returned as numpy on the host, so large
+models over the full corpus will bind on RAM first.
+
+**The notebook is generated, not hand-edited.** Change `colab/build_notebook.py`
 and regenerate:
 
 ```bash
 python colab/build_notebook.py
 ```
+
+### Corpus
+
+Two corpora ship with the repository:
+
+| file | pairs | notes |
+|---|---|---|
+| `base_vs_contrast_n50.json` | 25 | Original. All published results use this. |
+| `base_vs_contrast_n216.json` | 108 | Expanded, with confound controls. |
+
+The expanded corpus adds a `contrast_type` field that separates two variables
+the original design confounded. Nearly every original contrast broke the base
+pattern by appending a low-frequency abstract noun ("philosophy", "democracy"),
+so "contrast" meant both *structure broken* and *unusual token present* — the
+r⊥ effect could be read as a lexical-frequency artifact.
+
+| `contrast_type` | how the contrast breaks the base | controls for |
+|---|---|---|
+| `abstract` | low-frequency abstract noun (original design) | — baseline |
+| `concrete` | high-frequency concrete noun | lexical frequency |
+| `in_domain` | same semantic class, wrong position (`one two three seven`) | identity and frequency |
+| `swap` | same tokens, order destroyed | token identity exactly |
+
+Comparing `abstract` against `in_domain` isolates structure from frequency. Note
+that `swap` is undefined for the `repetition` category — shuffling
+`the the the the` is a no-op — so that cell is empty by construction.
+
+`contrast_type` is written to the corpus JSON but is **not** carried into the
+Record types, so stratified analysis currently joins back to the corpus file on
+`prompt` or `pair_id`.
+
+Regenerate either corpus:
+
+```bash
+python corpus/corpus_gen.py --output corpus/base_vs_contrast_n216.json
+python corpus/corpus_gen.py --legacy --output corpus/base_vs_contrast_n50.json
+python corpus/corpus_gen.py --stats            # category x contrast_type matrix
+python corpus/corpus_gen.py --list-categories
+```
+
+`--legacy` reproduces the original 25-pair file byte-for-byte on every original
+field, including `pair_id` ordering, so pre-expansion results stay comparable.
 
 ### Single-prompt entropy probe
 
@@ -197,6 +284,12 @@ python workflows/ck_analysis.py \
     --corpus corpus/base_vs_contrast_n50.json \
     --model gpt2-small \
     --save-data
+
+# Store only the final token position — much smaller .npz
+python workflows/ck_analysis.py \
+    --corpus corpus/base_vs_contrast_n216.json \
+    --model gpt2-small \
+    --last-token-only --save-data
 ```
 
 Computes the exact logit decomposition `c_k = σ_k · (r · v_k)` where v_k and σ_k are
@@ -208,6 +301,9 @@ type:
 2. **Last-token heatmap** — mean |c_k| at the final token, log-scale colormap, layers
    1–end, stratified by role (base / contrast / difference).
 3. **All-tokens heatmap** — same but averaged over all token positions (secondary).
+   This is the only figure that needs the full token axis; it is skipped under
+   `--last-token-only`, and the plot function raises rather than silently
+   averaging over a single token.
 4. **Spectral CoM vs. layer** — center of mass `Σ_k k·c_k² / Σ_k c_k²` at the last
    token, mean ± std across prompts, base and contrast lines.
 5. **Cumulative power fraction** — `F(K) = Σ_{k<K} c_k² / Σ_k c_k²` vs k for a
@@ -284,6 +380,10 @@ bounded by memory rather than compute. In particular,
 consumes most of the available memory and takes approximately 4 hours on
 the pilot corpus.
 
+Runs can also be offloaded to a free Google Colab T4 — see **Running on Google
+Colab** above. That path covers models up to pythia-2.8b; pythia-6.9b remains
+local-only.
+
 **macOS note**: PyPI PyTorch wheels link against the Accelerate framework
 and are unstable on macOS 15 (Sequoia). Install PyTorch via conda
 (which uses OpenBLAS) to avoid this:
@@ -335,7 +435,11 @@ results without re-running any model inference.
 
 Active and planned directions are tracked in `FutureWork.md`, including:
 
-- Corpus expansion beyond the n=50 pilot
+- Re-running the analyses against the expanded 108-pair corpus
+- Stratifying results by `contrast_type` to separate structural effects from
+  lexical-frequency effects
+- Running the c_k spectrum workflow over a corpus (built and tested, but
+  `data/ck/` is still empty)
 - Deeper interpretation of the mechanics curves in relation to the entropy findings
 
 This repository will continue to evolve as the project develops.

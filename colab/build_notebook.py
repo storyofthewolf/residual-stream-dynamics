@@ -14,8 +14,19 @@ REPO_URL = "https://github.com/storyofthewolf/residual-stream-dynamics.git"
 _HERE = Path(__file__).resolve().parent
 
 
+def _lines(text):
+    """Split into an nbformat source list.
+
+    Every element except the last must keep its trailing newline. Without them
+    Jupyter rejoins the list with no separator, which silently collapses a
+    markdown cell into one run-on paragraph. nbformat.validate() does not catch
+    this — it checks structure, not line terminators.
+    """
+    return text.splitlines(keepends=True)
+
+
 def md(text):
-    return {"cell_type": "markdown", "metadata": {}, "source": text.strip().split("\n")}
+    return {"cell_type": "markdown", "metadata": {}, "source": _lines(text.strip())}
 
 
 def code(text):
@@ -24,7 +35,7 @@ def code(text):
         "execution_count": None,
         "metadata": {},
         "outputs": [],
-        "source": text.strip("\n").split("\n"),
+        "source": _lines(text.strip("\n")),
     }
 
 
@@ -63,6 +74,10 @@ else:
 
 `data/` and `figures/` are gitignored, so this clone is small (a few MB).
 Results are written to Drive in cell 4.
+
+**Set `BRANCH`** to whichever branch holds the code you want to run. It must
+already be pushed to GitHub — Colab clones from the remote, not from your
+laptop. Leave it as `"main"` once the work is merged.
 """),
     code(f"""
 import os
@@ -70,16 +85,19 @@ from pathlib import Path
 
 REPO_URL  = "{REPO_URL}"
 REPO_NAME = "residual-stream-dynamics"
+BRANCH    = "main"          # <-- set to your working branch if not yet merged
 REPO_DIR  = Path("/content") / REPO_NAME
 
 if REPO_DIR.exists():
-    print(f"{{REPO_DIR}} already exists — pulling latest")
-    !cd {{REPO_DIR}} && git pull --ff-only
+    print(f"{{REPO_DIR}} already exists — fetching {{BRANCH}}")
+    !cd {{REPO_DIR}} && git fetch origin {{BRANCH}} && git checkout {{BRANCH}} && git pull --ff-only
 else:
-    !git clone {{REPO_URL}} {{REPO_DIR}}
+    !git clone --branch {{BRANCH}} {{REPO_URL}} {{REPO_DIR}}
 
 os.chdir(REPO_DIR)
 print(f"\\ncwd: {{Path.cwd()}}")
+!git rev-parse --abbrev-ref HEAD
+!git log --oneline -1
 """),
 
     md("""
@@ -266,6 +284,17 @@ def main():
         "nbformat": 4,
         "nbformat_minor": 0,
     }
+    # Round-trip check: every source line but the last must end in a newline,
+    # or the cell renders as one run-on line in Jupyter/Colab.
+    for i, cell in enumerate(nb["cells"]):
+        src = cell["source"]
+        for j, line in enumerate(src[:-1]):
+            if not line.endswith("\n"):
+                raise ValueError(
+                    f"cell {i} line {j} has no trailing newline: {line!r} — "
+                    f"this collapses the cell when rendered"
+                )
+
     out = _HERE / "residual_stream_dynamics_colab.ipynb"
     out.write_text(json.dumps(nb, indent=1))
     print(f"wrote {out}  ({len(CELLS)} cells)")
