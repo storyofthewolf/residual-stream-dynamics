@@ -132,7 +132,8 @@ not capture on its own. Newest entry at the bottom.
 
 ## 2026-08-17
 
-**Commits:** `8388519`, plus the generator removal
+**Commits:** `8388519`, `31078f5`, `72889d7`, `a760c1b`, merged to `main` as
+`619d932` (PR #1). This closes out the Colab work started 2026-08-16.
 
 **Decisions**
 
@@ -169,3 +170,54 @@ not capture on its own. Newest entry at the bottom.
 - Notebook kernel for local work is the Anaconda `base` env
   (`/opt/anaconda3/bin/python`, Python 3.11.11) — the only registered
   kernelspec, and what the notebook metadata already names.
+
+**Later the same day — Colab guards, GPU confirmation, merge**
+
+**Decisions**
+
+- **Made the Colab notebook fail loudly outside Colab.** Running it in local
+  Jupyter produced `nvidia-smi: command not found`, then `cuda available:
+  False`, then a `FileNotFoundError` on `/content/residual-stream-dynamics`
+  three cells later. All correct behavior — `/content` and `nvidia-smi` are
+  Colab-only — but nothing said so, and the traceback pointed at a path that
+  means nothing on a laptop. Added step 0, which raises immediately when
+  `import google.colab` fails and points at the workflow scripts for local work.
+
+- **The no-GPU case now raises instead of warning.** It previously printed
+  "NO GPU — set Runtime..." and continued. A user could scroll past that and
+  start a multi-hour job that silently ran on CPU. Failing closed is the right
+  default when the whole point of the notebook is GPU access.
+
+- **Set `BRANCH` back to `"main"` before merging**, so a fresh clone from the
+  default branch pulls the default branch. Left as its own commit ahead of the
+  merge rather than folded in, to keep the reason legible.
+
+- **Merged via PR with a merge commit, not a squash.** The seven commits are
+  individually meaningful and the doc/session-log history is worth keeping
+  distinct in the graph.
+
+**Notes**
+
+- **The CUDA path is confirmed working.** A Colab T4 (driver 580.82.07, CUDA
+  13.0, torch 2.11.0+cu128) attached successfully and the GPU check passed.
+  This closes the "CUDA paths never executed" caveat carried since 2026-08-16 —
+  though only the setup cells are verified; no full corpus workflow has been
+  run on GPU end to end yet.
+
+- **The T4 reports 14.6 GB usable, not 16.** Earlier model-fit estimates assumed
+  ~16 GB, so the margin on pythia-2.8b (~11 GB fp16 plus activations) is thinner
+  than documented. It should still fit; it is the one model where an OOM is
+  plausible.
+
+- **Colab ships torch 2.11.0+cu128**, newer than the local 2.10.0. This is why
+  cell 3 installs `transformer_lens` and `sae_lens` but deliberately not torch —
+  pip would replace the CUDA-matched build with a mismatched wheel.
+
+- **Drive symlinks confirmed working.** Workflows print `/content/...` paths
+  because they cannot see they are traversing a symlink; the bytes land in
+  `MyDrive/residual-stream-dynamics/`. Worth re-checking the Drive path (not the
+  `/content` one) before ending a long session — Colab's Drive mount can lag or
+  fail silently on large writes.
+
+- `gh` CLI is not installed on this machine, so the PR was created and merged in
+  the browser. Installing it would let future PRs be driven from the terminal.

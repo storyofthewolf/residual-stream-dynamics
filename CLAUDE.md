@@ -274,6 +274,12 @@ is not argument-parsing or I/O belongs in a compute module.
   generator, removed 2026-08-17 because the notebook is edited in Colab and a
   generator silently reverted those edits on the next build. Do not reintroduce
   one. pythia-6.9b does not fit in 16GB and is not runnable on the free tier.
+- **The Colab notebook fails closed, by design.** Step 0 raises if
+  `import google.colab` fails, and the GPU check raises rather than warning when
+  no CUDA device is present. Both are deliberate: the notebook clones into
+  `/content` and mounts Drive, so running it locally produces a confusing
+  `FileNotFoundError` several cells later, and a warn-and-continue GPU check
+  lets a multi-hour job start silently on CPU. Do not soften these to warnings.
 - **Model zoo**: GPT-2 (small/medium/large/XL) and Pythia (160m, 1b, 2.8b, 6.9b)
   are the primary test models. `utils/model_loader.py` contains `MODEL_CONFIGS` for each.
   Gemma-2 and Llama support is partial (`has_resid_mid` detection works; BOS token
@@ -328,28 +334,33 @@ is not argument-parsing or I/O belongs in a compute module.
 
 ## Next steps
 
-### Session handoff — current state (2026-08-16)
+### Session handoff — current state (2026-08-17)
 
-Work lives on branch **`colab-support`**, two commits ahead of `main`, **not yet
-pushed**. `main` does not have any of it.
+The Colab work is **merged to `main`** (PR #1, merge commit `619d932`); the
+`colab-support` branch is deleted locally and on the remote. `main` is the only
+branch and is in sync.
 
-Ready but not yet run:
-- **The expanded corpus has not been used for any stored result.** Everything in
-  `data/` is from the 25-pair corpus. `base_vs_contrast_n216.json` is validated
-  end-to-end (216/216 prompts extract cleanly) but no analysis has been re-run
-  against it.
-- **`data/ck/` is still empty.** The c_k workflow is complete and tested; a
-  corpus run is the highest-value next action, ideally with `--last-token-only`.
-- **`contrast_type` stratification does not exist yet.** The field is in the
-  corpus JSON but no analysis consumes it.
+**Infrastructure is done. The science has not started.** Everything below is
+ready to run and has not been run:
 
-Untested by necessity: the CUDA code paths. All device changes were verified on
-CPU and by confirming the CPU/MPS branches are unchanged, but no CUDA hardware
-was available. Cell 5 of the Colab notebook is the smoke test — run it before
-committing to a long job.
+- **No stored result uses the expanded corpus.** All of `data/` is from the
+  25-pair corpus. `base_vs_contrast_n216.json` is validated end-to-end (216/216
+  prompts extract cleanly) but no analysis has been re-run against it.
+- **`data/ck/` is still empty.** The c_k workflow has never produced a corpus
+  result for any model. This is the highest-value next action — the code is
+  finished, the hypothesis is sharp, and `--last-token-only` makes it cheap.
+- **`contrast_type` stratification does not exist.** The field is in the corpus
+  JSON but no analysis consumes it, and it does not reach the Record types.
 
-Before running on Colab: push the branch, and set `BRANCH` in notebook cell 2 to
-match. The clone cell defaults to `"main"`.
+**GPU status:** a Colab T4 has been attached successfully and the environment
+check passes (driver 580.82.07, CUDA 13.0, torch 2.11.0+cu128). Only the setup
+cells are verified — no corpus workflow has run on GPU end to end, so the first
+real run is still where a device bug would surface. Note the T4 reports 14.6 GB
+usable, not 16; pythia-2.8b is the one model where an OOM is plausible.
+
+To run on Colab: open `colab/residual_stream_dynamics_colab.ipynb` from GitHub,
+attach a T4, and run the setup cells. `BRANCH` defaults to `"main"` and needs no
+change now that the work is merged.
 
 ### Clean up the project root directory — COMPLETED (2026-05-02)
 Root reorganization is done. All Python files are now in named subdirectories:
