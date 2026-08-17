@@ -170,6 +170,12 @@ is not a win. The unembedding matrix is always upcast to float32 before SVD.
 free-tier T4 GPU, with `data/` and `figures/` symlinked into Google Drive so
 results survive runtime recycling.
 
+> **This notebook only runs on Colab.** It clones into `/content`, mounts Google
+> Drive, and requires an NVIDIA GPU — none of which exist on a local machine.
+> Opening it in local Jupyter or VS Code stops at the environment check in
+> step 0 with instructions. For local work, run the `workflows/` scripts from a
+> terminal instead; they already run on CPU/MPS.
+
 Colab cannot be driven from a terminal or a script — runtime allocation and the
 Drive OAuth consent both require an interactive browser session. The steps below
 are manual and take a couple of minutes.
@@ -194,13 +200,16 @@ select the branch, and choose `colab/residual_stream_dynamics_colab.ipynb`.
 Do this before running anything. Without it every workflow silently falls back
 to CPU — cell 1 checks for this and tells you.
 
-**4. Check `BRANCH` in cell 2** matches the branch you pushed in step 1, and set
-it back to `"main"` once the work is merged. The cell prints the checked-out
-branch and HEAD commit so you can confirm you are running what you think.
+**4. Check `BRANCH`** in the notebook's step 2 matches the branch you pushed
+above, and set it back to `"main"` once the work is merged. That cell prints the
+checked-out branch and HEAD commit so you can confirm you are running what you
+think.
 
-**5. Run cells 1–5 in order.** Cell 4 opens the Google Drive OAuth prompt and
-needs a click. Cell 5 is a smoke test — if it prints entropy curves, the GPU
-path works and longer jobs are safe to start.
+**5. Run the notebook's setup cells (steps 0–5) in order.** Step 0 verifies you
+are on Colab, step 1 requires a GPU (both stop with instructions if not), and
+step 4 opens the Google Drive OAuth prompt and needs a click. Step 5 is a smoke
+test — if it prints entropy curves, the GPU path works and longer jobs are safe
+to start.
 
 After that the analysis cells are independent; run whichever you need.
 
