@@ -194,10 +194,9 @@ select the branch, and choose `colab/residual_stream_dynamics_colab.ipynb`.
 Do this before running anything. Without it every workflow silently falls back
 to CPU — cell 1 checks for this and tells you.
 
-**4. Check `BRANCH` in cell 2** matches the branch you pushed in step 1. Its
-default comes from `DEFAULT_BRANCH` in `colab/build_notebook.py`; set both back
-to `"main"` once the work is merged. The cell prints the checked-out branch and
-HEAD commit so you can confirm you are running what you think.
+**4. Check `BRANCH` in cell 2** matches the branch you pushed in step 1, and set
+it back to `"main"` once the work is merged. The cell prints the checked-out
+branch and HEAD commit so you can confirm you are running what you think.
 
 **5. Run cells 1–5 in order.** Cell 4 opens the Google Drive OAuth prompt and
 needs a click. Cell 5 is a smoke test — if it prints entropy curves, the GPU
@@ -217,12 +216,10 @@ models load in float16 automatically on CUDA. **pythia-6.9b does not fit** in
 gives about 12GB, and activations are returned as numpy on the host, so large
 models over the full corpus will bind on RAM first.
 
-**The notebook is generated, not hand-edited.** Change `colab/build_notebook.py`
-and regenerate:
-
-```bash
-python colab/build_notebook.py
-```
+**Editing the notebook.** Edit `colab/residual_stream_dynamics_colab.ipynb`
+directly, in Colab or Jupyter — it is the source of truth, not a build artifact.
+If you change it in Colab, download it (**File → Download → .ipynb**) over the
+repo copy and commit, or the change lives only in that Colab session.
 
 ### Corpus
 

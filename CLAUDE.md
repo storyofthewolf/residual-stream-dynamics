@@ -269,9 +269,11 @@ is not argument-parsing or I/O belongs in a compute module.
   back to float32 on CPU and MPS. `W_U` is upcast with `.float()` before SVD
   regardless, so fp16 weights never reach the decomposition.
 - **Google Colab**: `colab/residual_stream_dynamics_colab.ipynb` runs the
-  corpus workflows on a free-tier T4. Regenerate it with
-  `python colab/build_notebook.py` — do not hand-edit the `.ipynb`.
-  pythia-6.9b does not fit in 16GB and is not runnable on the free tier.
+  corpus workflows on a free-tier T4. The `.ipynb` is the source of truth —
+  edit it directly. It was originally emitted by a `build_notebook.py`
+  generator, removed 2026-08-17 because the notebook is edited in Colab and a
+  generator silently reverted those edits on the next build. Do not reintroduce
+  one. pythia-6.9b does not fit in 16GB and is not runnable on the free tier.
 - **Model zoo**: GPT-2 (small/medium/large/XL) and Pythia (160m, 1b, 2.8b, 6.9b)
   are the primary test models. `utils/model_loader.py` contains `MODEL_CONFIGS` for each.
   Gemma-2 and Llama support is partial (`has_resid_mid` detection works; BOS token

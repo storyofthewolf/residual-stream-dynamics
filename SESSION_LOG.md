@@ -116,8 +116,9 @@ not capture on its own. Newest entry at the bottom.
   without `keepends`, so nbformat source lists had no line terminators and
   markdown cells collapsed into one run-on paragraph. `nbformat.validate()`
   passes on this — it checks structure, not line terminators — so the first
-  validation gave false confidence. `build_notebook.py` now asserts trailing
-  newlines explicitly.
+  validation gave false confidence. `build_notebook.py` gained an explicit
+  trailing-newline assertion (the generator was removed the next day — see the
+  2026-08-17 entry — which eliminates this failure mode entirely).
 
 - `corpus_gen.py` gained a `validate_corpus()` that fails closed on duplicate
   descriptions, identical base/contrast pairs, missing legacy descriptions, and
@@ -126,3 +127,45 @@ not capture on its own. Newest entry at the bottom.
 
 - DEVELOPER_NOTES.md does not exist in this repo. Granular flag and function
   listings currently live in README.md and CLAUDE.md.
+
+---
+
+## 2026-08-17
+
+**Commits:** `8388519`, plus the generator removal
+
+**Decisions**
+
+- **Removed `colab/build_notebook.py`; the `.ipynb` is now the source of
+  truth.** The generator was introduced to keep notebook diffs readable — JSON
+  `.ipynb` produces noisy diffs and churns execution counts. That benefit did
+  not survive contact with how the notebook is actually used.
+
+  The deciding argument: the Colab notebook is *edited in Colab*, which writes
+  `.ipynb`. A generator makes every Colab-side edit something that must be
+  manually back-ported into Python or silently lost on the next build. That
+  already happened once — a hand-edited `BRANCH = "colab-support"` was at risk
+  of reverting to `"main"`, and `DEFAULT_BRANCH` was added purely to paper over
+  a problem the generator itself created. The `_lines()` newline bug was also a
+  pure artifact of synthesizing notebook JSON by hand; editing the `.ipynb`
+  directly cannot produce that class of error.
+
+  Treating a file as a build artifact only works when nothing else writes to
+  it. Colab does. Do not reintroduce a generator.
+
+- **Fixed notebook paths and requirements pins** (see commit `8388519`). The
+  requirements bug was the more serious of the two: `transformer_lens>=6.37.6`
+  and `sae_lens>=1.26.4` were transposed, and since transformer_lens has no 6.x
+  release, `pip install -r requirements.txt` could not resolve at all. Anyone
+  cloning the repo hit a hard failure. Found by checking the pins against the
+  installed environment rather than reading them.
+
+**Notes**
+
+- Trade-off accepted with the generator removal: notebook diffs are noisier
+  now. If that becomes annoying, an `nbstripout` filter on `.ipynb` is the
+  standard fix and does not reintroduce the back-porting problem.
+
+- Notebook kernel for local work is the Anaconda `base` env
+  (`/opt/anaconda3/bin/python`, Python 3.11.11) — the only registered
+  kernelspec, and what the notebook metadata already names.
