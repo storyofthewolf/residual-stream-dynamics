@@ -60,6 +60,31 @@ confound controls is now available (see **Corpus** below) but the analyses have
 not yet been re-run against it. See the notebook for full discussion and
 `FutureWork.md` for ongoing directions.
 
+## Environment
+
+Python 3.11, with dependencies from `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+Development uses the Anaconda `base` environment (Python 3.11.11); the pins in
+`requirements.txt` are the versions the pipeline is verified against.
+
+**Notebook kernel.** Select the interpreter that has these packages installed —
+under Anaconda that is `base`, at `/opt/anaconda3/bin/python`. In VS Code, use
+the kernel picker in the top right of the notebook and choose that environment;
+do not select the macOS system Python at `/usr/bin/python3`, which has none of
+the dependencies. The notebook's saved kernel metadata already points at
+`base`, so it is usually selected automatically.
+
+The notebook resolves the project root from the kernel's working directory, so
+it runs correctly whether the kernel starts in `notebooks/` or at the
+repository root.
+
+On Google Colab the runtime supplies the kernel — see **Running on Google
+Colab** below.
+
 ## Reproducing the notebook
 
 To keep the repository clean, `.npz` and `.png` files are not committed.
@@ -169,9 +194,10 @@ select the branch, and choose `colab/residual_stream_dynamics_colab.ipynb`.
 Do this before running anything. Without it every workflow silently falls back
 to CPU — cell 1 checks for this and tells you.
 
-**4. Set `BRANCH` in cell 2** to the branch you pushed in step 1. It defaults to
-`"main"`; leave it once your work is merged. The cell prints the checked-out
-branch and HEAD commit so you can confirm you are running what you think.
+**4. Check `BRANCH` in cell 2** matches the branch you pushed in step 1. Its
+default comes from `DEFAULT_BRANCH` in `colab/build_notebook.py`; set both back
+to `"main"` once the work is merged. The cell prints the checked-out branch and
+HEAD commit so you can confirm you are running what you think.
 
 **5. Run cells 1–5 in order.** Cell 4 opens the Google Drive OAuth prompt and
 needs a click. Cell 5 is a smoke test — if it prints entropy curves, the GPU

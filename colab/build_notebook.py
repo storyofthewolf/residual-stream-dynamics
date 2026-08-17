@@ -11,6 +11,13 @@ import json
 from pathlib import Path
 
 REPO_URL = "https://github.com/storyofthewolf/residual-stream-dynamics.git"
+
+# Branch the generated notebook clones by default. Keep this in sync with the
+# branch the work actually lives on — regenerating overwrites the notebook, so
+# a hand-edit to BRANCH in the .ipynb is lost on the next build. Set back to
+# "main" once the work is merged.
+DEFAULT_BRANCH = "colab-support"
+
 _HERE = Path(__file__).resolve().parent
 
 
@@ -75,9 +82,10 @@ else:
 `data/` and `figures/` are gitignored, so this clone is small (a few MB).
 Results are written to Drive in cell 4.
 
-**Set `BRANCH`** to whichever branch holds the code you want to run. It must
-already be pushed to GitHub — Colab clones from the remote, not from your
-laptop. Leave it as `"main"` once the work is merged.
+**Check `BRANCH`** below — it must name a branch already pushed to GitHub,
+since Colab clones from the remote, not from your laptop. Set it back to
+`"main"` once the work is merged. The cell prints the checked-out branch and
+HEAD commit so you can confirm what is actually running.
 """),
     code(f"""
 import os
@@ -85,7 +93,7 @@ from pathlib import Path
 
 REPO_URL  = "{REPO_URL}"
 REPO_NAME = "residual-stream-dynamics"
-BRANCH    = "main"          # <-- set to your working branch if not yet merged
+BRANCH    = "{DEFAULT_BRANCH}"   # <-- set to your working branch if not yet merged
 REPO_DIR  = Path("/content") / REPO_NAME
 
 if REPO_DIR.exists():

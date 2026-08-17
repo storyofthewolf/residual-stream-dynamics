@@ -308,7 +308,10 @@ is not argument-parsing or I/O belongs in a compute module.
   it was silently ignored. The function recomputes SVD internally.
 - **Do not use relative `sys.path` inserts** (e.g. `sys.path.insert(0, 'utils')`).
   Always derive paths from `Path(__file__).resolve()` so scripts work from any working
-  directory.
+  directory. Notebooks have no `__file__`; they derive `_PROJECT_ROOT` from
+  `Path.cwd()`, walking up one level if `plotting/` is not present, and raise if
+  the root cannot be located. `DATA_DIR` and `FIGURES_DIR` are built from that
+  root — never from `'../data'`-style literals.
 - **No torch, no TransformerLens, no model loading in the dashboard modules.**
   `dashboard/dashboard_loader.py`, `dashboard/dashboard_viz.py`, and `dashboard/dashboard.py`
   are pure numpy + matplotlib + Gradio. Any computation that requires a live model belongs

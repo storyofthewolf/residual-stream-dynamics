@@ -1,7 +1,13 @@
 torch>=2.10.0
-transformer_lens>=6.37.6
-sae_lens>=1.26.4
-numpy>=2.0.0
+# These two pins were transposed: 6.37.6 is a sae_lens version, and
+# transformer_lens has no 6.x release, so `pip install -r requirements.txt`
+# could not resolve. Both now reflect the verified development environment.
+transformer_lens>=2.17.0
+sae_lens>=6.37.6
+# 1.26 is the verified floor — the development environment runs 1.26.4 and the
+# full pipeline passes on it. numpy 2.x also works; nothing here needs 2.x-only
+# API, so the pin does not force an ecosystem-wide upgrade.
+numpy>=1.26
 matplotlib>=3.8.0
 gradio>=6.0.0
 huggingface_hub>=0.36.0
