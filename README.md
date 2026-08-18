@@ -221,9 +221,13 @@ survivors.
 
 **What fits in the free tier.** Everything up to **pythia-2.8b**; the larger
 models load in float16 automatically on CUDA. **pythia-6.9b does not fit** in
-16GB and needs a bigger card. Watch host RAM as well as VRAM — Colab free tier
-gives about 12GB, and activations are returned as numpy on the host, so large
-models over the full corpus will bind on RAM first.
+16GB and needs a bigger card.
+
+Note the T4 reports about **14.6 GB usable**, not the nominal 16 — pythia-2.8b
+(~11 GB in fp16, plus activations) is the one model with a thin margin. Watch
+host RAM as well as VRAM: Colab free tier gives about 12GB, and activations are
+returned as numpy on the host, so large models over the full corpus will bind on
+RAM before VRAM.
 
 **Editing the notebook.** Edit `colab/residual_stream_dynamics_colab.ipynb`
 directly, in Colab or Jupyter — it is the source of truth, not a build artifact.

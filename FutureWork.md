@@ -1,6 +1,6 @@
 # Future Work
 
-*Last updated: August 16th, 2026*
+*Last updated: August 17th, 2026*
 
 This document tracks planned and in-progress research and engineering directions
 for the residual-stream-dynamics project. Items are roughly prioritized within
@@ -10,8 +10,9 @@ each section but the ordering is informal. This is a working document.
 
 ## Current priorities
 
-Compute now runs on Google Colab free tier (T4, 16GB), so the practical ceiling
-is **pythia-2.8b**. This is not a limitation for the science: the claims are
+Compute now runs on Google Colab free tier (T4; the card reports ~14.6 GB
+usable, not the nominal 16), so the practical ceiling is **pythia-2.8b** — and
+that is the one model where an OOM is plausible. This is not a limitation for the science: the claims are
 about residual stream geometry, not about model capability, and the existing
 gpt2-xl / pythia-6.9b results already establish that the effect is not a
 small-model artifact. Model scale is a settled question; the open questions are
