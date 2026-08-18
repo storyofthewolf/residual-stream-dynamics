@@ -1,0 +1,842 @@
+[
+  {
+    "pair_id": 0,
+    "category": "size_act_bare",
+    "description": "Size, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of expanding is"
+  },
+  {
+    "pair_id": 0,
+    "category": "size_act_bare",
+    "description": "Size, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of shrinking is"
+  },
+  {
+    "pair_id": 1,
+    "category": "size_act_bare",
+    "description": "Size, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of growing is"
+  },
+  {
+    "pair_id": 1,
+    "category": "size_act_bare",
+    "description": "Size, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of reducing is"
+  },
+  {
+    "pair_id": 2,
+    "category": "size_act_bare",
+    "description": "Size, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of stretching is"
+  },
+  {
+    "pair_id": 2,
+    "category": "size_act_bare",
+    "description": "Size, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of narrowing is"
+  },
+  {
+    "pair_id": 3,
+    "category": "size_act_sentence",
+    "description": "Size, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger hugely."
+  },
+  {
+    "pair_id": 3,
+    "category": "size_act_sentence",
+    "description": "Size, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger slightly."
+  },
+  {
+    "pair_id": 4,
+    "category": "size_act_sentence",
+    "description": "Size, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger greatly."
+  },
+  {
+    "pair_id": 4,
+    "category": "size_act_sentence",
+    "description": "Size, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger barely."
+  },
+  {
+    "pair_id": 5,
+    "category": "size_act_sentence",
+    "description": "Size, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger widely."
+  },
+  {
+    "pair_id": 5,
+    "category": "size_act_sentence",
+    "description": "Size, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger narrowly."
+  },
+  {
+    "pair_id": 6,
+    "category": "size_disposition_bare",
+    "description": "Size, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of height is"
+  },
+  {
+    "pair_id": 6,
+    "category": "size_disposition_bare",
+    "description": "Size, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of depth is"
+  },
+  {
+    "pair_id": 7,
+    "category": "size_disposition_bare",
+    "description": "Size, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of length is"
+  },
+  {
+    "pair_id": 7,
+    "category": "size_disposition_bare",
+    "description": "Size, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of width is"
+  },
+  {
+    "pair_id": 8,
+    "category": "size_disposition_bare",
+    "description": "Size, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of size is"
+  },
+  {
+    "pair_id": 8,
+    "category": "size_disposition_bare",
+    "description": "Size, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of mass is"
+  },
+  {
+    "pair_id": 9,
+    "category": "size_disposition_sentence",
+    "description": "Size, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a tall person."
+  },
+  {
+    "pair_id": 9,
+    "category": "size_disposition_sentence",
+    "description": "Size, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a short person."
+  },
+  {
+    "pair_id": 10,
+    "category": "size_disposition_sentence",
+    "description": "Size, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a large person."
+  },
+  {
+    "pair_id": 10,
+    "category": "size_disposition_sentence",
+    "description": "Size, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a small person."
+  },
+  {
+    "pair_id": 11,
+    "category": "size_disposition_sentence",
+    "description": "Size, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a big person."
+  },
+  {
+    "pair_id": 11,
+    "category": "size_disposition_sentence",
+    "description": "Size, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a tiny person."
+  },
+  {
+    "pair_id": 12,
+    "category": "temp_act_bare",
+    "description": "Temperature, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of heating is"
+  },
+  {
+    "pair_id": 12,
+    "category": "temp_act_bare",
+    "description": "Temperature, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of cooling is"
+  },
+  {
+    "pair_id": 13,
+    "category": "temp_act_bare",
+    "description": "Temperature, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of warming is"
+  },
+  {
+    "pair_id": 13,
+    "category": "temp_act_bare",
+    "description": "Temperature, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of chilling is"
+  },
+  {
+    "pair_id": 14,
+    "category": "temp_act_bare",
+    "description": "Temperature, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of boiling is"
+  },
+  {
+    "pair_id": 14,
+    "category": "temp_act_bare",
+    "description": "Temperature, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of freezing is"
+  },
+  {
+    "pair_id": 15,
+    "category": "temp_act_sentence",
+    "description": "Temperature, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger warmly."
+  },
+  {
+    "pair_id": 15,
+    "category": "temp_act_sentence",
+    "description": "Temperature, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger coldly."
+  },
+  {
+    "pair_id": 16,
+    "category": "temp_act_sentence",
+    "description": "Temperature, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger brightly."
+  },
+  {
+    "pair_id": 16,
+    "category": "temp_act_sentence",
+    "description": "Temperature, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger slowly."
+  },
+  {
+    "pair_id": 17,
+    "category": "temp_act_sentence",
+    "description": "Temperature, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger dryly."
+  },
+  {
+    "pair_id": 17,
+    "category": "temp_act_sentence",
+    "description": "Temperature, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger dully."
+  },
+  {
+    "pair_id": 18,
+    "category": "temp_disposition_bare",
+    "description": "Temperature, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of heat is"
+  },
+  {
+    "pair_id": 18,
+    "category": "temp_disposition_bare",
+    "description": "Temperature, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of cold is"
+  },
+  {
+    "pair_id": 19,
+    "category": "temp_disposition_bare",
+    "description": "Temperature, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of warmth is"
+  },
+  {
+    "pair_id": 19,
+    "category": "temp_disposition_bare",
+    "description": "Temperature, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of chill is"
+  },
+  {
+    "pair_id": 20,
+    "category": "temp_disposition_bare",
+    "description": "Temperature, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of fire is"
+  },
+  {
+    "pair_id": 20,
+    "category": "temp_disposition_bare",
+    "description": "Temperature, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of ice is"
+  },
+  {
+    "pair_id": 21,
+    "category": "temp_disposition_sentence",
+    "description": "Temperature, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a hot person."
+  },
+  {
+    "pair_id": 21,
+    "category": "temp_disposition_sentence",
+    "description": "Temperature, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a cold person."
+  },
+  {
+    "pair_id": 22,
+    "category": "temp_disposition_sentence",
+    "description": "Temperature, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a warm person."
+  },
+  {
+    "pair_id": 22,
+    "category": "temp_disposition_sentence",
+    "description": "Temperature, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a cool person."
+  },
+  {
+    "pair_id": 23,
+    "category": "temp_disposition_sentence",
+    "description": "Temperature, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a sunny person."
+  },
+  {
+    "pair_id": 23,
+    "category": "temp_disposition_sentence",
+    "description": "Temperature, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a wet person."
+  },
+  {
+    "pair_id": 24,
+    "category": "speed_act_bare",
+    "description": "Speed, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of running is"
+  },
+  {
+    "pair_id": 24,
+    "category": "speed_act_bare",
+    "description": "Speed, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of walking is"
+  },
+  {
+    "pair_id": 25,
+    "category": "speed_act_bare",
+    "description": "Speed, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of rushing is"
+  },
+  {
+    "pair_id": 25,
+    "category": "speed_act_bare",
+    "description": "Speed, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of waiting is"
+  },
+  {
+    "pair_id": 26,
+    "category": "speed_act_bare",
+    "description": "Speed, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of racing is"
+  },
+  {
+    "pair_id": 26,
+    "category": "speed_act_bare",
+    "description": "Speed, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of resting is"
+  },
+  {
+    "pair_id": 27,
+    "category": "speed_act_sentence",
+    "description": "Speed, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger quickly."
+  },
+  {
+    "pair_id": 27,
+    "category": "speed_act_sentence",
+    "description": "Speed, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger slowly."
+  },
+  {
+    "pair_id": 28,
+    "category": "speed_act_sentence",
+    "description": "Speed, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger rapidly."
+  },
+  {
+    "pair_id": 28,
+    "category": "speed_act_sentence",
+    "description": "Speed, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger gradually."
+  },
+  {
+    "pair_id": 29,
+    "category": "speed_act_sentence",
+    "description": "Speed, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger swiftly."
+  },
+  {
+    "pair_id": 29,
+    "category": "speed_act_sentence",
+    "description": "Speed, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger steadily."
+  },
+  {
+    "pair_id": 30,
+    "category": "speed_disposition_bare",
+    "description": "Speed, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of speed is"
+  },
+  {
+    "pair_id": 30,
+    "category": "speed_disposition_bare",
+    "description": "Speed, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of delay is"
+  },
+  {
+    "pair_id": 31,
+    "category": "speed_disposition_bare",
+    "description": "Speed, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of haste is"
+  },
+  {
+    "pair_id": 31,
+    "category": "speed_disposition_bare",
+    "description": "Speed, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of rest is"
+  },
+  {
+    "pair_id": 32,
+    "category": "speed_disposition_bare",
+    "description": "Speed, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of motion is"
+  },
+  {
+    "pair_id": 32,
+    "category": "speed_disposition_bare",
+    "description": "Speed, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of calm is"
+  },
+  {
+    "pair_id": 33,
+    "category": "speed_disposition_sentence",
+    "description": "Speed, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a quick person."
+  },
+  {
+    "pair_id": 33,
+    "category": "speed_disposition_sentence",
+    "description": "Speed, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a slow person."
+  },
+  {
+    "pair_id": 34,
+    "category": "speed_disposition_sentence",
+    "description": "Speed, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a fast person."
+  },
+  {
+    "pair_id": 34,
+    "category": "speed_disposition_sentence",
+    "description": "Speed, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a calm person."
+  },
+  {
+    "pair_id": 35,
+    "category": "speed_disposition_sentence",
+    "description": "Speed, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a active person."
+  },
+  {
+    "pair_id": 35,
+    "category": "speed_disposition_sentence",
+    "description": "Speed, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a idle person."
+  },
+  {
+    "pair_id": 36,
+    "category": "sound_act_bare",
+    "description": "Sound, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of shouting is"
+  },
+  {
+    "pair_id": 36,
+    "category": "sound_act_bare",
+    "description": "Sound, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of breathing is"
+  },
+  {
+    "pair_id": 37,
+    "category": "sound_act_bare",
+    "description": "Sound, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of yelling is"
+  },
+  {
+    "pair_id": 37,
+    "category": "sound_act_bare",
+    "description": "Sound, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of sleeping is"
+  },
+  {
+    "pair_id": 38,
+    "category": "sound_act_bare",
+    "description": "Sound, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of singing is"
+  },
+  {
+    "pair_id": 38,
+    "category": "sound_act_bare",
+    "description": "Sound, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of resting is"
+  },
+  {
+    "pair_id": 39,
+    "category": "sound_act_sentence",
+    "description": "Sound, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger loudly."
+  },
+  {
+    "pair_id": 39,
+    "category": "sound_act_sentence",
+    "description": "Sound, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger quietly."
+  },
+  {
+    "pair_id": 40,
+    "category": "sound_act_sentence",
+    "description": "Sound, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger sharply."
+  },
+  {
+    "pair_id": 40,
+    "category": "sound_act_sentence",
+    "description": "Sound, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger softly."
+  },
+  {
+    "pair_id": 41,
+    "category": "sound_act_sentence",
+    "description": "Sound, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger clearly."
+  },
+  {
+    "pair_id": 41,
+    "category": "sound_act_sentence",
+    "description": "Sound, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger gently."
+  },
+  {
+    "pair_id": 42,
+    "category": "sound_disposition_bare",
+    "description": "Sound, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of noise is"
+  },
+  {
+    "pair_id": 42,
+    "category": "sound_disposition_bare",
+    "description": "Sound, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of silence is"
+  },
+  {
+    "pair_id": 43,
+    "category": "sound_disposition_bare",
+    "description": "Sound, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of sound is"
+  },
+  {
+    "pair_id": 43,
+    "category": "sound_disposition_bare",
+    "description": "Sound, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of quiet is"
+  },
+  {
+    "pair_id": 44,
+    "category": "sound_disposition_bare",
+    "description": "Sound, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of volume is"
+  },
+  {
+    "pair_id": 44,
+    "category": "sound_disposition_bare",
+    "description": "Sound, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of calm is"
+  },
+  {
+    "pair_id": 45,
+    "category": "sound_disposition_sentence",
+    "description": "Sound, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a loud person."
+  },
+  {
+    "pair_id": 45,
+    "category": "sound_disposition_sentence",
+    "description": "Sound, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a quiet person."
+  },
+  {
+    "pair_id": 46,
+    "category": "sound_disposition_sentence",
+    "description": "Sound, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a noisy person."
+  },
+  {
+    "pair_id": 46,
+    "category": "sound_disposition_sentence",
+    "description": "Sound, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a silent person."
+  },
+  {
+    "pair_id": 47,
+    "category": "sound_disposition_sentence",
+    "description": "Sound, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a vocal person."
+  },
+  {
+    "pair_id": 47,
+    "category": "sound_disposition_sentence",
+    "description": "Sound, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a shy person."
+  },
+  {
+    "pair_id": 48,
+    "category": "age_act_bare",
+    "description": "Age, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of aging is"
+  },
+  {
+    "pair_id": 48,
+    "category": "age_act_bare",
+    "description": "Age, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of restoring is"
+  },
+  {
+    "pair_id": 49,
+    "category": "age_act_bare",
+    "description": "Age, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of fading is"
+  },
+  {
+    "pair_id": 49,
+    "category": "age_act_bare",
+    "description": "Age, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of refreshing is"
+  },
+  {
+    "pair_id": 50,
+    "category": "age_act_bare",
+    "description": "Age, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of maturing is"
+  },
+  {
+    "pair_id": 50,
+    "category": "age_act_bare",
+    "description": "Age, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of renewing is"
+  },
+  {
+    "pair_id": 51,
+    "category": "age_act_sentence",
+    "description": "Age, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger slowly."
+  },
+  {
+    "pair_id": 51,
+    "category": "age_act_sentence",
+    "description": "Age, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger quickly."
+  },
+  {
+    "pair_id": 52,
+    "category": "age_act_sentence",
+    "description": "Age, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger gradually."
+  },
+  {
+    "pair_id": 52,
+    "category": "age_act_sentence",
+    "description": "Age, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger suddenly."
+  },
+  {
+    "pair_id": 53,
+    "category": "age_act_sentence",
+    "description": "Age, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger steadily."
+  },
+  {
+    "pair_id": 53,
+    "category": "age_act_sentence",
+    "description": "Age, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger sharply."
+  },
+  {
+    "pair_id": 54,
+    "category": "age_disposition_bare",
+    "description": "Age, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of age is"
+  },
+  {
+    "pair_id": 54,
+    "category": "age_disposition_bare",
+    "description": "Age, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of youth is"
+  },
+  {
+    "pair_id": 55,
+    "category": "age_disposition_bare",
+    "description": "Age, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of history is"
+  },
+  {
+    "pair_id": 55,
+    "category": "age_disposition_bare",
+    "description": "Age, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of novelty is"
+  },
+  {
+    "pair_id": 56,
+    "category": "age_disposition_bare",
+    "description": "Age, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of tradition is"
+  },
+  {
+    "pair_id": 56,
+    "category": "age_disposition_bare",
+    "description": "Age, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of change is"
+  },
+  {
+    "pair_id": 57,
+    "category": "age_disposition_sentence",
+    "description": "Age, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a old person."
+  },
+  {
+    "pair_id": 57,
+    "category": "age_disposition_sentence",
+    "description": "Age, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a young person."
+  },
+  {
+    "pair_id": 58,
+    "category": "age_disposition_sentence",
+    "description": "Age, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a ancient person."
+  },
+  {
+    "pair_id": 58,
+    "category": "age_disposition_sentence",
+    "description": "Age, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a modern person."
+  },
+  {
+    "pair_id": 59,
+    "category": "age_disposition_sentence",
+    "description": "Age, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a mature person."
+  },
+  {
+    "pair_id": 59,
+    "category": "age_disposition_sentence",
+    "description": "Age, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a fresh person."
+  }
+]

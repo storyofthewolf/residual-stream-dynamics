@@ -47,16 +47,51 @@ operationalization here, but this asymmetry should be flagged as a caveat in any
 writeup rather than treated as equivalent to the other four foundations.
 
 --------------------------------------------------------------------------
+Word choice is constrained by TOKENIZATION, not by intensity
+--------------------------------------------------------------------------
+Every virtue/vice pair is token-count matched in BOTH the GPT-2 and Pythia
+tokenizers: the two poles encode to the same number of tokens as each other
+within each tokenizer. Absolute length varies by cell (a pair may be 1 token in
+GPT-2 and 2 in Pythia); what is held fixed is that virtue and vice never differ.
+
+This matters because English builds vice terms morphologically, by prefixing
+negations onto virtue stems — dis+loyalty, in+subordination, un+faithful — and
+BPE splits on exactly those affixes. In the first draft of this corpus, vice
+words averaged 1.88 tokens against virtue's 1.42, and vice was longer in 27 of
+60 pairs but shorter in only 7. That bias aligns perfectly with `role`, and it
+points the same direction across all five foundations, so it would masquerade as
+precisely the "common signature of moral polarity" this corpus is meant to test.
+A pilot run on gpt2-small showed the layer-9 virtue-vice effect was ~10x larger
+in length-mismatched pairs than in matched ones.
+
+Matching costs some construct fidelity. Known drift, to weigh in any writeup:
+  - "falsely" serves as the vice adverb for BOTH fairness and loyalty
+    (act/sentence r1), weakening the foundation-specific contrast there.
+  - sanctity/disposition/bare uses purity-corruption, grace-vice, virtue-sin;
+    "corruption" is also the fairness vice noun, and virtue/vice are generic
+    moral terms rather than sanctity-specific ones.
+  - care/act/sentence r3 "softly"-"violently" drifts toward manner-of-motion.
+  - authority/disposition/sentence r2 "disciplined"-"rude" is weak for
+    subversion; "rude" sits closer to Care/politeness.
+
+When re-deriving this list, verify matching against every tokenizer you intend
+to run. Single-token status is NOT portable across model families; these lists
+are matched for GPT-2 and Pythia only. Gemma and Llama need a fresh pass.
+
 NOTE — intensity is NOT implemented in this pass
 --------------------------------------------------------------------------
-The three replicates per cell are informal mild/moderate/severe orderings by
-general usage judgment. They are NOT validated against any lexicon and carry no
-intensity semantics in the emitted corpus. A future pass will re-derive both the
-word choices and their ordering from continuous scores in MoralStrength (Araque
-et al. 2020) or eMFD (Hopp et al. 2021). That pass will require a new
-`intensity_score` field threaded through ActivationRecord and EntropyRecord and
-through their .npz save/load functions — a real schema change, explicitly out of
-scope now.
+The three replicates per cell are NOT an intensity ordering. They were once
+informal mild/moderate/severe orderings, but token-matching reordered and
+replaced words freely, so any residual ordering is now coincidental. They are
+unvalidated against any lexicon and carry no intensity semantics.
+
+A future pass will re-derive word choices from continuous scores in
+MoralStrength (Araque et al. 2020) or eMFD (Hopp et al. 2021), and will have to
+satisfy the token-matching constraint above simultaneously — the two constraints
+interact, and the intersection may be empty for some cells. That pass will also
+require a new `intensity_score` field threaded through ActivationRecord and
+EntropyRecord and through their .npz save/load functions — a real schema change,
+explicitly out of scope now.
 
 Do NOT encode intensity into `category` or `pair_id`. Doing so would fragment
 the 3 replicates into separate categories and defeat their purpose: they are
@@ -98,67 +133,67 @@ TEMPLATES = {
     # ---- Care/Harm ----
     ("care", "act", "bare"): (
         "The act of {word} is",
-        ["comforting", "protecting", "nurturing"],
-        ["tormenting", "neglecting", "harming"],
+        ["comforting", "nurturing", "protecting"],
+        ["hurting", "harming", "attacking"],
     ),
     ("care", "act", "sentence"): (
         "She treated the injured stranger {word}.",
-        ["gently", "kindly", "compassionately"],
-        ["cruelly", "harshly", "brutally"],
+        ["gently", "kindly", "softly"],
+        ["roughly", "badly", "violently"],
     ),
     ("care", "disposition", "bare"): (
         "The trait of {word} is",
-        ["kindness", "compassion", "gentleness"],
-        ["cruelty", "harshness", "brutality"],
+        ["kindness", "compassion", "mercy"],
+        ["cruelty", "brutality", "malice"],
     ),
     ("care", "disposition", "sentence"): (
         "She is a {word} person.",
-        ["kind", "gentle", "compassionate"],
+        ["kind", "gentle", "caring"],
         ["cruel", "harsh", "brutal"],
     ),
 
     # ---- Fairness/Cheating ----
     ("fairness", "act", "bare"): (
         "The act of {word} is",
-        ["sharing", "cooperating", "reciprocating"],
-        ["cheating", "exploiting", "stealing"],
+        ["sharing", "giving", "cooperating"],
+        ["cheating", "exploiting", "robbing"],
     ),
     ("fairness", "act", "sentence"): (
         "She treated her business partner {word}.",
-        ["fairly", "honestly", "equitably"],
-        ["unfairly", "dishonestly", "deceitfully"],
+        ["fairly", "equitably", "justly"],
+        ["falsely", "dishonestly", "deceitfully"],
     ),
     ("fairness", "disposition", "bare"): (
         "The trait of {word} is",
         ["fairness", "honesty", "integrity"],
-        ["dishonesty", "corruption", "deceit"],
+        ["corruption", "deceit", "greed"],
     ),
     ("fairness", "disposition", "sentence"): (
         "She is a {word} person.",
-        ["fair", "honest", "principled"],
-        ["dishonest", "corrupt", "deceitful"],
+        ["fair", "truthful", "honest"],
+        ["corrupt", "dishonest", "greedy"],
     ),
 
     # ---- Loyalty/Betrayal ----
     ("loyalty", "act", "bare"): (
         "The act of {word} is",
-        ["supporting", "defending", "upholding"],
-        ["betraying", "abandoning", "deserting"],
+        ["upholding", "supporting", "defending"],
+        ["abandoning", "leaving", "denying"],
     ),
     ("loyalty", "act", "sentence"): (
         "She treated her closest friend {word}.",
-        ["loyally", "faithfully", "devotedly"],
-        ["disloyally", "treacherously", "unfaithfully"],
+        ["faithfully", "devotedly", "loyally"],
+        ["falsely", "treacherously", "perfidiously"],
     ),
     ("loyalty", "disposition", "bare"): (
         "The trait of {word} is",
-        ["loyalty", "faithfulness", "devotion"],
-        ["disloyalty", "treachery", "betrayal"],
+        ["loyalty", "devotion", "faithfulness"],
+        ["betrayal", "treason", "treachery"],
     ),
     ("loyalty", "disposition", "sentence"): (
         "She is a {word} person.",
-        ["loyal", "faithful", "devoted"],
-        ["disloyal", "treacherous", "unfaithful"],
+        ["loyal", "steadfast", "dependable"],
+        ["false", "treacherous", "faithless"],
     ),
 
     # ---- Authority/Subversion ----
@@ -166,45 +201,45 @@ TEMPLATES = {
     # the other four. Conventional MFT operationalization is followed here.
     ("authority", "act", "bare"): (
         "The act of {word} is",
-        ["obeying", "deferring", "complying"],
-        ["defying", "disobeying", "rebelling"],
+        ["following", "serving", "submitting"],
+        ["resisting", "opposing", "refusing"],
     ),
     ("authority", "act", "sentence"): (
         "She treated her commanding officer {word}.",
-        ["obediently", "deferentially", "dutifully"],
-        ["defiantly", "insubordinately", "rebelliously"],
+        ["obediently", "humbly", "compliantly"],
+        ["defiantly", "rebelliously", "brazenly"],
     ),
     ("authority", "disposition", "bare"): (
         "The trait of {word} is",
-        ["obedience", "deference", "discipline"],
-        ["insubordination", "defiance", "rebelliousness"],
+        ["obedience", "discipline", "respect"],
+        ["rebellion", "disrespect", "disorder"],
     ),
     ("authority", "disposition", "sentence"): (
         "She is a {word} person.",
-        ["obedient", "dutiful", "disciplined"],
-        ["insubordinate", "defiant", "rebellious"],
+        ["obedient", "disciplined", "meek"],
+        ["defiant", "rude", "unruly"],
     ),
 
     # ---- Sanctity/Degradation ----
     ("sanctity", "act", "bare"): (
         "The act of {word} is",
-        ["purifying", "honoring", "revering"],
-        ["defiling", "desecrating", "contaminating"],
+        ["honoring", "purifying", "revering"],
+        ["cursing", "defiling", "contaminating"],
     ),
     ("sanctity", "act", "sentence"): (
         "She treated the sacred site {word}.",
-        ["reverently", "respectfully", "devoutly"],
-        ["disrespectfully", "sacrilegiously", "profanely"],
+        ["piously", "devoutly", "humbly"],
+        ["disrespectfully", "crudely", "rudely"],
     ),
     ("sanctity", "disposition", "bare"): (
         "The trait of {word} is",
-        ["purity", "reverence", "sanctity"],
-        ["impurity", "profanity", "depravity"],
+        ["purity", "grace", "virtue"],
+        ["corruption", "vice", "sin"],
     ),
     ("sanctity", "disposition", "sentence"): (
         "She is a {word} person.",
-        ["pure", "reverent", "devout"],
-        ["impure", "profane", "depraved"],
+        ["pure", "devout", "holy"],
+        ["filthy", "obscene", "corrupt"],
     ),
 }
 
@@ -260,6 +295,45 @@ def build_corpus(pairs=None):
     return corpus
 
 
+# Tokenizers the word lists are matched against. Adding a model family here
+# will surface any cell whose pair does not match under it.
+TOKENIZERS_TO_CHECK = ["gpt2", "EleutherAI/pythia-160m"]
+
+
+def check_token_matching(tokenizers=TOKENIZERS_TO_CHECK):
+    """Verify every virtue/vice pair encodes to the same token count.
+
+    Matching is required *within* each tokenizer, not across them: a pair may
+    be 1 token in GPT-2 and 2 in Pythia, so long as virtue and vice agree in
+    each. See the module docstring for why this invariant matters.
+
+    Returns a list of problem strings; empty means clean. Returns [] (skip,
+    not pass) if transformers or the tokenizer files are unavailable, so
+    corpus generation works offline.
+    """
+    try:
+        from transformers import AutoTokenizer
+    except ImportError:
+        return []
+
+    problems = []
+    for hf_name in tokenizers:
+        try:
+            tok = AutoTokenizer.from_pretrained(hf_name)
+        except Exception:
+            continue  # offline or uncached; skip this tokenizer
+        for (foundation, level, style), (_, virtues, vices) in TEMPLATES.items():
+            for i, (v, c) in enumerate(zip(virtues, vices)):
+                nv = len(tok.encode(" " + v))
+                nc = len(tok.encode(" " + c))
+                if nv != nc:
+                    problems.append(
+                        f"{foundation}/{level}/{style} r{i + 1}: token-count "
+                        f"mismatch under {hf_name}: {v!r}={nv} vs {c!r}={nc}"
+                    )
+    return problems
+
+
 def validate_corpus(pairs=None):
     """Check the expanded pair list for the mistakes that are easy to make.
 
@@ -298,6 +372,13 @@ def validate_corpus(pairs=None):
     for i, p in enumerate(pairs):
         if p[0] == p[1]:
             problems.append(f"pair {i}: base and contrast are identical: {p[0]!r}")
+
+    # Token-count matching is the whole point of the current word lists (see
+    # module docstring). Verify it when the tokenizers are available, so an
+    # edit cannot silently reintroduce the virtue/vice length confound.
+    # Skipped rather than failed when transformers is absent, so corpus
+    # generation never hard-depends on it.
+    problems.extend(check_token_matching())
 
     # Descriptions must be unique so --list-categories is unambiguous.
     seen = set()
