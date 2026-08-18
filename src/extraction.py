@@ -171,6 +171,17 @@ class ActivationRecord:
 # save_ablation_records in their respective compute modules.
 # ============================================================================
 
+def _or_none(value):
+    """Restore an optional metadata string from its on-disk form.
+
+    Empty string is the sentinel for "absent". Comparing to "" explicitly
+    (rather than `str(value) or None`) keeps legitimately falsy values such as
+    pair_id 0 from being silently loaded back as None.
+    """
+    s = str(value)
+    return s if s != "" else None
+
+
 def save_activation_records(records: list, path) -> None:
     """Save a list of ActivationRecords to a single .npz file.
 
@@ -209,9 +220,9 @@ def save_activation_records(records: list, path) -> None:
         hook_patterns = np.array([r.hook_pattern for r in records], dtype=object),
         d_models      = np.array([r.d_model      for r in records], dtype=np.int32),
         has_resid_mid = np.array([r.has_resid_mid for r in records], dtype=bool),
-        pair_ids      = np.array([r.pair_id   or "" for r in records], dtype=object),
-        roles         = np.array([r.role       or "" for r in records], dtype=object),
-        categories    = np.array([r.category   or "" for r in records], dtype=object),
+        pair_ids      = np.array(["" if r.pair_id  is None else str(r.pair_id)  for r in records], dtype=object),
+        roles         = np.array(["" if r.role     is None else str(r.role)     for r in records], dtype=object),
+        categories    = np.array(["" if r.category is None else str(r.category) for r in records], dtype=object),
     )
     print(f"  Saved {n} ActivationRecords to {path}")
 
@@ -235,9 +246,12 @@ def load_activation_records(path) -> list:
             n_layers      = nl,
             seq_len       = sl,
             has_resid_mid = bool(d["has_resid_mid"][i]),
-            pair_id       = str(d["pair_ids"][i])   or None,
-            role          = str(d["roles"][i])       or None,
-            category      = str(d["categories"][i]) or None,
+            # Empty string is the on-disk sentinel for "absent". Compare to ""
+            # explicitly rather than using `or None`, so a legitimately falsy
+            # value such as pair_id 0 survives the round trip.
+            pair_id       = _or_none(d["pair_ids"][i]),
+            role          = _or_none(d["roles"][i]),
+            category      = _or_none(d["categories"][i]),
         ))
     return records
 

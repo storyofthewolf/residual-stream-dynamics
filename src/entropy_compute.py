@@ -90,7 +90,7 @@ import numpy as np
 warnings.filterwarnings("ignore", category=UserWarning, module="transformer_lens")
 logging.getLogger("transformer_lens").setLevel(logging.ERROR)
 
-from extraction import ActivationRecord
+from extraction import ActivationRecord, _or_none
 from math_utils import (  # noqa: F401 — compute_wu_svd/renyi_entropy re-exported for callers
     compute_wu_svd,
     renyi_entropy,
@@ -667,9 +667,9 @@ def save_entropy_records(records: list, path) -> None:
     norm_keys   = np.array([r.norm_key   for r in records], dtype=object)
     alphas      = np.array([r.alpha      for r in records], dtype=np.float32)
     d_models    = np.array([r.d_model    for r in records], dtype=np.int32)
-    roles       = np.array([r.role      or "" for r in records], dtype=object)
-    categories  = np.array([r.category  or "" for r in records], dtype=object)
-    pair_ids    = np.array([r.pair_id   or "" for r in records], dtype=object)
+    roles       = np.array(["" if r.role     is None else str(r.role)     for r in records], dtype=object)
+    categories  = np.array(["" if r.category is None else str(r.category) for r in records], dtype=object)
+    pair_ids    = np.array(["" if r.pair_id  is None else str(r.pair_id)  for r in records], dtype=object)
 
     np.savez(
         path,
@@ -721,9 +721,9 @@ def load_entropy_records(path) -> list:
             alpha      = float(d["alphas"][i]),
             surface    = surface,
             d_model    = int(d["d_models"][i]),
-            role       = str(d["roles"][i])      or None,
-            category   = str(d["categories"][i]) or None,
-            pair_id    = str(d["pair_ids"][i])   or None,
+            role       = _or_none(d["roles"][i]),
+            category   = _or_none(d["categories"][i]),
+            pair_id    = _or_none(d["pair_ids"][i]),
         ))
     return records
 

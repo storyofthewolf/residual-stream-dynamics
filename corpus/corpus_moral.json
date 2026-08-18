@@ -1,0 +1,842 @@
+[
+  {
+    "pair_id": 0,
+    "category": "care_act_bare",
+    "description": "Care/Harm, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of comforting is"
+  },
+  {
+    "pair_id": 0,
+    "category": "care_act_bare",
+    "description": "Care/Harm, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of tormenting is"
+  },
+  {
+    "pair_id": 1,
+    "category": "care_act_bare",
+    "description": "Care/Harm, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of protecting is"
+  },
+  {
+    "pair_id": 1,
+    "category": "care_act_bare",
+    "description": "Care/Harm, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of neglecting is"
+  },
+  {
+    "pair_id": 2,
+    "category": "care_act_bare",
+    "description": "Care/Harm, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of nurturing is"
+  },
+  {
+    "pair_id": 2,
+    "category": "care_act_bare",
+    "description": "Care/Harm, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of harming is"
+  },
+  {
+    "pair_id": 3,
+    "category": "care_act_sentence",
+    "description": "Care/Harm, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger gently."
+  },
+  {
+    "pair_id": 3,
+    "category": "care_act_sentence",
+    "description": "Care/Harm, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger cruelly."
+  },
+  {
+    "pair_id": 4,
+    "category": "care_act_sentence",
+    "description": "Care/Harm, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger kindly."
+  },
+  {
+    "pair_id": 4,
+    "category": "care_act_sentence",
+    "description": "Care/Harm, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger harshly."
+  },
+  {
+    "pair_id": 5,
+    "category": "care_act_sentence",
+    "description": "Care/Harm, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the injured stranger compassionately."
+  },
+  {
+    "pair_id": 5,
+    "category": "care_act_sentence",
+    "description": "Care/Harm, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the injured stranger brutally."
+  },
+  {
+    "pair_id": 6,
+    "category": "care_disposition_bare",
+    "description": "Care/Harm, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of kindness is"
+  },
+  {
+    "pair_id": 6,
+    "category": "care_disposition_bare",
+    "description": "Care/Harm, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of cruelty is"
+  },
+  {
+    "pair_id": 7,
+    "category": "care_disposition_bare",
+    "description": "Care/Harm, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of compassion is"
+  },
+  {
+    "pair_id": 7,
+    "category": "care_disposition_bare",
+    "description": "Care/Harm, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of harshness is"
+  },
+  {
+    "pair_id": 8,
+    "category": "care_disposition_bare",
+    "description": "Care/Harm, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of gentleness is"
+  },
+  {
+    "pair_id": 8,
+    "category": "care_disposition_bare",
+    "description": "Care/Harm, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of brutality is"
+  },
+  {
+    "pair_id": 9,
+    "category": "care_disposition_sentence",
+    "description": "Care/Harm, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a kind person."
+  },
+  {
+    "pair_id": 9,
+    "category": "care_disposition_sentence",
+    "description": "Care/Harm, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a cruel person."
+  },
+  {
+    "pair_id": 10,
+    "category": "care_disposition_sentence",
+    "description": "Care/Harm, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a gentle person."
+  },
+  {
+    "pair_id": 10,
+    "category": "care_disposition_sentence",
+    "description": "Care/Harm, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a harsh person."
+  },
+  {
+    "pair_id": 11,
+    "category": "care_disposition_sentence",
+    "description": "Care/Harm, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a compassionate person."
+  },
+  {
+    "pair_id": 11,
+    "category": "care_disposition_sentence",
+    "description": "Care/Harm, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a brutal person."
+  },
+  {
+    "pair_id": 12,
+    "category": "fairness_act_bare",
+    "description": "Fairness/Cheating, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of sharing is"
+  },
+  {
+    "pair_id": 12,
+    "category": "fairness_act_bare",
+    "description": "Fairness/Cheating, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of cheating is"
+  },
+  {
+    "pair_id": 13,
+    "category": "fairness_act_bare",
+    "description": "Fairness/Cheating, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of cooperating is"
+  },
+  {
+    "pair_id": 13,
+    "category": "fairness_act_bare",
+    "description": "Fairness/Cheating, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of exploiting is"
+  },
+  {
+    "pair_id": 14,
+    "category": "fairness_act_bare",
+    "description": "Fairness/Cheating, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of reciprocating is"
+  },
+  {
+    "pair_id": 14,
+    "category": "fairness_act_bare",
+    "description": "Fairness/Cheating, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of stealing is"
+  },
+  {
+    "pair_id": 15,
+    "category": "fairness_act_sentence",
+    "description": "Fairness/Cheating, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated her business partner fairly."
+  },
+  {
+    "pair_id": 15,
+    "category": "fairness_act_sentence",
+    "description": "Fairness/Cheating, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated her business partner unfairly."
+  },
+  {
+    "pair_id": 16,
+    "category": "fairness_act_sentence",
+    "description": "Fairness/Cheating, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated her business partner honestly."
+  },
+  {
+    "pair_id": 16,
+    "category": "fairness_act_sentence",
+    "description": "Fairness/Cheating, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated her business partner dishonestly."
+  },
+  {
+    "pair_id": 17,
+    "category": "fairness_act_sentence",
+    "description": "Fairness/Cheating, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated her business partner equitably."
+  },
+  {
+    "pair_id": 17,
+    "category": "fairness_act_sentence",
+    "description": "Fairness/Cheating, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated her business partner deceitfully."
+  },
+  {
+    "pair_id": 18,
+    "category": "fairness_disposition_bare",
+    "description": "Fairness/Cheating, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of fairness is"
+  },
+  {
+    "pair_id": 18,
+    "category": "fairness_disposition_bare",
+    "description": "Fairness/Cheating, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of dishonesty is"
+  },
+  {
+    "pair_id": 19,
+    "category": "fairness_disposition_bare",
+    "description": "Fairness/Cheating, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of honesty is"
+  },
+  {
+    "pair_id": 19,
+    "category": "fairness_disposition_bare",
+    "description": "Fairness/Cheating, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of corruption is"
+  },
+  {
+    "pair_id": 20,
+    "category": "fairness_disposition_bare",
+    "description": "Fairness/Cheating, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of integrity is"
+  },
+  {
+    "pair_id": 20,
+    "category": "fairness_disposition_bare",
+    "description": "Fairness/Cheating, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of deceit is"
+  },
+  {
+    "pair_id": 21,
+    "category": "fairness_disposition_sentence",
+    "description": "Fairness/Cheating, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a fair person."
+  },
+  {
+    "pair_id": 21,
+    "category": "fairness_disposition_sentence",
+    "description": "Fairness/Cheating, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a dishonest person."
+  },
+  {
+    "pair_id": 22,
+    "category": "fairness_disposition_sentence",
+    "description": "Fairness/Cheating, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a honest person."
+  },
+  {
+    "pair_id": 22,
+    "category": "fairness_disposition_sentence",
+    "description": "Fairness/Cheating, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a corrupt person."
+  },
+  {
+    "pair_id": 23,
+    "category": "fairness_disposition_sentence",
+    "description": "Fairness/Cheating, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a principled person."
+  },
+  {
+    "pair_id": 23,
+    "category": "fairness_disposition_sentence",
+    "description": "Fairness/Cheating, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a deceitful person."
+  },
+  {
+    "pair_id": 24,
+    "category": "loyalty_act_bare",
+    "description": "Loyalty/Betrayal, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of supporting is"
+  },
+  {
+    "pair_id": 24,
+    "category": "loyalty_act_bare",
+    "description": "Loyalty/Betrayal, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of betraying is"
+  },
+  {
+    "pair_id": 25,
+    "category": "loyalty_act_bare",
+    "description": "Loyalty/Betrayal, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of defending is"
+  },
+  {
+    "pair_id": 25,
+    "category": "loyalty_act_bare",
+    "description": "Loyalty/Betrayal, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of abandoning is"
+  },
+  {
+    "pair_id": 26,
+    "category": "loyalty_act_bare",
+    "description": "Loyalty/Betrayal, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of upholding is"
+  },
+  {
+    "pair_id": 26,
+    "category": "loyalty_act_bare",
+    "description": "Loyalty/Betrayal, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of deserting is"
+  },
+  {
+    "pair_id": 27,
+    "category": "loyalty_act_sentence",
+    "description": "Loyalty/Betrayal, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated her closest friend loyally."
+  },
+  {
+    "pair_id": 27,
+    "category": "loyalty_act_sentence",
+    "description": "Loyalty/Betrayal, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated her closest friend disloyally."
+  },
+  {
+    "pair_id": 28,
+    "category": "loyalty_act_sentence",
+    "description": "Loyalty/Betrayal, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated her closest friend faithfully."
+  },
+  {
+    "pair_id": 28,
+    "category": "loyalty_act_sentence",
+    "description": "Loyalty/Betrayal, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated her closest friend treacherously."
+  },
+  {
+    "pair_id": 29,
+    "category": "loyalty_act_sentence",
+    "description": "Loyalty/Betrayal, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated her closest friend devotedly."
+  },
+  {
+    "pair_id": 29,
+    "category": "loyalty_act_sentence",
+    "description": "Loyalty/Betrayal, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated her closest friend unfaithfully."
+  },
+  {
+    "pair_id": 30,
+    "category": "loyalty_disposition_bare",
+    "description": "Loyalty/Betrayal, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of loyalty is"
+  },
+  {
+    "pair_id": 30,
+    "category": "loyalty_disposition_bare",
+    "description": "Loyalty/Betrayal, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of disloyalty is"
+  },
+  {
+    "pair_id": 31,
+    "category": "loyalty_disposition_bare",
+    "description": "Loyalty/Betrayal, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of faithfulness is"
+  },
+  {
+    "pair_id": 31,
+    "category": "loyalty_disposition_bare",
+    "description": "Loyalty/Betrayal, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of treachery is"
+  },
+  {
+    "pair_id": 32,
+    "category": "loyalty_disposition_bare",
+    "description": "Loyalty/Betrayal, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of devotion is"
+  },
+  {
+    "pair_id": 32,
+    "category": "loyalty_disposition_bare",
+    "description": "Loyalty/Betrayal, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of betrayal is"
+  },
+  {
+    "pair_id": 33,
+    "category": "loyalty_disposition_sentence",
+    "description": "Loyalty/Betrayal, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a loyal person."
+  },
+  {
+    "pair_id": 33,
+    "category": "loyalty_disposition_sentence",
+    "description": "Loyalty/Betrayal, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a disloyal person."
+  },
+  {
+    "pair_id": 34,
+    "category": "loyalty_disposition_sentence",
+    "description": "Loyalty/Betrayal, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a faithful person."
+  },
+  {
+    "pair_id": 34,
+    "category": "loyalty_disposition_sentence",
+    "description": "Loyalty/Betrayal, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a treacherous person."
+  },
+  {
+    "pair_id": 35,
+    "category": "loyalty_disposition_sentence",
+    "description": "Loyalty/Betrayal, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a devoted person."
+  },
+  {
+    "pair_id": 35,
+    "category": "loyalty_disposition_sentence",
+    "description": "Loyalty/Betrayal, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a unfaithful person."
+  },
+  {
+    "pair_id": 36,
+    "category": "authority_act_bare",
+    "description": "Authority/Subversion, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of obeying is"
+  },
+  {
+    "pair_id": 36,
+    "category": "authority_act_bare",
+    "description": "Authority/Subversion, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of defying is"
+  },
+  {
+    "pair_id": 37,
+    "category": "authority_act_bare",
+    "description": "Authority/Subversion, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of deferring is"
+  },
+  {
+    "pair_id": 37,
+    "category": "authority_act_bare",
+    "description": "Authority/Subversion, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of disobeying is"
+  },
+  {
+    "pair_id": 38,
+    "category": "authority_act_bare",
+    "description": "Authority/Subversion, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of complying is"
+  },
+  {
+    "pair_id": 38,
+    "category": "authority_act_bare",
+    "description": "Authority/Subversion, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of rebelling is"
+  },
+  {
+    "pair_id": 39,
+    "category": "authority_act_sentence",
+    "description": "Authority/Subversion, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated her commanding officer obediently."
+  },
+  {
+    "pair_id": 39,
+    "category": "authority_act_sentence",
+    "description": "Authority/Subversion, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated her commanding officer defiantly."
+  },
+  {
+    "pair_id": 40,
+    "category": "authority_act_sentence",
+    "description": "Authority/Subversion, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated her commanding officer deferentially."
+  },
+  {
+    "pair_id": 40,
+    "category": "authority_act_sentence",
+    "description": "Authority/Subversion, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated her commanding officer insubordinately."
+  },
+  {
+    "pair_id": 41,
+    "category": "authority_act_sentence",
+    "description": "Authority/Subversion, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated her commanding officer dutifully."
+  },
+  {
+    "pair_id": 41,
+    "category": "authority_act_sentence",
+    "description": "Authority/Subversion, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated her commanding officer rebelliously."
+  },
+  {
+    "pair_id": 42,
+    "category": "authority_disposition_bare",
+    "description": "Authority/Subversion, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of obedience is"
+  },
+  {
+    "pair_id": 42,
+    "category": "authority_disposition_bare",
+    "description": "Authority/Subversion, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of insubordination is"
+  },
+  {
+    "pair_id": 43,
+    "category": "authority_disposition_bare",
+    "description": "Authority/Subversion, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of deference is"
+  },
+  {
+    "pair_id": 43,
+    "category": "authority_disposition_bare",
+    "description": "Authority/Subversion, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of defiance is"
+  },
+  {
+    "pair_id": 44,
+    "category": "authority_disposition_bare",
+    "description": "Authority/Subversion, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of discipline is"
+  },
+  {
+    "pair_id": 44,
+    "category": "authority_disposition_bare",
+    "description": "Authority/Subversion, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of rebelliousness is"
+  },
+  {
+    "pair_id": 45,
+    "category": "authority_disposition_sentence",
+    "description": "Authority/Subversion, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a obedient person."
+  },
+  {
+    "pair_id": 45,
+    "category": "authority_disposition_sentence",
+    "description": "Authority/Subversion, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a insubordinate person."
+  },
+  {
+    "pair_id": 46,
+    "category": "authority_disposition_sentence",
+    "description": "Authority/Subversion, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a dutiful person."
+  },
+  {
+    "pair_id": 46,
+    "category": "authority_disposition_sentence",
+    "description": "Authority/Subversion, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a defiant person."
+  },
+  {
+    "pair_id": 47,
+    "category": "authority_disposition_sentence",
+    "description": "Authority/Subversion, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a disciplined person."
+  },
+  {
+    "pair_id": 47,
+    "category": "authority_disposition_sentence",
+    "description": "Authority/Subversion, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a rebellious person."
+  },
+  {
+    "pair_id": 48,
+    "category": "sanctity_act_bare",
+    "description": "Sanctity/Degradation, act, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The act of purifying is"
+  },
+  {
+    "pair_id": 48,
+    "category": "sanctity_act_bare",
+    "description": "Sanctity/Degradation, act, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The act of defiling is"
+  },
+  {
+    "pair_id": 49,
+    "category": "sanctity_act_bare",
+    "description": "Sanctity/Degradation, act, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The act of honoring is"
+  },
+  {
+    "pair_id": 49,
+    "category": "sanctity_act_bare",
+    "description": "Sanctity/Degradation, act, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The act of desecrating is"
+  },
+  {
+    "pair_id": 50,
+    "category": "sanctity_act_bare",
+    "description": "Sanctity/Degradation, act, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The act of revering is"
+  },
+  {
+    "pair_id": 50,
+    "category": "sanctity_act_bare",
+    "description": "Sanctity/Degradation, act, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The act of contaminating is"
+  },
+  {
+    "pair_id": 51,
+    "category": "sanctity_act_sentence",
+    "description": "Sanctity/Degradation, act, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She treated the sacred site reverently."
+  },
+  {
+    "pair_id": 51,
+    "category": "sanctity_act_sentence",
+    "description": "Sanctity/Degradation, act, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She treated the sacred site disrespectfully."
+  },
+  {
+    "pair_id": 52,
+    "category": "sanctity_act_sentence",
+    "description": "Sanctity/Degradation, act, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She treated the sacred site respectfully."
+  },
+  {
+    "pair_id": 52,
+    "category": "sanctity_act_sentence",
+    "description": "Sanctity/Degradation, act, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She treated the sacred site sacrilegiously."
+  },
+  {
+    "pair_id": 53,
+    "category": "sanctity_act_sentence",
+    "description": "Sanctity/Degradation, act, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She treated the sacred site devoutly."
+  },
+  {
+    "pair_id": 53,
+    "category": "sanctity_act_sentence",
+    "description": "Sanctity/Degradation, act, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She treated the sacred site profanely."
+  },
+  {
+    "pair_id": 54,
+    "category": "sanctity_disposition_bare",
+    "description": "Sanctity/Degradation, disposition, bare, replicate 1/3",
+    "role": "base",
+    "prompt": "The trait of purity is"
+  },
+  {
+    "pair_id": 54,
+    "category": "sanctity_disposition_bare",
+    "description": "Sanctity/Degradation, disposition, bare, replicate 1/3",
+    "role": "contrast",
+    "prompt": "The trait of impurity is"
+  },
+  {
+    "pair_id": 55,
+    "category": "sanctity_disposition_bare",
+    "description": "Sanctity/Degradation, disposition, bare, replicate 2/3",
+    "role": "base",
+    "prompt": "The trait of reverence is"
+  },
+  {
+    "pair_id": 55,
+    "category": "sanctity_disposition_bare",
+    "description": "Sanctity/Degradation, disposition, bare, replicate 2/3",
+    "role": "contrast",
+    "prompt": "The trait of profanity is"
+  },
+  {
+    "pair_id": 56,
+    "category": "sanctity_disposition_bare",
+    "description": "Sanctity/Degradation, disposition, bare, replicate 3/3",
+    "role": "base",
+    "prompt": "The trait of sanctity is"
+  },
+  {
+    "pair_id": 56,
+    "category": "sanctity_disposition_bare",
+    "description": "Sanctity/Degradation, disposition, bare, replicate 3/3",
+    "role": "contrast",
+    "prompt": "The trait of depravity is"
+  },
+  {
+    "pair_id": 57,
+    "category": "sanctity_disposition_sentence",
+    "description": "Sanctity/Degradation, disposition, sentence, replicate 1/3",
+    "role": "base",
+    "prompt": "She is a pure person."
+  },
+  {
+    "pair_id": 57,
+    "category": "sanctity_disposition_sentence",
+    "description": "Sanctity/Degradation, disposition, sentence, replicate 1/3",
+    "role": "contrast",
+    "prompt": "She is a impure person."
+  },
+  {
+    "pair_id": 58,
+    "category": "sanctity_disposition_sentence",
+    "description": "Sanctity/Degradation, disposition, sentence, replicate 2/3",
+    "role": "base",
+    "prompt": "She is a reverent person."
+  },
+  {
+    "pair_id": 58,
+    "category": "sanctity_disposition_sentence",
+    "description": "Sanctity/Degradation, disposition, sentence, replicate 2/3",
+    "role": "contrast",
+    "prompt": "She is a profane person."
+  },
+  {
+    "pair_id": 59,
+    "category": "sanctity_disposition_sentence",
+    "description": "Sanctity/Degradation, disposition, sentence, replicate 3/3",
+    "role": "base",
+    "prompt": "She is a devout person."
+  },
+  {
+    "pair_id": 59,
+    "category": "sanctity_disposition_sentence",
+    "description": "Sanctity/Degradation, disposition, sentence, replicate 3/3",
+    "role": "contrast",
+    "prompt": "She is a depraved person."
+  }
+]
