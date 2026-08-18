@@ -9,5 +9,8 @@ sae_lens>=6.37.6
 # API, so the pin does not force an ecosystem-wide upgrade.
 numpy>=1.26
 matplotlib>=3.8.0
+# Required by src/probe_compute.py (logistic probe, grouped CV, permutation null).
+# Colab preinstalls it, but a bare venv does not.
+scikit-learn>=1.3
 gradio>=6.0.0
 huggingface_hub>=0.36.0
