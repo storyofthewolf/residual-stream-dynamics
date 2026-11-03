@@ -52,6 +52,22 @@ src/mechanics_compute.py      COMPUTATION — residual stream trajectory mechani
                               cosine similarity curves (state-state, update-state, update-update).
                               save_mechanics_records / load_mechanics_records in this module.
 
+src/stats_utils.py            SHARED STATS — seeded pair bootstrap (pairs, not prompts, are the
+                              unit), percentile CIs, paired effect sizes, unpenalized logistic IRLS.
+
+src/ablation_controls_compute.py  COMPUTATION — Batch 1 controls on saved ablation results
+                              (reproduction, margins, random-subspace null, pre/post-LN, margin
+                              regression). Reads ablation .npz directly: load_ablation_records keeps a
+                              full array copy per record and OOMs on large-model files.
+
+src/markov_compute.py         COMPUTATION — entropy-rate analysis for corpus/markov_gen.py prompts
+                              (output-distribution stats, pair-bootstrap Spearman). No forward pass.
+
+src/toy_training.py           TRAINING — small attn-only HookedTransformers trained on in-context
+                              Markov chains (Phase 1 model hierarchy). Like extraction.py it PRODUCES
+                              the analyzed object, so it runs forward/backward passes; analysis code
+                              must still not. Checkpoints → data/toy/ (git-ignored).
+
 workflows/                    ORCHESTRATION — argument parsing, corpus iteration, save/load,
                               calls into compute modules, calls into plot modules. No computation
                               or plotting logic belongs here.
@@ -62,6 +78,12 @@ workflows/                    ORCHESTRATION — argument parsing, corpus iterati
   wu_subspace_analysis.py     — W_U subspace entropy workflow
   mechanics_analysis.py       — mechanics corpus workflow; saves MechanicsRecords to data/mechanics/
   single_prompt.py            — exploratory single-prompt workflow; saves ActivationRecords
+  ablation_controls_analysis.py — Batch 1 controls; staged (reproduce first, stops on failure)
+  markov_entropy_analysis.py  — Markov entropy-rate corpus; saves to data/markov/
+  toy_markov_train.py         — Phase 1 toy-transformer training; saves to data/toy/{run}/
+
+Research process: notes/predictions.md (author's predictions, written before runs) and
+notes/decision_log.md (every design choice, appended before results). Keep both current.
 
 plotting/entropy_plots.py     VISUALIZATION — workflow-layer figures produced by entropy_analysis.py.
 plotting/ablation_plots.py    VISUALIZATION — workflow-layer figures produced by ablation_analysis.py.
