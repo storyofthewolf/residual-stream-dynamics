@@ -1,0 +1,4002 @@
+[
+  {
+    "pair_id": 0,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      0
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " cloud horse river bread jacket mirror garden forest violin window ocean stone tiger lamp apple rabbit pencil bottle chair candle cloud horse river bread jacket mirror garden forest violin window ocean stone tiger lamp apple rabbit pencil bottle chair candle cloud horse river bread jacket mirror garden forest violin window ocean stone tiger lamp apple rabbit pencil bottle chair candle cloud horse river bread",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 0,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      0
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " cloud chair horse lamp rabbit lamp river jacket tiger bread forest horse chair mirror candle candle window lamp stone violin pencil horse garden window ocean mirror bottle stone rabbit bread bread mirror river ocean violin cloud violin forest rabbit forest cloud candle bottle window apple apple river tiger apple pencil horse cloud pencil garden chair jacket tiger river stone ocean bread bottle garden jacket",
+    "empirical_cond_entropy": 1.6083065481341585,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 1,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      1
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " mirror apple river tiger cloud stone forest rabbit bottle garden violin chair bread pencil jacket candle lamp window horse ocean mirror apple river tiger cloud stone forest rabbit bottle garden violin chair bread pencil jacket candle lamp window horse ocean mirror apple river tiger cloud stone forest rabbit bottle garden violin chair bread pencil jacket candle lamp window horse ocean mirror apple river tiger",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 1,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      1
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " bottle candle lamp river lamp violin chair bread bottle ocean mirror forest jacket apple tiger pencil violin river mirror jacket mirror stone rabbit apple cloud apple forest pencil horse tiger cloud river window pencil garden stone cloud ocean garden window lamp candle stone bread window bottle horse tiger ocean tiger jacket candle river horse violin garden chair chair rabbit rabbit bread mirror forest apple",
+    "empirical_cond_entropy": 1.600525198996491,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 2,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      2
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " horse cloud bread apple chair stone tiger violin lamp pencil jacket garden ocean candle forest river bottle mirror window rabbit horse cloud bread apple chair stone tiger violin lamp pencil jacket garden ocean candle forest river bottle mirror window rabbit horse cloud bread apple chair stone tiger violin lamp pencil jacket garden ocean candle forest river bottle mirror window rabbit horse cloud bread apple",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 2,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      2
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " mirror ocean bread candle violin chair stone stone lamp candle chair horse mirror bread garden tiger apple rabbit bread apple violin stone horse tiger ocean ocean garden jacket window rabbit tiger river garden bottle window forest forest candle jacket window cloud pencil cloud cloud river jacket cloud lamp horse bottle apple pencil chair pencil rabbit horse river forest bottle violin apple bread lamp mirror",
+    "empirical_cond_entropy": 1.6400525798801904,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 3,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      3
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " chair garden mirror rabbit ocean pencil horse bottle bread river cloud lamp jacket candle tiger apple stone violin window forest chair garden mirror rabbit ocean pencil horse bottle bread river cloud lamp jacket candle tiger apple stone violin window forest chair garden mirror rabbit ocean pencil horse bottle bread river cloud lamp jacket candle tiger apple stone violin window forest chair garden mirror rabbit",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 3,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      3
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " mirror rabbit river rabbit cloud bottle forest lamp ocean violin pencil apple bottle lamp violin chair chair mirror violin cloud pencil bread jacket horse pencil stone mirror garden stone candle jacket ocean candle garden stone chair window chair rabbit horse forest window cloud tiger horse window forest bottle bread jacket candle garden bread lamp garden mirror tiger ocean river apple rabbit apple tiger river",
+    "empirical_cond_entropy": 1.576560516388127,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 4,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      4
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " pencil ocean mirror forest chair lamp jacket violin horse apple bottle candle river stone cloud bread window garden rabbit tiger pencil ocean mirror forest chair lamp jacket violin horse apple bottle candle river stone cloud bread window garden rabbit tiger pencil ocean mirror forest chair lamp jacket violin horse apple bottle candle river stone cloud bread window garden rabbit tiger pencil ocean mirror forest",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 4,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      4
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " stone candle tiger river bottle pencil chair cloud cloud garden chair river window apple tiger jacket horse bottle window cloud lamp jacket pencil bottle horse rabbit ocean stone tiger mirror pencil apple garden mirror garden violin stone jacket forest pencil ocean forest window lamp mirror mirror forest bread forest violin bread bread river lamp horse candle chair ocean candle ocean rabbit violin apple rabbit",
+    "empirical_cond_entropy": 1.6717986116262222,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 5,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      5
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " river ocean pencil bread horse cloud forest jacket rabbit garden apple candle chair stone tiger lamp violin mirror bottle window river ocean pencil bread horse cloud forest jacket rabbit garden apple candle chair stone tiger lamp violin mirror bottle window river ocean pencil bread horse cloud forest jacket rabbit garden apple candle chair stone tiger lamp violin mirror bottle window river ocean pencil bread",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 5,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      5
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " pencil cloud lamp rabbit jacket lamp river window rabbit lamp violin tiger mirror tiger apple candle river bread candle mirror pencil apple ocean garden forest cloud cloud river forest ocean candle chair pencil bread window forest bottle bread rabbit stone violin bottle bread stone tiger violin window pencil horse stone chair mirror river jacket horse apple horse ocean chair garden garden ocean bottle jacket",
+    "empirical_cond_entropy": 1.6400525798801906,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 6,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      6
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " ocean apple tiger mirror stone rabbit cloud garden horse bread candle jacket river violin forest pencil window lamp bottle chair ocean apple tiger mirror stone rabbit cloud garden horse bread candle jacket river violin forest pencil window lamp bottle chair ocean apple tiger mirror stone rabbit cloud garden horse bread candle jacket river violin forest pencil window lamp bottle chair ocean apple tiger mirror",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 6,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      6
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " garden window lamp chair stone bread pencil tiger tiger violin garden jacket violin candle ocean window river bottle violin garden horse bottle cloud mirror forest mirror ocean mirror pencil apple chair window river candle ocean pencil forest apple lamp rabbit candle river bread stone tiger bottle rabbit ocean cloud bread cloud horse mirror horse jacket lamp jacket forest apple apple rabbit stone chair tiger",
+    "empirical_cond_entropy": 1.5370331355044278,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 7,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      7
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " forest lamp apple cloud rabbit ocean horse garden stone window bread jacket tiger pencil bottle river candle chair mirror violin forest lamp apple cloud rabbit ocean horse garden stone window bread jacket tiger pencil bottle river candle chair mirror violin forest lamp apple cloud rabbit ocean horse garden stone window bread jacket tiger pencil bottle river candle chair mirror violin forest lamp apple cloud",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 7,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      7
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " cloud rabbit bottle river ocean ocean rabbit candle bottle mirror garden jacket tiger stone lamp horse cloud violin pencil river garden window apple ocean bread chair apple cloud jacket horse jacket bottle lamp pencil mirror forest horse apple violin window rabbit candle candle tiger stone mirror window cloud pencil apple tiger forest river chair stone bread bread violin garden lamp chair lamp forest forest",
+    "empirical_cond_entropy": 1.6005251989964913,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 8,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      8
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " bread forest mirror garden violin window stone ocean apple river chair bottle horse jacket candle cloud lamp pencil tiger rabbit bread forest mirror garden violin window stone ocean apple river chair bottle horse jacket candle cloud lamp pencil tiger rabbit bread forest mirror garden violin window stone ocean apple river chair bottle horse jacket candle cloud lamp pencil tiger rabbit bread forest mirror garden",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 8,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      8
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " garden forest chair mirror horse window apple jacket horse forest river bread stone violin cloud mirror ocean ocean chair bottle mirror garden horse candle jacket bread mirror rabbit tiger window cloud violin river forest garden bread candle apple cloud tiger river candle bottle lamp apple stone lamp window ocean rabbit jacket rabbit pencil bottle tiger stone garden violin bread chair lamp pencil forest pencil",
+    "empirical_cond_entropy": 1.6717986116262222,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 9,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      9
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " mirror forest jacket window stone lamp ocean candle chair apple horse cloud violin pencil bottle tiger river rabbit bread garden mirror forest jacket window stone lamp ocean candle chair apple horse cloud violin pencil bottle tiger river rabbit bread garden mirror forest jacket window stone lamp ocean candle chair apple horse cloud violin pencil bottle tiger river rabbit bread garden mirror forest jacket window",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 9,
+    "category": "markov_H0.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.0,
+    "entropy_rate_true": 0.0,
+    "lam": 0.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      0,
+      9
+    ],
+    "description": "Markov chain, H=0.00 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " pencil jacket forest jacket bread violin river ocean ocean garden bottle violin mirror window bread pencil lamp tiger chair stone ocean bread jacket horse apple apple lamp stone bottle rabbit river chair horse stone cloud bottle horse cloud mirror tiger forest candle forest mirror lamp violin apple river jacket candle chair window cloud mirror pencil forest window garden window garden rabbit tiger candle rabbit",
+    "empirical_cond_entropy": 1.608306548134159,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 10,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      0
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " chair bread tiger window cloud jacket candle garden horse rabbit forest lamp stone river apple violin ocean bottle mirror pencil chair bread tiger window cloud jacket candle garden horse violin ocean bottle mirror pencil chair bread tiger window cloud jacket candle garden horse rabbit forest lamp stone river apple violin ocean bottle mirror pencil chair bread tiger window cloud jacket candle garden garden horse",
+    "empirical_cond_entropy": 0.10102425359682984,
+    "empirical_unigram_entropy": 4.259623781480403
+  },
+  {
+    "pair_id": 10,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      0
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " jacket bread cloud chair chair cloud forest cloud jacket lamp candle horse window bread candle mirror mirror window jacket chair garden ocean apple horse garden pencil bread window bottle violin river violin horse rabbit stone candle rabbit jacket bottle pencil tiger river tiger ocean ocean garden chair cloud garden lamp pencil tiger apple window violin garden mirror forest stone bottle candle bread tiger horse",
+    "empirical_cond_entropy": 1.652999452181232,
+    "empirical_unigram_entropy": 4.259623781480403
+  },
+  {
+    "pair_id": 11,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      1
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " candle jacket bread lamp river mirror violin window ocean cloud rabbit tiger forest bottle chair garden pencil apple stone horse candle jacket bread horse candle jacket bread lamp river mirror violin window ocean cloud rabbit tiger forest bottle chair garden jacket bread lamp river mirror violin window ocean cloud rabbit tiger forest bottle chair garden pencil apple stone horse candle jacket cloud horse candle",
+    "empirical_cond_entropy": 0.20404369797259272,
+    "empirical_unigram_entropy": 4.276907328518199
+  },
+  {
+    "pair_id": 11,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      1
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " apple candle garden forest bread tiger horse mirror mirror cloud cloud forest river chair cloud candle forest violin tiger ocean ocean candle chair bottle cloud jacket bread horse window candle horse stone lamp rabbit violin ocean jacket jacket lamp chair apple river rabbit bottle window jacket stone garden candle garden bread bottle violin mirror tiger bread window river pencil rabbit horse lamp pencil jacket",
+    "empirical_cond_entropy": 1.6614014365142602,
+    "empirical_unigram_entropy": 4.276907328518199
+  },
+  {
+    "pair_id": 12,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      2
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " river bottle pencil lamp rabbit ocean violin candle tiger chair mirror window horse stone bread forest jacket garden apple cloud river bottle pencil lamp rabbit ocean violin candle tiger chair mirror window horse stone bread forest jacket garden apple cloud river bottle pencil lamp rabbit ocean violin candle tiger chair mirror window horse stone bread forest jacket garden apple cloud river bottle pencil lamp",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 12,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      2
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " pencil jacket ocean mirror horse candle mirror river bottle forest garden pencil cloud cloud candle chair tiger forest bottle window lamp lamp ocean stone stone tiger horse river apple stone window river violin candle rabbit bread bread bottle cloud mirror bottle rabbit forest apple violin chair tiger pencil ocean pencil garden rabbit garden lamp violin river window chair lamp horse bread jacket apple jacket",
+    "empirical_cond_entropy": 1.6400525798801908,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 13,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      3
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " apple ocean horse stone violin mirror tiger forest chair rabbit pencil garden river bread jacket cloud lamp window bottle candle apple ocean horse stone violin cloud lamp window bottle candle apple ocean horse stone violin mirror jacket cloud lamp window bottle candle apple ocean horse stone violin mirror forest chair rabbit pencil stone forest chair rabbit pencil garden river bread jacket cloud lamp window",
+    "empirical_cond_entropy": 0.22800838058095682,
+    "empirical_unigram_entropy": 4.2554884298164914
+  },
+  {
+    "pair_id": 13,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      3
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " forest rabbit bottle violin chair apple apple ocean stone forest pencil chair window forest cloud apple garden violin jacket apple stone ocean jacket bread pencil window stone stone lamp stone rabbit lamp violin cloud chair bread mirror horse lamp garden mirror violin mirror river horse horse ocean tiger window candle cloud bottle candle jacket horse rabbit pencil lamp bottle window candle ocean cloud river",
+    "empirical_cond_entropy": 1.7087101665356275,
+    "empirical_unigram_entropy": 4.2554884298164914
+  },
+  {
+    "pair_id": 14,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      4
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " apple ocean bottle forest window garden jacket apple ocean bottle forest window garden violin candle rabbit mirror horse jacket apple ocean chair lamp tiger cloud pencil river bread bread jacket apple ocean tiger cloud pencil river bread jacket apple ocean bottle forest window garden violin candle rabbit mirror horse stone chair lamp tiger cloud pencil river bread jacket apple ocean bottle forest window garden",
+    "empirical_cond_entropy": 0.2461869048305863,
+    "empirical_unigram_entropy": 4.1929884298164914
+  },
+  {
+    "pair_id": 14,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      4
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " ocean horse apple forest tiger jacket horse bread garden pencil bread forest garden garden tiger river candle apple violin mirror window rabbit violin mirror ocean candle ocean jacket apple lamp bread ocean window bottle bottle chair bottle apple river jacket bottle stone rabbit ocean pencil chair window ocean lamp window apple garden cloud cloud pencil forest forest bread river jacket jacket tiger cloud apple",
+    "empirical_cond_entropy": 1.7102953327278478,
+    "empirical_unigram_entropy": 4.1929884298164914
+  },
+  {
+    "pair_id": 15,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      5
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " violin bread apple pencil tiger bottle garden river forest ocean violin lamp chair mirror horse rabbit window jacket candle stone cloud bread ocean violin lamp chair mirror horse rabbit window jacket candle stone cloud bread apple pencil tiger bottle garden river forest ocean mirror bottle garden river forest tiger bottle garden river forest ocean violin lamp chair rabbit window jacket candle stone cloud bread",
+    "empirical_cond_entropy": 0.2857142857142857,
+    "empirical_unigram_entropy": 4.288298827786958
+  },
+  {
+    "pair_id": 15,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      5
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " tiger bread ocean stone bottle apple lamp ocean jacket stone jacket mirror violin window mirror garden ocean forest rabbit bread pencil cloud mirror bottle chair garden garden horse violin forest lamp ocean apple forest violin forest window cloud lamp candle rabbit violin chair cloud river stone pencil river rabbit candle bread bread garden tiger bottle tiger horse window river chair jacket river bottle candle",
+    "empirical_cond_entropy": 1.6316505955471619,
+    "empirical_unigram_entropy": 4.288298827786958
+  },
+  {
+    "pair_id": 16,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      6
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " bread river apple pencil mirror cloud stone candle violin horse rabbit garden jacket chair ocean lamp forest cloud stone candle violin horse rabbit garden jacket chair ocean lamp forest window bread river apple pencil tiger bottle mirror cloud chair ocean lamp forest window bread river apple pencil tiger bottle mirror cloud stone candle violin horse rabbit garden jacket chair ocean rabbit garden jacket chair",
+    "empirical_cond_entropy": 0.19047619047619047,
+    "empirical_unigram_entropy": 4.282603078152579
+  },
+  {
+    "pair_id": 16,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      6
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " pencil candle rabbit tiger stone chair jacket horse ocean forest lamp cloud violin tiger horse ocean apple apple violin mirror bread cloud lamp mirror rabbit lamp bread bottle rabbit candle forest cloud ocean garden stone apple mirror garden stone river cloud window jacket jacket rabbit chair forest window pencil bread garden violin pencil horse chair bottle ocean garden river candle river chair chair jacket",
+    "empirical_cond_entropy": 1.5661633412761655,
+    "empirical_unigram_entropy": 4.282603078152579
+  },
+  {
+    "pair_id": 17,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      7
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " tiger bread ocean violin pencil garden jacket river bottle cloud stone rabbit lamp chair horse forest mirror apple candle window tiger bread ocean violin pencil garden jacket river bottle cloud stone rabbit lamp chair horse forest mirror apple candle window tiger bread ocean violin pencil garden jacket river bottle cloud stone rabbit lamp chair horse forest mirror apple candle window tiger bread ocean violin",
+    "empirical_cond_entropy": 0.0,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 17,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      7
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " candle chair tiger tiger jacket rabbit candle bread window cloud ocean cloud horse rabbit lamp chair forest violin horse ocean forest jacket garden bread bottle stone garden pencil stone bottle bread violin apple apple violin mirror ocean window river lamp lamp pencil river garden pencil chair forest jacket river mirror tiger candle horse bottle mirror ocean cloud stone bread tiger apple rabbit window violin",
+    "empirical_cond_entropy": 1.505287103758396,
+    "empirical_unigram_entropy": 4.311278124459133
+  },
+  {
+    "pair_id": 18,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      8
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " horse window ocean chair violin mirror jacket stone pencil cloud tiger garden forest apple horse window ocean chair violin mirror jacket candle river rabbit bread bottle lamp stone pencil cloud tiger garden forest apple horse window ocean chair violin mirror jacket candle river rabbit bread mirror jacket candle river rabbit bread window ocean chair violin mirror stone pencil cloud tiger garden forest apple horse",
+    "empirical_cond_entropy": 0.184280007530743,
+    "empirical_unigram_entropy": 4.251353078152579
+  },
+  {
+    "pair_id": 18,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      8
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " lamp violin candle river chair horse bread mirror mirror stone jacket ocean horse tiger stone violin window mirror window candle candle mirror ocean pencil garden bottle cloud window jacket pencil ocean forest cloud mirror ocean garden garden tiger rabbit bread cloud forest horse river bread chair violin window forest chair rabbit horse rabbit chair pencil apple tiger violin river stone apple jacket apple jacket",
+    "empirical_cond_entropy": 1.629655404768229,
+    "empirical_unigram_entropy": 4.251353078152579
+  },
+  {
+    "pair_id": 19,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      9
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " candle forest apple tiger garden window stone ocean bread cloud bottle chair horse violin river tiger garden window stone mirror candle forest apple tiger garden window stone ocean cloud bottle chair horse violin river rabbit jacket pencil lamp mirror candle forest apple tiger garden bread cloud bottle chair horse violin river rabbit jacket pencil lamp mirror candle forest apple tiger garden window stone ocean",
+    "empirical_cond_entropy": 0.18428000753074303,
+    "empirical_unigram_entropy": 4.261587797403417
+  },
+  {
+    "pair_id": 19,
+    "category": "markov_H0.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 0.5,
+    "entropy_rate_true": 0.4999999999988794,
+    "lam": 0.052781122265969316,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      1,
+      9
+    ],
+    "description": "Markov chain, H=0.50 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " apple garden ocean forest horse rabbit mirror violin forest stone horse bottle candle garden jacket pencil cloud candle horse bottle tiger river window apple apple window window bread tiger stone river window candle tiger forest chair garden violin rabbit stone chair tiger tiger apple mirror stone bottle jacket ocean candle garden garden river mirror lamp pencil chair ocean lamp cloud bread violin cloud forest",
+    "empirical_cond_entropy": 1.6192582296562672,
+    "empirical_unigram_entropy": 4.261587797403417
+  },
+  {
+    "pair_id": 20,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      0
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " pencil stone ocean horse garden apple bottle violin candle lamp window forest rabbit river cloud chair mirror window forest rabbit river cloud chair garden apple bottle violin candle tiger jacket pencil stone ocean horse rabbit river window forest rabbit river cloud tiger jacket pencil stone ocean horse garden apple bottle violin candle horse garden apple window forest ocean horse garden apple bottle violin candle",
+    "empirical_cond_entropy": 0.36856001506148606,
+    "empirical_unigram_entropy": 4.139162751096862
+  },
+  {
+    "pair_id": 20,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      0
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " apple ocean stone ocean apple horse violin bottle river garden jacket bottle rabbit forest candle cloud apple bottle tiger candle mirror window rabbit river apple river forest forest horse rabbit garden ocean horse ocean rabbit violin garden apple candle violin pencil window tiger cloud stone horse garden pencil bottle chair candle jacket violin horse window window garden cloud forest stone pencil lamp river chair",
+    "empirical_cond_entropy": 1.8586283163460449,
+    "empirical_unigram_entropy": 4.139162751096862
+  },
+  {
+    "pair_id": 21,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      1
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " ocean garden bottle mirror river jacket bread tiger apple window rabbit stone lamp cloud candle horse forest pencil violin chair ocean garden bottle mirror river jacket bread tiger apple window rabbit stone bottle mirror river jacket bread tiger apple window rabbit stone lamp cloud candle horse forest pencil violin chair ocean garden bottle bottle mirror river jacket bread tiger apple window rabbit stone lamp",
+    "empirical_cond_entropy": 0.10880560273449749,
+    "empirical_unigram_entropy": 4.251964015923012
+  },
+  {
+    "pair_id": 21,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      1
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " forest stone river stone jacket forest ocean ocean bread window bread ocean horse apple violin bottle rabbit rabbit apple violin jacket tiger lamp window apple tiger candle cloud river river jacket bottle mirror garden bread mirror mirror garden horse mirror tiger river chair window jacket pencil pencil lamp rabbit bottle bottle garden window apple lamp bread candle tiger bottle rabbit chair cloud stone stone",
+    "empirical_cond_entropy": 1.5972887378268361,
+    "empirical_unigram_entropy": 4.251964015923012
+  },
+  {
+    "pair_id": 22,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      2
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " bread candle forest rabbit ocean horse jacket garden bottle bottle lamp cloud stone window chair tiger bread candle forest bottle lamp cloud stone window chair tiger apple pencil tiger apple pencil violin river mirror lamp cloud stone bread candle forest rabbit ocean mirror bread candle forest rabbit river mirror bread candle cloud stone window horse jacket garden bottle lamp cloud stone window stone window",
+    "empirical_cond_entropy": 0.5121375001030223,
+    "empirical_unigram_entropy": 4.184171884241178
+  },
+  {
+    "pair_id": 22,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      2
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " tiger cloud window bread stone tiger cloud bottle lamp mirror window ocean cloud window bottle rabbit horse cloud garden bread stone jacket chair apple forest forest bottle stone candle tiger bread jacket river pencil bottle mirror lamp garden bread lamp stone chair stone candle rabbit mirror window forest cloud horse candle apple candle candle rabbit violin river lamp stone forest pencil ocean window bread",
+    "empirical_cond_entropy": 1.5016406180020279,
+    "empirical_unigram_entropy": 4.184171884241178
+  },
+  {
+    "pair_id": 23,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      3
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " pencil lamp garden apple bread rabbit stone candle pencil violin forest jacket tiger horse river bottle ocean cloud chair window lamp garden apple bread rabbit stone candle pencil violin mirror forest window lamp garden apple bread rabbit stone candle forest jacket tiger horse river bottle ocean cloud pencil violin river bottle ocean cloud chair window lamp garden apple bread rabbit pencil bottle ocean garden",
+    "empirical_cond_entropy": 0.41848457105714726,
+    "empirical_unigram_entropy": 4.242132914624721
+  },
+  {
+    "pair_id": 23,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      3
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " lamp apple window window candle stone rabbit bottle candle apple window jacket bread pencil pencil tiger mirror lamp garden candle bottle stone chair bottle garden pencil chair pencil river bread violin violin tiger apple forest ocean garden lamp lamp forest bread horse river rabbit river cloud stone rabbit forest ocean jacket rabbit bread ocean cloud pencil horse garden ocean garden apple bottle cloud violin",
+    "empirical_cond_entropy": 1.615057237489753,
+    "empirical_unigram_entropy": 4.242132914624721
+  },
+  {
+    "pair_id": 24,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      4
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " pencil horse river window river jacket candle chair tiger violin bread forest apple stone pencil horse river rabbit lamp window ocean cloud jacket candle chair tiger forest apple jacket candle chair tiger chair tiger violin bread forest apple stone pencil horse river rabbit lamp garden mirror bottle window violin bread forest apple stone pencil horse river river rabbit lamp garden mirror bottle window garden",
+    "empirical_cond_entropy": 0.4881728174946582,
+    "empirical_unigram_entropy": 4.225798827786958
+  },
+  {
+    "pair_id": 24,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      4
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " window pencil river pencil bread apple river mirror bottle apple violin horse rabbit stone river lamp tiger window garden candle jacket apple forest cloud window candle bottle river garden horse rabbit chair tiger pencil bread lamp horse bread garden horse forest apple tiger stone river jacket chair stone pencil jacket lamp chair violin river forest tiger mirror forest rabbit chair ocean candle window violin",
+    "empirical_cond_entropy": 1.5999045638011302,
+    "empirical_unigram_entropy": 4.225798827786958
+  },
+  {
+    "pair_id": 25,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      5
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " horse violin bread garden ocean river tiger cloud mirror bread garden ocean apple stone forest rabbit jacket candle lamp chair horse chair horse violin bread garden ocean river tiger cloud mirror pencil window cloud mirror pencil forest rabbit jacket candle lamp chair horse violin rabbit jacket stone forest rabbit jacket candle lamp chair horse violin bread garden ocean river tiger cloud mirror pencil window",
+    "empirical_cond_entropy": 0.30706314234835563,
+    "empirical_unigram_entropy": 4.185328664259099
+  },
+  {
+    "pair_id": 25,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      5
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " cloud horse horse violin pencil mirror forest ocean chair mirror rabbit river tiger apple chair candle cloud garden tiger garden tiger window violin ocean bread jacket ocean garden stone bread rabbit jacket horse mirror rabbit lamp pencil bread lamp candle garden river river horse ocean cloud forest lamp mirror rabbit window jacket violin jacket stone forest horse pencil cloud chair candle chair violin bread",
+    "empirical_cond_entropy": 1.6529994521812321,
+    "empirical_unigram_entropy": 4.185328664259099
+  },
+  {
+    "pair_id": 26,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      6
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " violin river bottle garden pencil cloud lamp rabbit mirror horse forest candle tiger window ocean stone jacket pencil cloud lamp rabbit mirror horse forest candle tiger window ocean chair bread apple stone river bottle garden pencil cloud lamp pencil cloud lamp rabbit mirror horse tiger window ocean chair bread apple stone jacket violin river bottle garden pencil bottle garden pencil cloud lamp rabbit mirror",
+    "empirical_cond_entropy": 0.28213392874313237,
+    "empirical_unigram_entropy": 4.230337797403416
+  },
+  {
+    "pair_id": 26,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      6
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " rabbit river rabbit cloud pencil window cloud garden bottle rabbit rabbit chair window lamp tiger pencil ocean river forest apple candle bottle jacket candle mirror bottle tiger pencil ocean lamp garden lamp stone ocean violin violin window cloud bread jacket garden bottle garden pencil stone horse mirror lamp pencil pencil forest mirror tiger cloud chair stone river cloud bread mirror horse lamp horse apple",
+    "empirical_cond_entropy": 1.6072758883520848,
+    "empirical_unigram_entropy": 4.230337797403416
+  },
+  {
+    "pair_id": 27,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      7
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " forest pencil mirror river lamp apple bread candle window violin garden jacket rabbit tiger horse ocean garden pencil mirror river lamp apple bread candle window violin cloud stone chair ocean garden ocean garden jacket rabbit rabbit tiger horse bottle forest bottle forest pencil mirror river lamp apple bread candle window violin cloud stone chair ocean garden bread candle window violin cloud stone chair ocean",
+    "empirical_cond_entropy": 0.323246475819052,
+    "empirical_unigram_entropy": 4.269247562960808
+  },
+  {
+    "pair_id": 27,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      7
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " bread apple garden jacket forest violin river chair bread ocean cloud horse cloud rabbit pencil candle rabbit apple garden chair candle window stone ocean mirror forest bottle mirror bread ocean pencil window garden garden stone lamp violin jacket ocean ocean river violin chair window tiger mirror cloud lamp violin garden lamp bottle tiger horse candle bread candle apple stone rabbit forest river pencil window",
+    "empirical_cond_entropy": 1.5797308487725679,
+    "empirical_unigram_entropy": 4.269247562960808
+  },
+  {
+    "pair_id": 28,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      8
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " ocean violin horse window mirror bread ocean violin cloud river garden pencil apple chair bread ocean jacket forest tiger jacket chair jacket chair rabbit horse window mirror stone candle window mirror bread ocean violin cloud river horse window rabbit horse forest tiger jacket chair rabbit horse window mirror bread ocean violin cloud river garden pencil apple bottle stone candle forest tiger jacket bread garden",
+    "empirical_cond_entropy": 0.6434671010770971,
+    "empirical_unigram_entropy": 4.1472261346067985
+  },
+  {
+    "pair_id": 28,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      8
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " violin horse forest bread pencil tiger window jacket pencil forest chair mirror apple ocean violin window horse cloud ocean window stone window garden river chair bread violin ocean candle rabbit violin stone chair tiger ocean river horse rabbit jacket apple bread jacket mirror bread tiger bread rabbit ocean cloud candle jacket mirror garden river mirror window jacket horse chair cloud garden bottle horse forest",
+    "empirical_cond_entropy": 1.7114704743333553,
+    "empirical_unigram_entropy": 4.1472261346067985
+  },
+  {
+    "pair_id": 29,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      9
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " river bread rabbit chair chair apple lamp jacket mirror window jacket mirror pencil violin forest window stone tiger garden river garden river bread rabbit horse river bread rabbit horse ocean bottle cloud candle chair apple lamp jacket mirror pencil violin forest window stone tiger garden river bread rabbit lamp jacket mirror jacket mirror pencil window stone tiger garden river bread rabbit mirror pencil violin",
+    "empirical_cond_entropy": 0.5121375001030223,
+    "empirical_unigram_entropy": 4.130892047769037
+  },
+  {
+    "pair_id": 29,
+    "category": "markov_H1.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.0,
+    "entropy_rate_true": 1.0000000000010583,
+    "lam": 0.12056586075368614,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      2,
+      9
+    ],
+    "description": "Markov chain, H=1.00 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " forest mirror river river bread stone violin bread pencil violin window jacket apple chair stone candle bread garden garden window garden horse bread garden jacket rabbit violin pencil jacket mirror pencil bottle river tiger mirror horse mirror river chair bread window rabbit jacket forest mirror stone rabbit tiger jacket apple chair mirror tiger window ocean river pencil lamp rabbit cloud rabbit river lamp lamp",
+    "empirical_cond_entropy": 1.6963178006447328,
+    "empirical_unigram_entropy": 4.130892047769037
+  },
+  {
+    "pair_id": 30,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      0
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " chair lamp horse chair river candle stone violin mirror bottle forest jacket bread lamp horse chair tiger ocean window pencil garden cloud rabbit apple river candle stone violin mirror bottle bottle forest jacket bread lamp horse apple river candle stone garden cloud rabbit apple river candle stone violin mirror bottle forest jacket cloud rabbit bottle ocean window stone violin mirror bottle forest jacket bread",
+    "empirical_cond_entropy": 0.42268556322366163,
+    "empirical_unigram_entropy": 4.2124433125951875
+  },
+  {
+    "pair_id": 30,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      0
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " chair chair lamp stone jacket jacket horse bottle rabbit cloud forest bottle bottle pencil rabbit forest violin tiger apple mirror horse ocean forest violin mirror river candle rabbit bread violin candle stone river ocean bottle forest stone garden window cloud jacket apple horse bread chair candle window jacket stone river stone apple cloud violin bottle mirror bottle lamp bread garden mirror river candle lamp",
+    "empirical_cond_entropy": 1.6452181030435642,
+    "empirical_unigram_entropy": 4.2124433125951875
+  },
+  {
+    "pair_id": 31,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      1
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " stone bread lamp window forest forest horse jacket garden apple tiger candle river mirror chair stone bread lamp window violin cloud pencil ocean bottle rabbit forest bread lamp window violin cloud pencil ocean bottle rabbit forest horse jacket garden apple tiger candle river rabbit forest horse jacket garden apple tiger candle river stone bread lamp bread lamp window garden tiger candle bottle rabbit apple",
+    "empirical_cond_entropy": 0.49134314987909866,
+    "empirical_unigram_entropy": 4.209322516654254
+  },
+  {
+    "pair_id": 31,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      1
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " bottle window apple apple tiger rabbit apple ocean apple river tiger bread garden garden lamp lamp cloud forest jacket pencil jacket mirror violin bread horse candle forest garden lamp stone candle bottle river ocean bottle window forest candle bread rabbit garden tiger candle window jacket forest window horse forest bread bread lamp tiger cloud chair violin river rabbit lamp horse stone rabbit stone pencil",
+    "empirical_cond_entropy": 1.7238628402242502,
+    "empirical_unigram_entropy": 4.209322516654254
+  },
+  {
+    "pair_id": 32,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      2
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " pencil ocean lamp river rabbit stone apple bread lamp river chair lamp river cloud pencil chair bottle chair bottle violin ocean window forest garden candle tiger jacket mirror chair bottle violin horse rabbit stone apple bread garden candle tiger jacket mirror chair bottle violin horse rabbit stone apple bread lamp river cloud violin horse rabbit stone apple bread violin violin horse rabbit stone apple",
+    "empirical_cond_entropy": 0.5137226662952425,
+    "empirical_unigram_entropy": 4.157057235905091
+  },
+  {
+    "pair_id": 32,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      2
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " stone violin rabbit chair apple candle river chair bottle apple horse stone cloud violin lamp rabbit violin bread horse window bottle jacket river apple violin bread violin bread mirror ocean apple chair rabbit river bottle rabbit garden chair bottle forest apple violin tiger candle cloud pencil rabbit jacket pencil river stone chair stone tiger garden horse lamp horse stone lamp mirror ocean bread lamp",
+    "empirical_cond_entropy": 1.6182275698741935,
+    "empirical_unigram_entropy": 4.157057235905091
+  },
+  {
+    "pair_id": 33,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      3
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " candle chair cloud garden tiger stone window river mirror bottle bottle bread ocean pencil mirror bottle candle chair cloud garden pencil bottle bread ocean pencil window pencil violin apple lamp rabbit jacket bread ocean forest candle mirror bottle bread ocean window river mirror forest candle chair cloud garden tiger stone apple lamp rabbit jacket horse forest candle violin apple lamp rabbit jacket horse forest",
+    "empirical_cond_entropy": 0.6542743007757718,
+    "empirical_unigram_entropy": 4.261587797403417
+  },
+  {
+    "pair_id": 33,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      3
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " jacket ocean ocean horse bread rabbit forest pencil chair lamp lamp window chair mirror bottle stone bottle bottle lamp ocean apple rabbit jacket candle jacket window mirror chair tiger cloud bottle river candle garden violin apple candle window candle candle garden forest mirror pencil bread mirror forest pencil violin bread tiger forest cloud stone river bottle garden horse apple rabbit cloud ocean pencil bread",
+    "empirical_cond_entropy": 1.5875121979102356,
+    "empirical_unigram_entropy": 4.261587797403417
+  },
+  {
+    "pair_id": 34,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      4
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " violin forest window apple tiger river violin ocean forest window mirror lamp stone rabbit candle jacket bottle pencil violin ocean forest bottle chair garden bread garden bread cloud pencil ocean stone rabbit candle jacket bottle stone rabbit candle jacket lamp lamp violin ocean forest window mirror horse lamp window bottle chair stone rabbit candle horse lamp bottle chair garden bread ocean forest bottle chair",
+    "empirical_cond_entropy": 0.8625189909148788,
+    "empirical_unigram_entropy": 4.146822516654254
+  },
+  {
+    "pair_id": 34,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      4
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " jacket rabbit pencil chair jacket ocean candle lamp window ocean candle jacket window rabbit garden forest tiger stone cloud horse forest violin window river lamp stone apple violin bottle lamp violin lamp chair chair pencil bottle ocean bread candle window horse bottle ocean bottle rabbit lamp stone violin forest bread garden garden stone forest mirror rabbit ocean bottle chair forest bottle bread candle mirror",
+    "empirical_cond_entropy": 1.6921168084782183,
+    "empirical_unigram_entropy": 4.146822516654254
+  },
+  {
+    "pair_id": 35,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      5
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " garden violin mirror tiger apple chair stone river forest chair stone river forest pencil rabbit jacket candle garden cloud bottle stone violin tiger ocean horse apple chair stone jacket candle garden cloud bottle violin mirror lamp bread horse apple chair stone river forest pencil rabbit jacket candle garden forest pencil rabbit jacket candle garden cloud bottle violin mirror tiger ocean forest violin mirror tiger",
+    "empirical_cond_entropy": 0.5544251887844494,
+    "empirical_unigram_entropy": 4.141126767019873
+  },
+  {
+    "pair_id": 35,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      5
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " candle cloud violin stone garden ocean chair river rabbit mirror cloud bottle tiger lamp river ocean candle rabbit jacket mirror forest tiger rabbit garden violin violin violin chair tiger forest chair cloud garden mirror stone garden horse pencil jacket chair bread stone forest pencil candle river candle violin mirror forest horse jacket apple apple bottle pencil tiger stone apple jacket bottle garden stone forest",
+    "empirical_cond_entropy": 1.7040991497824005,
+    "empirical_unigram_entropy": 4.141126767019873
+  },
+  {
+    "pair_id": 36,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      6
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " tiger cloud tiger bread pencil forest rabbit bottle garden garden apple window violin stone rabbit bottle garden apple window violin stone mirror chair ocean jacket lamp horse bread stone mirror chair ocean mirror chair ocean rabbit lamp horse river candle cloud tiger bread chair apple violin stone mirror chair ocean jacket lamp horse river candle cloud pencil forest rabbit jacket lamp horse river chair",
+    "empirical_cond_entropy": 0.6449077854458839,
+    "empirical_unigram_entropy": 4.257048827786958
+  },
+  {
+    "pair_id": 36,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      6
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " stone forest forest lamp lamp rabbit river cloud mirror garden mirror horse chair chair river jacket ocean bottle violin chair ocean candle cloud apple rabbit apple rabbit ocean violin garden mirror horse window tiger stone bottle bread pencil stone bread tiger horse window lamp apple chair candle pencil lamp tiger rabbit bread ocean horse cloud mirror violin garden river chair jacket stone jacket chair",
+    "empirical_cond_entropy": 1.5182339760594372,
+    "empirical_unigram_entropy": 4.257048827786958
+  },
+  {
+    "pair_id": 37,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      7
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " window bread garden tiger cloud violin mirror stone forest horse jacket ocean chair river garden tiger cloud violin mirror stone forest horse jacket ocean bottle candle pencil lamp apple rabbit window bread chair river garden tiger cloud violin ocean bottle candle pencil lamp apple rabbit window bread chair river garden apple garden tiger cloud violin mirror horse jacket river garden tiger cloud violin mirror",
+    "empirical_cond_entropy": 0.3378446430975282,
+    "empirical_unigram_entropy": 4.224642047769037
+  },
+  {
+    "pair_id": 37,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      7
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " bread stone forest tiger candle cloud chair pencil garden apple rabbit mirror jacket mirror violin garden ocean forest rabbit jacket candle ocean bread apple river tiger river chair tiger horse stone apple river garden bottle garden cloud lamp garden violin violin mirror window garden cloud window tiger lamp bottle tiger bread ocean pencil window horse river cloud violin jacket chair cloud mirror violin horse",
+    "empirical_cond_entropy": 1.6645717688987007,
+    "empirical_unigram_entropy": 4.224642047769037
+  },
+  {
+    "pair_id": 38,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      8
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " forest ocean stone pencil bottle river rabbit mirror window bread lamp horse apple forest ocean cloud stone garden violin candle jacket chair pencil bottle river rabbit tiger mirror window river rabbit tiger mirror window horse candle candle jacket chair pencil bottle river rabbit tiger mirror window pencil bottle river rabbit tiger mirror garden bottle river rabbit tiger mirror stone garden violin candle jacket chair",
+    "empirical_cond_entropy": 0.5105523339108021,
+    "empirical_unigram_entropy": 4.112997562960808
+  },
+  {
+    "pair_id": 38,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      8
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " bottle chair lamp river garden bread garden rabbit pencil pencil rabbit mirror tiger ocean mirror ocean pencil window window candle candle violin pencil stone garden apple bottle mirror chair chair forest jacket rabbit tiger stone bottle cloud bottle bottle horse river mirror tiger stone rabbit candle river horse river mirror window violin candle jacket river mirror rabbit jacket tiger rabbit river tiger window forest",
+    "empirical_cond_entropy": 1.7144963248943625,
+    "empirical_unigram_entropy": 4.112997562960808
+  },
+  {
+    "pair_id": 39,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      9
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " bottle chair garden apple window horse lamp pencil tiger jacket mirror horse stone violin rabbit violin rabbit candle ocean river cloud forest bread bottle chair garden apple window lamp pencil ocean river cloud forest bread bottle garden apple candle ocean river cloud violin rabbit candle ocean ocean river cloud forest bread bottle chair garden apple window lamp pencil tiger jacket mirror horse stone violin",
+    "empirical_cond_entropy": 0.38673853931111557,
+    "empirical_unigram_entropy": 4.2749433125951875
+  },
+  {
+    "pair_id": 39,
+    "category": "markov_H1.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 1.5,
+    "entropy_rate_true": 1.4999999999994742,
+    "lam": 0.19857723531322335,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      3,
+      9
+    ],
+    "description": "Markov chain, H=1.50 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " mirror mirror bottle bread rabbit forest garden jacket pencil window violin forest pencil bread lamp chair horse ocean horse window ocean violin jacket pencil lamp apple apple rabbit river cloud apple ocean forest bottle garden river stone tiger river candle bottle violin garden tiger rabbit cloud lamp candle river bottle chair cloud apple candle bread violin garden ocean stone horse window chair cloud ocean",
+    "empirical_cond_entropy": 1.5364125003090665,
+    "empirical_unigram_entropy": 4.2749433125951875
+  },
+  {
+    "pair_id": 40,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      0
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " jacket bottle cloud stone bottle window apple bread violin forest chair jacket bottle cloud mirror tiger river mirror tiger river apple mirror cloud stone rabbit chair lamp stone window river garden rabbit chair lamp river garden rabbit violin forest apple lamp jacket bottle cloud stone pencil horse candle ocean window bread violin forest ocean window bread violin forest violin garden rabbit chair lamp jacket",
+    "empirical_cond_entropy": 0.9222200868271407,
+    "empirical_unigram_entropy": 4.208918898701707
+  },
+  {
+    "pair_id": 40,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      0
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " garden bread mirror lamp jacket tiger mirror jacket cloud rabbit mirror garden stone violin apple violin chair stone window bottle window cloud bottle chair stone rabbit chair rabbit forest bottle rabbit candle pencil violin window forest chair apple bread ocean window cloud bottle violin horse jacket violin bread forest jacket cloud forest lamp stone river garden tiger river apple lamp river ocean lamp river",
+    "empirical_cond_entropy": 1.6092710791310183,
+    "empirical_unigram_entropy": 4.208918898701707
+  },
+  {
+    "pair_id": 41,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      1
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " stone lamp mirror ocean bottle river window violin pencil apple bread forest horse chair jacket tiger cloud garden rabbit candle stone lamp river bread mirror ocean bottle river window chair forest horse chair jacket tiger tiger cloud garden ocean bottle river bottle river window window violin rabbit stone lamp ocean tiger cloud window violin pencil forest horse garden rabbit candle stone lamp mirror ocean",
+    "empirical_cond_entropy": 0.7417310468761994,
+    "empirical_unigram_entropy": 4.236437164990342
+  },
+  {
+    "pair_id": 41,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      1
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " window ocean bottle tiger violin tiger jacket jacket horse horse bottle garden stone horse forest window apple river tiger violin ocean lamp rabbit chair chair rabbit chair bottle tiger candle ocean bread pencil river violin mirror garden forest window forest rabbit cloud stone river lamp lamp cloud mirror river cloud ocean garden candle river bottle stone mirror bread lamp pencil window window ocean stone",
+    "empirical_cond_entropy": 1.5813160149647878,
+    "empirical_unigram_entropy": 4.236437164990342
+  },
+  {
+    "pair_id": 42,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      2
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " stone window violin tiger jacket violin tiger ocean chair garden pencil bottle bread horse rabbit stone window cloud lamp candle jacket tiger ocean chair jacket violin pencil bottle lamp candle jacket violin tiger ocean chair garden mirror apple jacket bread horse forest jacket horse forest river stone window ocean cloud lamp river rabbit stone violin tiger ocean river rabbit stone window forest stone window",
+    "empirical_cond_entropy": 0.8968808486352048,
+    "empirical_unigram_entropy": 4.156446298134657
+  },
+  {
+    "pair_id": 42,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      2
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " stone chair lamp rabbit river mirror jacket horse window chair jacket garden stone candle forest rabbit garden river forest bottle violin ocean chair tiger tiger bread pencil stone jacket stone cloud horse window violin apple rabbit horse cloud window forest ocean jacket lamp bottle lamp jacket candle ocean stone window tiger pencil window river ocean jacket ocean violin bread violin tiger tiger violin stone",
+    "empirical_cond_entropy": 1.7156714664998698,
+    "empirical_unigram_entropy": 4.156446298134657
+  },
+  {
+    "pair_id": 43,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      3
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " forest mirror candle pencil pencil window cloud forest mirror candle pencil window cloud tiger violin violin jacket garden bottle river horse rabbit chair jacket mirror candle chair jacket garden bottle river horse window cloud tiger violin lamp horse ocean stone apple chair jacket violin lamp bread violin lamp bread rabbit chair violin garden bottle river horse mirror candle pencil window lamp cloud candle pencil",
+    "empirical_cond_entropy": 0.8269819915890456,
+    "empirical_unigram_entropy": 4.171973149067329
+  },
+  {
+    "pair_id": 43,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      3
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " mirror mirror pencil lamp candle lamp horse pencil window garden forest pencil pencil candle window violin tiger garden cloud bottle river bread lamp forest ocean garden cloud cloud chair stone pencil violin river chair violin horse tiger bread bottle jacket chair mirror bottle apple candle window rabbit violin candle river chair window horse jacket candle violin cloud horse jacket violin rabbit jacket lamp mirror",
+    "empirical_cond_entropy": 1.6785493009818162,
+    "empirical_unigram_entropy": 4.171973149067329
+  },
+  {
+    "pair_id": 44,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      4
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " river ocean horse tiger window candle stone pencil horse tiger window candle stone pencil forest bottle chair jacket mirror apple bread ocean horse window candle stone pencil mirror apple bread river lamp cloud garden forest bottle mirror apple bread cloud candle stone pencil rabbit jacket lamp mirror apple bread river ocean pencil rabbit jacket cloud garden forest bottle chair violin apple bread river ocean",
+    "empirical_cond_entropy": 0.6267292611962544,
+    "empirical_unigram_entropy": 4.228777399432949
+  },
+  {
+    "pair_id": 44,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      4
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " apple forest horse bottle pencil forest bread lamp pencil apple river jacket mirror candle bread jacket forest garden pencil ocean window stone ocean apple stone cloud lamp mirror bread apple mirror violin bread garden jacket chair pencil tiger window ocean candle rabbit candle chair bottle bread rabbit ocean horse mirror window candle pencil river river tiger bottle cloud cloud horse stone apple river stone",
+    "empirical_cond_entropy": 1.7160814910865825,
+    "empirical_unigram_entropy": 4.228777399432949
+  },
+  {
+    "pair_id": 45,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      5
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " jacket apple window tiger violin cloud window tiger violin cloud river candle pencil horse mirror stone horse cloud river bread candle pencil lamp garden stone ocean bottle forest chair jacket apple window garden rabbit stone ocean bottle forest chair jacket pencil cloud jacket bread candle pencil lamp garden rabbit horse tiger violin jacket apple window tiger violin cloud river bread candle garden rabbit horse",
+    "empirical_cond_entropy": 0.7255477134055028,
+    "empirical_unigram_entropy": 4.234473149067329
+  },
+  {
+    "pair_id": 45,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      5
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " tiger stone tiger garden cloud window tiger horse lamp cloud apple mirror cloud violin apple violin rabbit violin river violin candle bread cloud horse chair window lamp rabbit river pencil stone chair bottle window candle apple pencil ocean river pencil tiger horse bottle pencil garden stone rabbit window forest bread garden candle horse forest cloud jacket jacket candle garden jacket ocean bread jacket jacket",
+    "empirical_cond_entropy": 1.64101711087705,
+    "empirical_unigram_entropy": 4.234473149067329
+  },
+  {
+    "pair_id": 46,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      6
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " chair horse ocean river cloud forest mirror candle window garden stone rabbit stone bottle pencil chair chair stone bottle horse ocean river cloud bread lamp tiger apple violin forest chair horse ocean river cloud mirror candle window apple violin forest chair horse ocean river window jacket bottle pencil mirror candle window jacket rabbit bread mirror pencil bottle pencil rabbit ocean pencil candle jacket rabbit",
+    "empirical_cond_entropy": 0.9655384352906418,
+    "empirical_unigram_entropy": 4.189867633875558
+  },
+  {
+    "pair_id": 46,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      6
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " cloud rabbit mirror bottle apple stone candle ocean cloud ocean pencil jacket pencil garden stone rabbit forest apple window candle cloud river candle bottle ocean chair ocean violin mirror violin tiger rabbit bottle chair chair jacket lamp chair pencil jacket window window horse rabbit mirror forest river chair bread horse bread forest window horse stone candle river mirror pencil ocean bottle pencil horse river",
+    "empirical_cond_entropy": 1.660370776732187,
+    "empirical_unigram_entropy": 4.189867633875558
+  },
+  {
+    "pair_id": 47,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      7
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " jacket garden lamp forest forest pencil stone apple bread chair garden lamp violin horse lamp apple bread chair garden lamp violin jacket horse apple bread garden lamp lamp violin jacket horse tiger candle mirror window cloud bottle river stone apple bread candle chair garden lamp violin garden apple candle window cloud window cloud bread garden chair garden cloud bottle river stone apple bread chair",
+    "empirical_cond_entropy": 0.9993893415636574,
+    "empirical_unigram_entropy": 3.9366388679951365
+  },
+  {
+    "pair_id": 47,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      7
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " horse bread bottle tiger apple bottle garden stone window river jacket cloud lamp cloud lamp forest chair violin bread pencil bread garden violin garden chair stone apple lamp garden garden river jacket stone garden apple window candle bread jacket garden lamp horse forest lamp cloud candle violin chair apple mirror cloud garden bread lamp window bread chair violin apple chair candle apple horse lamp",
+    "empirical_cond_entropy": 1.9033873491783326,
+    "empirical_unigram_entropy": 3.9366388679951365
+  },
+  {
+    "pair_id": 48,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      8
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " chair candle stone jacket ocean apple forest rabbit pencil bottle tiger stone jacket ocean bread window forest rabbit pencil bottle candle cloud violin river chair candle cloud rabbit pencil garden lamp chair candle cloud violin rabbit pencil window forest rabbit pencil bottle tiger stone jacket ocean apple garden lamp chair horse mirror bread window forest rabbit pencil bottle tiger mirror bread window forest horse",
+    "empirical_cond_entropy": 0.5257050075994245,
+    "empirical_unigram_entropy": 4.2006481953738835
+  },
+  {
+    "pair_id": 48,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      8
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " rabbit horse forest bottle rabbit window pencil chair tiger lamp candle chair window rabbit rabbit apple stone horse chair jacket tiger river ocean tiger rabbit cloud forest chair candle jacket window stone window bread rabbit garden garden mirror jacket ocean violin ocean bottle lamp forest forest candle pencil pencil pencil cloud violin bottle bottle cloud pencil forest bread stone candle mirror apple bread pencil",
+    "empirical_cond_entropy": 1.7342600153362118,
+    "empirical_unigram_entropy": 4.2006481953738835
+  },
+  {
+    "pair_id": 49,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      9
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " violin mirror tiger window apple jacket stone candle horse mirror violin apple jacket stone forest chair lamp ocean river candle window rabbit garden jacket river candle horse mirror apple cloud bottle horse mirror tiger window rabbit pencil lamp cloud bottle mirror garden cloud forest chair lamp ocean garden cloud bottle bread pencil violin apple violin jacket stone forest chair lamp ocean river candle horse",
+    "empirical_cond_entropy": 0.8629290155015917,
+    "empirical_unigram_entropy": 4.2554884298164914
+  },
+  {
+    "pair_id": 49,
+    "category": "markov_H2.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.0,
+    "entropy_rate_true": 2.00000000000243,
+    "lam": 0.2863610701174366,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      4,
+      9
+    ],
+    "description": "Markov chain, H=2.00 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " ocean chair stone pencil lamp river mirror garden stone river bread violin cloud ocean lamp bottle violin mirror cloud candle cloud tiger jacket bottle candle violin horse forest stone apple forest tiger jacket lamp mirror violin garden window apple rabbit candle window apple jacket forest horse ocean horse pencil lamp apple window candle chair garden cloud mirror rabbit mirror bottle river jacket chair horse",
+    "empirical_cond_entropy": 1.6254544126017145,
+    "empirical_unigram_entropy": 4.2554884298164914
+  },
+  {
+    "pair_id": 50,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      0
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " jacket ocean tiger stone garden pencil stone pencil stone forest horse river mirror lamp ocean cloud apple chair bread mirror apple stone chair bread violin tiger jacket garden pencil jacket garden cloud rabbit candle window cloud candle bottle horse river pencil stone forest horse river mirror rabbit candle bottle river mirror window pencil candle bottle lamp rabbit candle bottle candle chair tiger jacket apple",
+    "empirical_cond_entropy": 1.1466481104369444,
+    "empirical_unigram_entropy": 4.218542680182112
+  },
+  {
+    "pair_id": 50,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      0
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " forest rabbit ocean mirror tiger pencil bread apple rabbit lamp candle jacket bottle mirror chair pencil ocean cloud rabbit apple horse window tiger stone violin horse cloud tiger stone stone jacket candle window bottle bottle garden mirror stone cloud river stone chair candle pencil river horse forest jacket candle chair apple jacket pencil candle river lamp mirror bread river candle bottle garden pencil garden",
+    "empirical_cond_entropy": 1.6707679518441485,
+    "empirical_unigram_entropy": 4.218542680182112
+  },
+  {
+    "pair_id": 51,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      1
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " lamp bread lamp bread river apple horse tiger bottle forest violin stone cloud bottle forest violin pencil ocean jacket rabbit horse rabbit horse tiger lamp bread window window garden violin bread pencil horse chair bottle river apple stone cloud apple mirror chair bottle pencil pencil ocean jacket rabbit horse garden candle window pencil ocean mirror chair horse tiger lamp bread cloud garden candle window",
+    "empirical_cond_entropy": 1.0358473169235138,
+    "empirical_unigram_entropy": 4.237997562960809
+  },
+  {
+    "pair_id": 51,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      1
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " chair chair lamp horse stone rabbit ocean forest ocean horse apple bread rabbit lamp violin cloud chair garden horse bread rabbit jacket apple tiger horse pencil ocean pencil bread lamp garden pencil stone candle cloud bottle pencil apple jacket violin cloud river window mirror lamp tiger bottle bottle window bread window pencil tiger garden horse forest candle bottle river window mirror violin bread horse",
+    "empirical_cond_entropy": 1.5693336736606058,
+    "empirical_unigram_entropy": 4.237997562960809
+  },
+  {
+    "pair_id": 52,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      2
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " rabbit bottle window horse bottle window horse cloud window horse cloud pencil chair mirror garden river violin ocean stone jacket tiger apple ocean bread river violin chair mirror garden horse violin ocean bread candle forest rabbit bottle jacket tiger bottle window violin rabbit bottle apple lamp forest rabbit bottle window tiger apple candle stone jacket tiger apple lamp forest rabbit bottle window horse cloud",
+    "empirical_cond_entropy": 0.7683551104216936,
+    "empirical_unigram_entropy": 4.165623587245975
+  },
+  {
+    "pair_id": 52,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      2
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " pencil apple candle cloud horse chair tiger forest rabbit mirror forest window violin tiger horse ocean rabbit lamp stone apple bottle window river bread bottle window rabbit garden chair bottle cloud jacket stone horse tiger apple rabbit violin jacket bottle river bottle lamp horse window tiger violin bottle ocean jacket window bread garden window candle forest ocean cloud mirror apple horse bottle rabbit violin",
+    "empirical_cond_entropy": 1.7484917129908113,
+    "empirical_unigram_entropy": 4.165623587245975
+  },
+  {
+    "pair_id": 53,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      3
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " garden jacket stone horse violin window bottle jacket rabbit apple cloud forest horse garden jacket jacket stone horse violin tiger bread chair candle river tiger garden jacket horse violin pencil candle cloud candle cloud pencil tiger garden jacket window bottle lamp cloud pencil cloud violin tiger bread chair garden jacket ocean jacket chair stone forest ocean rabbit apple cloud forest ocean rabbit apple cloud",
+    "empirical_cond_entropy": 1.09974940500229,
+    "empirical_unigram_entropy": 4.073433985216441
+  },
+  {
+    "pair_id": 53,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      3
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " forest jacket violin pencil pencil chair jacket tiger garden candle bottle rabbit ocean stone tiger rabbit cloud chair pencil ocean bread forest jacket ocean horse garden candle tiger cloud cloud jacket lamp cloud violin bread jacket horse garden rabbit violin jacket stone forest chair tiger apple window river candle garden horse bottle apple stone garden cloud jacket cloud jacket horse window apple violin cloud",
+    "empirical_cond_entropy": 1.688946476093778,
+    "empirical_unigram_entropy": 4.073433985216441
+  },
+  {
+    "pair_id": 54,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      4
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " chair window apple garden river forest bottle candle pencil chair bottle lamp jacket violin tiger bread ocean bread ocean mirror rabbit candle pencil chair window apple garden river forest tiger bread ocean stone mirror rabbit chair violin tiger bread ocean stone mirror ocean stone forest bottle horse cloud lamp chair window stone mirror tiger apple garden river forest bottle horse cloud bread ocean stone",
+    "empirical_cond_entropy": 0.7119802059091007,
+    "empirical_unigram_entropy": 4.197527399432949
+  },
+  {
+    "pair_id": 54,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      4
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " mirror bottle bread bread garden ocean cloud chair bottle candle tiger forest ocean violin stone window bread garden bread bread tiger lamp horse forest stone garden pencil rabbit river apple cloud ocean mirror ocean bottle candle jacket lamp apple stone tiger window horse chair stone stone river window forest violin chair tiger chair bottle ocean ocean river rabbit mirror mirror apple chair pencil forest",
+    "empirical_cond_entropy": 1.6525894275945192,
+    "empirical_unigram_entropy": 4.197527399432949
+  },
+  {
+    "pair_id": 55,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      5
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " bottle chair bread bottle chair river pencil garden candle stone mirror river horse forest pencil stone rabbit tiger lamp bread window apple horse river pencil window rabbit tiger lamp bread mirror river river pencil ocean lamp bread ocean candle forest window rabbit tiger stone pencil ocean mirror river apple horse mirror river violin window rabbit tiger lamp bread garden chair ocean forest cloud garden",
+    "empirical_cond_entropy": 1.1686611572292112,
+    "empirical_unigram_entropy": 4.114918704467279
+  },
+  {
+    "pair_id": 55,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      5
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " horse bread garden cloud pencil stone window ocean bread candle chair violin tiger ocean bread horse river tiger lamp bread river pencil apple stone chair river ocean bread bottle forest tiger window candle lamp mirror river apple river chair mirror lamp bottle rabbit river forest horse stone ocean mirror river window pencil rabbit pencil lamp mirror pencil forest window garden rabbit garden rabbit tiger",
+    "empirical_cond_entropy": 1.6927809986364153,
+    "empirical_unigram_entropy": 4.114918704467279
+  },
+  {
+    "pair_id": 56,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      6
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " rabbit forest mirror cloud bottle forest mirror cloud jacket pencil tiger candle jacket river horse apple violin violin river apple ocean jacket rabbit forest tiger river horse apple ocean garden violin bread stone window forest mirror chair lamp bottle stone stone chair lamp pencil rabbit violin apple ocean garden mirror garden jacket window jacket river rabbit tiger jacket apple ocean garden chair lamp apple",
+    "empirical_cond_entropy": 1.2678460790623365,
+    "empirical_unigram_entropy": 4.186889062229566
+  },
+  {
+    "pair_id": 56,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      6
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " tiger apple apple lamp apple stone tiger window candle forest rabbit garden bread apple stone horse pencil mirror lamp mirror jacket river jacket cloud bottle jacket forest ocean river lamp garden violin apple violin river chair forest rabbit jacket jacket garden garden apple window pencil violin ocean mirror tiger bottle rabbit violin mirror chair river stone ocean ocean horse cloud jacket forest rabbit chair",
+    "empirical_cond_entropy": 1.6591956351266797,
+    "empirical_unigram_entropy": 4.186889062229566
+  },
+  {
+    "pair_id": 57,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      7
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " bottle cloud bottle mirror ocean violin apple mirror chair mirror garden rabbit horse window cloud bottle jacket cloud stone apple cloud pencil violin apple chair pencil ocean tiger garden rabbit bread stone horse window cloud bottle mirror lamp chair forest jacket pencil violin mirror lamp candle river jacket horse window cloud jacket pencil violin apple violin horse forest ocean tiger chair tiger bottle window",
+    "empirical_cond_entropy": 1.2829987527509594,
+    "empirical_unigram_entropy": 4.158617633875558
+  },
+  {
+    "pair_id": 57,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      7
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " jacket window jacket pencil pencil violin cloud bottle apple horse horse cloud violin mirror window tiger cloud violin window bottle apple horse ocean lamp garden bottle mirror jacket stone ocean mirror tiger lamp rabbit candle tiger forest river jacket mirror pencil apple garden chair horse violin violin chair stone pencil chair bottle cloud chair mirror bread cloud apple ocean window cloud rabbit bottle forest",
+    "empirical_cond_entropy": 1.7436265306660998,
+    "empirical_unigram_entropy": 4.158617633875558
+  },
+  {
+    "pair_id": 58,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      8
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " mirror stone tiger apple ocean river lamp bottle bottle garden chair ocean pencil rabbit garden ocean pencil bottle chair bread mirror stone tiger window bottle candle violin jacket horse garden bread mirror stone tiger window bottle candle violin river lamp cloud river lamp cloud forest jacket horse apple garden apple ocean pencil bread candle pencil tiger window bottle rabbit garden chair ocean pencil rabbit",
+    "empirical_cond_entropy": 0.9421943878776388,
+    "empirical_unigram_entropy": 4.220506696105124
+  },
+  {
+    "pair_id": 58,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      8
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " lamp apple forest candle garden horse cloud lamp tiger mirror pencil bread stone mirror rabbit ocean bottle jacket violin chair stone bottle garden jacket candle chair garden violin bottle ocean river rabbit horse tiger pencil ocean lamp apple bread tiger bread pencil garden river cloud bottle river window apple pencil stone bottle rabbit ocean mirror chair bottle ocean candle window window garden tiger pencil",
+    "empirical_cond_entropy": 1.5917131900767498,
+    "empirical_unigram_entropy": 4.220506696105124
+  },
+  {
+    "pair_id": 59,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      9
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " chair forest ocean candle stone horse pencil river jacket lamp lamp garden bottle rabbit river apple chair tiger bottle candle pencil river apple jacket lamp bread window cloud horse window stone jacket lamp chair forest ocean candle stone bread mirror garden mirror garden pencil jacket rabbit violin tiger window cloud horse pencil window pencil river apple chair window cloud horse pencil river apple window",
+    "empirical_cond_entropy": 1.027445332590485,
+    "empirical_unigram_entropy": 4.1929884298164914
+  },
+  {
+    "pair_id": 59,
+    "category": "markov_H2.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 2.5,
+    "entropy_rate_true": 2.500000000000345,
+    "lam": 0.3847845095883713,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      5,
+      9
+    ],
+    "description": "Markov chain, H=2.50 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " rabbit garden cloud garden window horse mirror jacket tiger tiger candle chair window window stone mirror garden forest chair candle ocean pencil violin bottle stone window window cloud pencil pencil bread horse bottle bread cloud river lamp jacket horse rabbit apple pencil lamp river lamp river stone horse river apple lamp pencil apple pencil candle apple forest chair chair ocean jacket jacket river window",
+    "empirical_cond_entropy": 1.615057237489753,
+    "empirical_unigram_entropy": 4.1929884298164914
+  },
+  {
+    "pair_id": 60,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      0
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " lamp violin garden pencil ocean river stone violin garden candle apple bottle forest window candle river stone mirror cloud lamp mirror candle tiger pencil mirror apple lamp lamp violin candle apple pencil ocean apple rabbit apple bottle forest mirror cloud river stone bottle window forest window jacket river stone mirror river bottle forest window apple apple bottle forest garden candle ocean river window pencil",
+    "empirical_cond_entropy": 1.4082418545276374,
+    "empirical_unigram_entropy": 3.9144668072280524
+  },
+  {
+    "pair_id": 60,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      0
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " bottle forest stone window window mirror pencil pencil candle apple pencil lamp violin river cloud lamp mirror bottle river violin forest stone garden window violin bottle stone ocean mirror forest lamp bottle candle river river window candle jacket ocean garden mirror apple cloud ocean window forest tiger river apple river apple apple lamp forest apple garden rabbit stone candle candle mirror apple pencil bottle",
+    "empirical_cond_entropy": 1.9343568867137748,
+    "empirical_unigram_entropy": 3.9144668072280524
+  },
+  {
+    "pair_id": 61,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      1
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " mirror horse violin forest jacket pencil bottle apple violin chair jacket river bread tiger lamp mirror horse violin chair mirror horse violin ocean chair ocean pencil stone lamp pencil horse violin violin chair lamp jacket river lamp bread apple bottle apple forest garden window bread mirror mirror pencil candle stone forest pencil rabbit candle window rabbit candle tiger violin chair window jacket river cloud",
+    "empirical_cond_entropy": 1.3888881886725004,
+    "empirical_unigram_entropy": 4.171722954832899
+  },
+  {
+    "pair_id": 61,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      1
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " jacket violin pencil river lamp horse pencil ocean apple chair violin stone bottle chair violin forest horse jacket violin candle lamp candle violin chair mirror lamp jacket forest window candle apple cloud stone violin forest violin chair tiger mirror horse window mirror mirror bread jacket pencil pencil bread tiger lamp ocean garden mirror bottle river rabbit chair window rabbit pencil bread apple river horse",
+    "empirical_cond_entropy": 1.6470574348072686,
+    "empirical_unigram_entropy": 4.171722954832899
+  },
+  {
+    "pair_id": 62,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      2
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " cloud cloud stone cloud cloud garden ocean violin chair stone jacket tiger pencil apple bottle chair violin bread river cloud violin rabbit ocean lamp bottle chair violin stone jacket forest bottle chair window river horse apple river tiger candle lamp mirror mirror stone bread river horse cloud river window cloud tiger rabbit bread river horse tiger mirror stone jacket pencil ocean window cloud window",
+    "empirical_cond_entropy": 1.4187948886548276,
+    "empirical_unigram_entropy": 4.1304884298164914
+  },
+  {
+    "pair_id": 62,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      2
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " apple river mirror pencil stone stone tiger chair river cloud stone bread cloud rabbit bread jacket chair bread cloud river violin chair window stone violin candle apple cloud river ocean violin violin mirror forest rabbit horse stone tiger window tiger lamp bottle cloud window horse garden ocean jacket ocean window pencil mirror jacket cloud cloud river cloud chair bottle lamp bottle horse river tiger",
+    "empirical_cond_entropy": 1.6452181030435642,
+    "empirical_unigram_entropy": 4.1304884298164914
+  },
+  {
+    "pair_id": 63,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      3
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " cloud chair jacket bottle lamp garden stone jacket chair jacket bottle river window rabbit horse lamp garden stone bread forest candle apple ocean cloud chair window bottle river mirror pencil tiger window cloud violin horse tiger lamp garden stone bread bottle candle apple candle stone lamp garden ocean jacket garden stone bottle candle apple violin ocean cloud chair jacket bottle river lamp garden forest",
+    "empirical_cond_entropy": 1.0711737056406987,
+    "empirical_unigram_entropy": 4.142687164990341
+  },
+  {
+    "pair_id": 63,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      3
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " cloud garden candle bottle lamp bottle stone garden jacket stone jacket bread lamp chair rabbit chair garden pencil tiger candle jacket cloud window violin jacket jacket garden ocean stone lamp candle chair cloud apple candle apple river window bottle lamp stone bottle garden chair window horse horse stone river lamp cloud river bottle tiger apple violin ocean bread forest mirror bottle ocean forest garden",
+    "empirical_cond_entropy": 1.793141062075048,
+    "empirical_unigram_entropy": 4.142687164990341
+  },
+  {
+    "pair_id": 64,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      4
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " horse violin chair forest jacket bottle horse violin chair garden rabbit tiger forest rabbit lamp mirror bread cloud tiger window stone river river pencil lamp garden apple bottle horse violin rabbit stone river jacket bottle river pencil lamp horse rabbit garden apple forest rabbit stone window bread cloud chair river tiger jacket window stone rabbit lamp mirror bottle mirror bread candle stone river ocean",
+    "empirical_cond_entropy": 1.268466714257698,
+    "empirical_unigram_entropy": 4.196512843709971
+  },
+  {
+    "pair_id": 64,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      4
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " pencil apple horse lamp cloud lamp chair jacket river violin ocean forest bottle mirror stone jacket mirror bread violin chair garden apple chair bread rabbit bottle stone rabbit river horse candle bottle tiger river rabbit stone garden river lamp window bread rabbit garden pencil window tiger bottle river horse rabbit lamp stone rabbit forest river violin tiger mirror cloud jacket window stone forest horse",
+    "empirical_cond_entropy": 1.653620087376593,
+    "empirical_unigram_entropy": 4.196512843709971
+  },
+  {
+    "pair_id": 65,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      5
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " violin tiger pencil forest horse mirror window horse mirror bread ocean apple jacket bottle violin cloud garden bread candle lamp tiger window horse mirror rabbit river chair horse mirror window ocean lamp chair pencil chair horse mirror bottle river river tiger chair horse garden river chair apple jacket candle ocean violin lamp tiger rabbit river chair horse mirror window rabbit river bread window ocean",
+    "empirical_cond_entropy": 1.2030230149495371,
+    "empirical_unigram_entropy": 4.0498437507738325
+  },
+  {
+    "pair_id": 65,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      5
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " river horse violin tiger window river horse tiger violin river chair horse mirror chair bottle forest mirror cloud bread horse apple garden rabbit chair river mirror bottle chair window candle window jacket rabbit horse mirror tiger river garden ocean chair window bread ocean ocean river mirror horse candle horse violin chair lamp rabbit bread tiger pencil window ocean lamp lamp apple pencil mirror jacket",
+    "empirical_cond_entropy": 1.7906349198488047,
+    "empirical_unigram_entropy": 4.0498437507738325
+  },
+  {
+    "pair_id": 66,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      6
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " forest garden ocean lamp bread window pencil rabbit apple violin violin rabbit horse candle river bread bottle forest tiger candle horse horse violin garden jacket violin jacket horse lamp bread window tiger candle river forest tiger candle river stone candle river mirror jacket river candle river stone apple chair window lamp violin bread bottle apple cloud mirror jacket window mirror stone window mirror chair",
+    "empirical_cond_entropy": 1.3595038173292784,
+    "empirical_unigram_entropy": 4.156042680182112
+  },
+  {
+    "pair_id": 66,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      6
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " river chair mirror lamp river candle bread chair forest river rabbit mirror window violin candle violin cloud stone bread tiger rabbit stone bottle forest candle violin jacket bottle stone jacket mirror jacket bread river candle ocean garden horse apple forest river horse lamp mirror apple window bread horse lamp apple garden candle jacket pencil violin window window violin horse tiger tiger river candle window",
+    "empirical_cond_entropy": 1.6134720712975323,
+    "empirical_unigram_entropy": 4.156042680182112
+  },
+  {
+    "pair_id": 67,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      7
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " candle mirror cloud bottle ocean pencil mirror jacket jacket violin candle mirror ocean horse garden window rabbit jacket bread forest garden stone stone bread forest lamp apple river pencil bottle ocean pencil river pencil violin candle horse rabbit violin candle stone bread forest violin candle violin candle mirror cloud lamp apple river pencil pencil jacket river violin candle mirror tiger chair window lamp apple",
+    "empirical_cond_entropy": 1.0838202371030778,
+    "empirical_unigram_entropy": 4.143593750773832
+  },
+  {
+    "pair_id": 67,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      7
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " pencil stone river violin tiger river bread candle river cloud lamp stone horse bread pencil violin bottle candle bread rabbit violin mirror pencil chair bottle garden ocean forest pencil window stone violin pencil candle apple mirror mirror forest apple lamp garden pencil cloud candle lamp candle mirror mirror violin ocean ocean jacket forest candle candle horse rabbit apple window violin river jacket jacket jacket",
+    "empirical_cond_entropy": 1.770871229406955,
+    "empirical_unigram_entropy": 4.143593750773832
+  },
+  {
+    "pair_id": 68,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      8
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " violin jacket pencil stone forest garden candle bread river pencil stone forest candle lamp river apple lamp tiger stone stone forest window bottle pencil cloud bottle ocean bread mirror jacket pencil candle apple jacket violin candle garden ocean bread river lamp tiger tiger garden ocean forest window horse mirror mirror river jacket pencil garden bread chair violin candle river window bottle rabbit chair cloud",
+    "empirical_cond_entropy": 1.374656491017901,
+    "empirical_unigram_entropy": 4.216982282211646
+  },
+  {
+    "pair_id": 68,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      8
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " rabbit mirror apple river candle pencil bread river mirror pencil stone tiger lamp bread horse bottle forest river violin candle candle forest candle jacket forest river forest violin jacket ocean river jacket window violin ocean garden pencil bottle bread garden mirror lamp pencil lamp tiger candle garden chair window stone tiger window pencil ocean jacket chair stone cloud bread stone bottle cloud garden apple",
+    "empirical_cond_entropy": 1.716081491086582,
+    "empirical_unigram_entropy": 4.216982282211646
+  },
+  {
+    "pair_id": 69,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      9
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " garden forest candle forest apple apple mirror forest stone garden forest stone jacket rabbit candle cloud apple rabbit ocean bread pencil candle garden ocean candle candle garden forest stone tiger horse jacket pencil candle violin tiger violin river chair cloud pencil tiger ocean violin violin river chair lamp bottle horse lamp bottle jacket tiger violin mirror cloud candle garden forest stone window tiger violin",
+    "empirical_cond_entropy": 1.305632434738587,
+    "empirical_unigram_entropy": 4.130238235582061
+  },
+  {
+    "pair_id": 69,
+    "category": "markov_H3.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.0,
+    "entropy_rate_true": 2.9999999999990172,
+    "lam": 0.496183905975613,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      6,
+      9
+    ],
+    "description": "Markov chain, H=3.00 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " cloud tiger forest violin jacket horse candle forest apple stone garden violin stone cloud mirror horse pencil jacket river pencil ocean candle bread violin violin bottle rabbit tiger candle stone cloud rabbit candle bottle candle tiger forest chair violin forest tiger jacket river candle candle stone chair garden garden garden ocean apple tiger violin lamp pencil lamp mirror window garden forest apple ocean forest",
+    "empirical_cond_entropy": 1.6470574348072686,
+    "empirical_unigram_entropy": 4.130238235582061
+  },
+  {
+    "pair_id": 70,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      0
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " candle apple garden mirror tiger river violin violin chair forest candle garden tiger ocean cloud jacket window horse garden ocean garden candle forest candle pencil bread bottle lamp tiger rabbit cloud jacket window garden garden bread apple garden river violin stone garden pencil bread apple pencil violin chair stone apple garden stone lamp ocean bottle river violin chair tiger rabbit garden mirror violin chair",
+    "empirical_cond_entropy": 1.3610889835214985,
+    "empirical_unigram_entropy": 4.117132914624721
+  },
+  {
+    "pair_id": 70,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      0
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " candle apple cloud violin pencil stone chair forest garden violin apple tiger chair cloud garden stone garden garden violin bottle tiger chair ocean jacket garden bread stone window garden river lamp violin violin mirror bread pencil garden violin garden forest window bread jacket river lamp chair ocean candle mirror bottle rabbit rabbit apple ocean river tiger garden tiger candle apple horse pencil garden candle",
+    "empirical_cond_entropy": 1.627039578793934,
+    "empirical_unigram_entropy": 4.117132914624721
+  },
+  {
+    "pair_id": 71,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      1
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " garden forest chair garden forest river violin ocean apple bottle candle cloud rabbit river jacket window garden window jacket chair garden tiger candle horse ocean jacket rabbit violin ocean mirror mirror candle apple lamp forest river jacket rabbit violin rabbit mirror tiger rabbit violin rabbit violin pencil garden forest jacket candle violin pencil lamp apple ocean mirror stone window pencil apple lamp ocean mirror",
+    "empirical_cond_entropy": 1.3866388323220833,
+    "empirical_unigram_entropy": 4.055036532577265
+  },
+  {
+    "pair_id": 71,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      1
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " rabbit candle garden candle violin tiger bottle river mirror rabbit lamp garden ocean cloud ocean jacket rabbit lamp chair forest ocean rabbit forest window garden tiger jacket jacket river violin ocean river violin jacket violin chair horse mirror candle apple stone jacket forest pencil violin mirror violin forest mirror pencil garden garden apple lamp rabbit pencil apple window window rabbit candle mirror ocean apple",
+    "empirical_cond_entropy": 1.8290880859875944,
+    "empirical_unigram_entropy": 4.055036532577265
+  },
+  {
+    "pair_id": 72,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      2
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " rabbit lamp bread window violin violin chair pencil pencil river candle rabbit violin bread window violin bottle candle apple stone bread chair pencil tiger ocean ocean mirror chair horse rabbit lamp ocean mirror chair ocean lamp jacket garden stone bread mirror forest river bottle forest window cloud stone stone bread rabbit lamp jacket tiger stone mirror forest river bread window pencil apple ocean bottle",
+    "empirical_cond_entropy": 1.364669340492652,
+    "empirical_unigram_entropy": 4.171973149067329
+  },
+  {
+    "pair_id": 72,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      2
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " rabbit pencil garden mirror horse ocean candle bread stone rabbit window river stone ocean bottle violin jacket chair forest tiger forest rabbit river bread violin river stone apple chair ocean stone bread chair forest jacket lamp tiger ocean candle mirror bottle bread apple pencil pencil ocean window cloud violin mirror lamp bread lamp rabbit window chair violin mirror window bread bottle pencil lamp stone",
+    "empirical_cond_entropy": 1.64101711087705,
+    "empirical_unigram_entropy": 4.171973149067329
+  },
+  {
+    "pair_id": 73,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      3
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " forest window lamp mirror chair rabbit mirror forest garden ocean candle pencil bread garden forest apple forest violin bread stone apple chair pencil bread tiger garden river candle lamp candle pencil apple lamp bread garden ocean river rabbit stone stone tiger forest bottle jacket cloud river violin mirror forest bottle tiger mirror forest bottle cloud stone bottle rabbit rabbit tiger mirror forest bottle rabbit",
+    "empirical_cond_entropy": 1.4443447374554121,
+    "empirical_unigram_entropy": 4.084322516654253
+  },
+  {
+    "pair_id": 73,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      3
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " forest ocean forest rabbit forest mirror stone bottle rabbit forest bottle bread candle mirror river garden apple garden bread garden chair violin bottle tiger mirror chair window rabbit bread river river tiger violin mirror rabbit garden bread apple rabbit pencil cloud ocean forest bottle cloud forest jacket lamp forest stone stone pencil tiger lamp forest apple stone candle lamp mirror pencil candle tiger bottle",
+    "empirical_cond_entropy": 1.7300590231696977,
+    "empirical_unigram_entropy": 4.084322516654253
+  },
+  {
+    "pair_id": 74,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      4
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " pencil jacket candle jacket ocean bread pencil tiger ocean horse garden forest rabbit pencil apple garden lamp bottle ocean candle jacket bottle window bread mirror tiger stone bread violin river bottle stone apple ocean garden horse river cloud violin jacket jacket lamp forest mirror tiger ocean window garden apple jacket window bread candle jacket bottle stone forest river cloud tiger violin rabbit forest violin",
+    "empirical_cond_entropy": 1.5522293641558864,
+    "empirical_unigram_entropy": 4.159524219659049
+  },
+  {
+    "pair_id": 74,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      4
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " violin bread horse lamp stone mirror window mirror river bottle bottle pencil apple pencil candle river ocean cloud river stone bottle jacket horse jacket bread forest jacket jacket candle forest ocean violin jacket bread jacket stone tiger apple tiger bread tiger jacket rabbit lamp garden violin violin pencil ocean forest candle ocean window garden bottle forest ocean garden tiger cloud window rabbit garden apple",
+    "empirical_cond_entropy": 1.7624692450739263,
+    "empirical_unigram_entropy": 4.159524219659049
+  },
+  {
+    "pair_id": 75,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      5
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " garden mirror candle violin lamp forest horse river rabbit window chair stone tiger garden mirror stone bread garden forest chair stone violin horse candle pencil garden tiger window chair rabbit cloud chair stone bread garden rabbit jacket violin candle pencil horse mirror mirror horse rabbit cloud apple candle rabbit candle pencil ocean river bottle forest forest pencil cloud horse rabbit rabbit jacket violin lamp",
+    "empirical_cond_entropy": 1.4242145773896857,
+    "empirical_unigram_entropy": 4.13694854093942
+  },
+  {
+    "pair_id": 75,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      5
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " violin mirror rabbit jacket candle pencil jacket bread rabbit tiger lamp horse window violin candle violin stone horse rabbit rabbit mirror violin pencil garden cloud rabbit ocean tiger horse mirror stone river candle cloud pencil garden candle garden lamp chair river candle stone bread horse mirror horse pencil window cloud chair rabbit garden apple forest stone bottle forest chair forest garden rabbit forest chair",
+    "empirical_cond_entropy": 1.7141298552704853,
+    "empirical_unigram_entropy": 4.13694854093942
+  },
+  {
+    "pair_id": 76,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      6
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " candle violin tiger bottle chair jacket apple violin rabbit jacket horse stone bread lamp forest stone river garden river garden cloud rabbit mirror apple violin tiger bottle candle apple cloud bread rabbit ocean bottle mirror forest river garden jacket ocean horse pencil garden bottle lamp forest jacket ocean garden bottle lamp chair apple violin horse bread chair stone river garden stone forest mirror forest",
+    "empirical_cond_entropy": 1.3595038173292786,
+    "empirical_unigram_entropy": 4.156042680182112
+  },
+  {
+    "pair_id": 76,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      6
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " bottle forest tiger garden ocean garden bottle rabbit garden apple chair river apple mirror garden forest garden apple rabbit bread chair horse jacket forest cloud bread bread horse violin mirror jacket jacket candle horse apple jacket stone candle rabbit lamp chair river river forest ocean tiger mirror violin stone ocean river bottle lamp bottle bottle forest stone lamp stone violin violin pencil cloud garden",
+    "empirical_cond_entropy": 1.7160814910865825,
+    "empirical_unigram_entropy": 4.156042680182112
+  },
+  {
+    "pair_id": 77,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      7
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " cloud apple window ocean forest tiger forest ocean tiger mirror chair cloud chair cloud apple stone river window candle lamp bottle violin ocean mirror tiger cloud apple stone river window window pencil chair lamp cloud garden bread lamp pencil candle violin forest apple stone lamp horse garden violin candle horse violin pencil chair candle tiger violin forest horse garden bottle candle ocean mirror violin",
+    "empirical_cond_entropy": 1.5094219671396956,
+    "empirical_unigram_entropy": 4.085882914624721
+  },
+  {
+    "pair_id": 77,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      7
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " pencil cloud cloud window river mirror mirror violin apple violin candle ocean horse ocean pencil pencil lamp tiger violin stone tiger stone garden window garden cloud window lamp forest forest violin tiger forest candle forest garden cloud candle violin cloud horse bread stone window apple candle violin bottle lamp river apple horse ocean mirror chair tiger lamp candle apple chair chair chair bottle ocean",
+    "empirical_cond_entropy": 1.7342600153362122,
+    "empirical_unigram_entropy": 4.085882914624721
+  },
+  {
+    "pair_id": 78,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      8
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " pencil bottle rabbit apple bottle violin violin candle chair cloud river jacket mirror bottle rabbit apple ocean tiger lamp lamp window bread lamp violin apple apple ocean forest violin lamp horse bread lamp violin rabbit apple ocean candle violin cloud river jacket tiger candle stone tiger window pencil mirror river jacket mirror bottle rabbit jacket horse bread lamp jacket river bread lamp pencil stone",
+    "empirical_cond_entropy": 1.3196099668217025,
+    "empirical_unigram_entropy": 4.09132847002467
+  },
+  {
+    "pair_id": 78,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      8
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " apple candle bread rabbit pencil apple window violin rabbit stone candle lamp ocean lamp violin apple lamp bread rabbit tiger jacket stone rabbit lamp bottle tiger window jacket lamp ocean cloud jacket mirror violin river river violin horse jacket mirror violin pencil river lamp bottle river chair violin tiger candle bottle pencil horse lamp bread bottle mirror apple forest bread ocean jacket apple cloud",
+    "empirical_cond_entropy": 1.7167456812447799,
+    "empirical_unigram_entropy": 4.09132847002467
+  },
+  {
+    "pair_id": 79,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      9
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " cloud cloud bread ocean tiger chair bread jacket tiger mirror forest bread garden ocean cloud river window garden apple garden mirror chair mirror candle ocean stone apple pencil stone bread river bottle lamp horse window bottle violin lamp bottle violin lamp horse jacket chair mirror forest candle candle ocean pencil cloud cloud violin lamp violin lamp candle ocean jacket forest garden ocean pencil cloud",
+    "empirical_cond_entropy": 1.3610889835214988,
+    "empirical_unigram_entropy": 4.1499433125951875
+  },
+  {
+    "pair_id": 79,
+    "category": "markov_H3.50",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 3.5,
+    "entropy_rate_true": 3.5000000000009868,
+    "lam": 0.6259404353345417,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      7,
+      9
+    ],
+    "description": "Markov chain, H=3.50 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " chair violin pencil bread window jacket lamp lamp river garden ocean cloud stone forest violin river candle jacket window bread tiger ocean candle garden mirror tiger violin cloud forest bottle ocean horse mirror pencil mirror cloud horse apple chair cloud candle ocean garden lamp pencil cloud ocean bread garden jacket ocean lamp bread violin mirror lamp forest stone candle chair bottle apple bottle cloud",
+    "empirical_cond_entropy": 1.8175157692701251,
+    "empirical_unigram_entropy": 4.1499433125951875
+  },
+  {
+    "pair_id": 80,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      0
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " rabbit bread candle ocean pencil horse bottle bottle chair ocean rabbit ocean jacket apple stone chair violin lamp horse forest window pencil apple cloud mirror rabbit mirror pencil apple window candle apple bottle window bread garden cloud lamp candle river bread bottle stone rabbit bread bottle chair horse forest window candle stone mirror river rabbit violin pencil garden jacket jacket apple pencil horse forest",
+    "empirical_cond_entropy": 1.4834620937523986,
+    "empirical_unigram_entropy": 4.172376767019874
+  },
+  {
+    "pair_id": 80,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      0
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " pencil apple bread forest bottle ocean bread bread rabbit horse candle stone cloud pencil stone apple bottle jacket window stone violin rabbit apple mirror bread ocean violin horse window cloud forest forest bottle horse lamp mirror candle chair rabbit horse pencil window chair garden jacket ocean mirror garden jacket pencil apple candle river rabbit lamp rabbit river pencil window apple bottle chair candle bottle",
+    "empirical_cond_entropy": 1.6088610545443052,
+    "empirical_unigram_entropy": 4.172376767019874
+  },
+  {
+    "pair_id": 81,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      1
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " tiger tiger chair bottle candle tiger rabbit bread mirror garden jacket rabbit window chair jacket apple bread mirror bottle tiger garden apple horse jacket river violin pencil garden tiger pencil stone bottle candle window apple cloud pencil jacket window window ocean candle tiger stone candle horse chair jacket tiger bread cloud horse jacket pencil pencil stone chair bottle forest violin pencil mirror garden chair",
+    "empirical_cond_entropy": 1.6261186027599117,
+    "empirical_unigram_entropy": 4.061638867995136
+  },
+  {
+    "pair_id": 81,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      1
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " pencil chair river pencil mirror jacket garden horse tiger tiger rabbit jacket tiger bottle apple bread chair candle bottle tiger horse window bread ocean candle stone bread horse pencil violin jacket garden tiger candle stone tiger rabbit mirror stone bottle bottle pencil jacket chair window cloud apple chair jacket mirror window jacket window forest cloud candle tiger pencil apple chair violin pencil garden garden",
+    "empirical_cond_entropy": 1.790634919848805,
+    "empirical_unigram_entropy": 4.061638867995136
+  },
+  {
+    "pair_id": 82,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      2
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " bread garden chair rabbit pencil jacket cloud lamp mirror ocean rabbit forest jacket river pencil pencil tiger forest apple candle river candle apple jacket mirror bread bottle violin ocean tiger forest stone cloud horse pencil forest candle apple window cloud cloud garden horse forest bottle apple mirror lamp rabbit cloud garden garden rabbit horse apple pencil apple pencil tiger lamp garden ocean tiger forest",
+    "empirical_cond_entropy": 1.6130620467108194,
+    "empirical_unigram_entropy": 4.1206573285182
+  },
+  {
+    "pair_id": 82,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      2
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " apple violin candle forest bread pencil cloud pencil pencil bottle tiger bottle jacket ocean garden forest apple apple candle rabbit river cloud horse jacket bread horse lamp forest horse jacket rabbit ocean mirror garden rabbit tiger rabbit tiger chair pencil ocean mirror mirror pencil cloud pencil window candle forest apple forest lamp garden forest tiger garden cloud cloud apple apple stone lamp garden river",
+    "empirical_cond_entropy": 1.559967158330718,
+    "empirical_unigram_entropy": 4.1206573285182
+  },
+  {
+    "pair_id": 83,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      3
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " apple bottle jacket bread mirror stone violin tiger pencil forest mirror window mirror cloud river river mirror window apple horse forest bread violin bread jacket bread apple window jacket ocean lamp forest apple stone garden tiger candle pencil mirror stone window apple garden horse mirror horse garden river bread chair rabbit cloud rabbit window apple chair violin stone jacket river garden apple mirror jacket",
+    "empirical_cond_entropy": 1.7147940454286825,
+    "empirical_unigram_entropy": 4.087553861896761
+  },
+  {
+    "pair_id": 83,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      3
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " stone candle apple cloud forest rabbit apple jacket window tiger stone garden window stone mirror ocean bread forest jacket window bread jacket horse mirror pencil mirror jacket forest violin apple bottle mirror apple rabbit river horse violin window pencil mirror cloud bread horse garden apple river window chair violin chair stone garden apple river river mirror bread apple garden lamp jacket bread tiger mirror",
+    "empirical_cond_entropy": 1.7183308474369996,
+    "empirical_unigram_entropy": 4.087553861896761
+  },
+  {
+    "pair_id": 84,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      4
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " tiger cloud mirror stone rabbit violin cloud jacket garden horse lamp forest bread lamp forest chair violin garden mirror ocean candle chair lamp pencil mirror rabbit lamp forest river candle window apple pencil lamp forest horse pencil candle bread apple ocean window stone violin forest jacket stone bottle bottle pencil pencil violin rabbit lamp rabbit apple mirror river garden garden garden river lamp chair",
+    "empirical_cond_entropy": 1.6111104108947227,
+    "empirical_unigram_entropy": 4.183518072054204
+  },
+  {
+    "pair_id": 84,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      4
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " bread candle mirror rabbit mirror stone rabbit lamp bottle lamp lamp river violin forest stone violin pencil ocean violin forest horse forest apple candle garden lamp forest jacket horse chair garden ocean garden jacket bread river lamp chair mirror pencil cloud rabbit garden chair window candle cloud bottle pencil tiger garden rabbit river window pencil mirror apple forest apple lamp pencil stone lamp violin",
+    "empirical_cond_entropy": 1.7303131887411818,
+    "empirical_unigram_entropy": 4.183518072054204
+  },
+  {
+    "pair_id": 85,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      5
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " ocean chair river rabbit bottle jacket garden bread apple forest ocean chair cloud window bread mirror jacket horse stone lamp lamp ocean river rabbit horse window apple lamp jacket ocean forest pencil river violin jacket stone candle chair forest forest mirror violin violin candle jacket rabbit ocean window stone apple chair river rabbit pencil cloud violin ocean cloud window garden river bread stone tiger",
+    "empirical_cond_entropy": 1.666566959677634,
+    "empirical_unigram_entropy": 4.191428031846024
+  },
+  {
+    "pair_id": 85,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      5
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " ocean window stone stone window pencil chair jacket river cloud bottle ocean violin window ocean lamp rabbit cloud chair forest bread mirror ocean river bread candle garden lamp violin jacket mirror jacket candle rabbit tiger river chair stone cloud violin window rabbit jacket violin forest lamp river stone horse rabbit river jacket ocean forest garden horse apple pencil apple apple bread chair forest ocean",
+    "empirical_cond_entropy": 1.711880498920068,
+    "empirical_unigram_entropy": 4.191428031846024
+  },
+  {
+    "pair_id": 86,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      6
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " horse bread garden violin jacket pencil horse bread garden stone horse bread ocean garden horse bread lamp chair bottle mirror ocean rabbit jacket lamp chair stone horse stone ocean mirror window lamp chair forest bottle pencil lamp chair rabbit bottle ocean ocean mirror chair tiger horse stone rabbit forest forest lamp pencil apple horse bottle apple apple violin jacket river garden bottle forest horse",
+    "empirical_cond_entropy": 1.5534045057613937,
+    "empirical_unigram_entropy": 3.9966718842411786
+  },
+  {
+    "pair_id": 86,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      6
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " stone lamp horse pencil apple ocean jacket mirror bottle horse bottle ocean horse chair violin forest violin mirror rabbit garden horse horse stone horse chair stone ocean mirror rabbit horse chair garden lamp forest chair chair tiger window river horse jacket lamp lamp garden bottle jacket apple forest bread rabbit ocean bread garden pencil stone ocean pencil forest apple bread bottle bottle bread lamp",
+    "empirical_cond_entropy": 1.8388646259041954,
+    "empirical_unigram_entropy": 3.9966718842411786
+  },
+  {
+    "pair_id": 87,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      7
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " river garden cloud apple cloud chair tiger violin jacket rabbit mirror horse candle ocean tiger bottle forest garden apple apple window tiger jacket mirror chair forest ocean stone chair chair horse garden cloud ocean violin jacket lamp stone chair tiger window horse stone pencil lamp bottle tiger window horse river garden rabbit stone jacket candle pencil window candle lamp tiger garden bottle apple stone",
+    "empirical_cond_entropy": 1.595293547047903,
+    "empirical_unigram_entropy": 4.154482282211645
+  },
+  {
+    "pair_id": 87,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      7
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " river chair garden stone cloud forest tiger river apple jacket pencil mirror tiger rabbit cloud garden ocean stone apple window violin candle chair violin window garden stone bottle cloud chair tiger apple ocean candle candle tiger jacket lamp bottle ocean horse lamp pencil chair bottle forest tiger jacket garden garden rabbit horse window chair stone lamp window tiger jacket horse stone mirror horse apple",
+    "empirical_cond_entropy": 1.6843354593405506,
+    "empirical_unigram_entropy": 4.154482282211645
+  },
+  {
+    "pair_id": 88,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      8
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " candle garden chair chair bread candle horse lamp pencil jacket candle apple tiger lamp rabbit window bottle window window violin river violin jacket candle pencil tiger mirror bread apple tiger pencil window forest ocean cloud violin bottle tiger lamp rabbit window stone bread cloud pencil tiger forest forest apple window stone jacket violin bottle jacket ocean pencil mirror candle garden pencil jacket ocean rabbit",
+    "empirical_cond_entropy": 1.4663142292848426,
+    "empirical_unigram_entropy": 4.169801813326428
+  },
+  {
+    "pair_id": 88,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      8
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " bottle window stone violin tiger violin mirror jacket candle stone jacket bottle pencil horse ocean bread apple cloud apple chair pencil bottle pencil forest candle window candle jacket tiger window jacket tiger lamp jacket candle pencil forest violin lamp window garden violin ocean rabbit garden river bread window rabbit rabbit mirror cloud candle pencil bread lamp tiger pencil chair tiger apple window forest ocean",
+    "empirical_cond_entropy": 1.6567904197610333,
+    "empirical_unigram_entropy": 4.169801813326428
+  },
+  {
+    "pair_id": 89,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      9
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " rabbit candle lamp bread cloud garden apple mirror violin horse candle chair ocean bottle tiger jacket pencil lamp forest ocean river ocean stone violin tiger stone river violin cloud stone rabbit horse garden mirror river apple candle jacket lamp pencil lamp pencil candle jacket chair mirror tiger stone pencil mirror candle jacket apple bread cloud bottle garden apple bread window rabbit mirror river ocean",
+    "empirical_cond_entropy": 1.4245810470135623,
+    "empirical_unigram_entropy": 4.222678031846025
+  },
+  {
+    "pair_id": 89,
+    "category": "markov_H4.00",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.0,
+    "entropy_rate_true": 3.9999999999996856,
+    "lam": 0.790572751345735,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      8,
+      9
+    ],
+    "description": "Markov chain, H=4.00 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " violin rabbit bottle tiger river ocean bottle rabbit pencil tiger pencil stone forest jacket mirror lamp stone apple candle tiger candle rabbit bread candle river jacket apple cloud horse apple mirror candle garden stone cloud jacket river bread garden garden cloud pencil lamp pencil mirror apple mirror chair window stone candle mirror bread horse lamp ocean violin chair ocean violin river jacket ocean lamp",
+    "empirical_cond_entropy": 1.6587856105399663,
+    "empirical_unigram_entropy": 4.222678031846025
+  },
+  {
+    "pair_id": 90,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      0
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 0",
+    "role": "base",
+    "prompt": " lamp jacket chair garden violin cloud garden mirror forest rabbit rabbit river lamp garden mirror jacket horse jacket stone violin jacket ocean jacket river stone jacket violin cloud pencil jacket lamp horse garden cloud bottle lamp garden apple bread forest jacket pencil window window horse lamp chair forest horse lamp ocean apple garden horse river violin rabbit river jacket ocean tiger tiger river horse",
+    "empirical_cond_entropy": 1.7744080314152726,
+    "empirical_unigram_entropy": 4.004877492046058
+  },
+  {
+    "pair_id": 90,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      0
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 0",
+    "role": "contrast",
+    "prompt": " tiger river jacket horse garden river pencil cloud forest bread garden ocean window tiger apple forest apple violin jacket rabbit mirror mirror jacket horse stone jacket lamp garden lamp forest horse cloud jacket river garden jacket horse ocean cloud chair rabbit lamp jacket pencil river chair lamp lamp violin horse garden rabbit garden window bottle ocean jacket stone river violin lamp violin jacket horse",
+    "empirical_cond_entropy": 1.742661999669241,
+    "empirical_unigram_entropy": 4.004877492046058
+  },
+  {
+    "pair_id": 91,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      1
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 1",
+    "role": "base",
+    "prompt": " apple forest bread lamp river forest stone horse violin cloud lamp window window horse window candle chair jacket tiger rabbit candle pencil jacket cloud bread rabbit rabbit bread rabbit window chair river forest violin mirror tiger garden apple horse bread chair apple window candle river chair horse lamp horse violin apple violin stone window candle tiger window forest window candle garden horse river lamp",
+    "empirical_cond_entropy": 1.7560188965569947,
+    "empirical_unigram_entropy": 4.001964015923012
+  },
+  {
+    "pair_id": 91,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      1
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 1",
+    "role": "contrast",
+    "prompt": " forest rabbit stone forest horse chair apple apple chair violin apple window lamp cloud rabbit river apple violin lamp cloud tiger candle window candle window violin window bread window candle lamp garden candle mirror lamp horse window bread jacket horse rabbit candle garden window chair window violin horse forest horse river rabbit bread chair bread river stone forest horse tiger tiger river jacket pencil",
+    "empirical_cond_entropy": 1.7638002456946626,
+    "empirical_unigram_entropy": 4.001964015923012
+  },
+  {
+    "pair_id": 92,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      2
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 2",
+    "role": "base",
+    "prompt": " lamp forest apple river mirror chair river apple mirror tiger garden apple mirror cloud rabbit river stone candle tiger mirror chair apple rabbit violin tiger stone lamp lamp jacket apple garden pencil jacket chair violin lamp river stone apple horse river bottle jacket horse candle chair window garden window jacket river forest river bottle garden pencil window chair violin lamp chair candle horse mirror",
+    "empirical_cond_entropy": 1.7271428563567413,
+    "empirical_unigram_entropy": 4.024693118360758
+  },
+  {
+    "pair_id": 92,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      2
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 2",
+    "role": "contrast",
+    "prompt": " horse apple apple garden lamp stone jacket lamp rabbit chair garden river cloud chair mirror jacket garden window apple apple forest forest violin bottle candle violin mirror jacket pencil chair stone window tiger river mirror pencil jacket tiger lamp horse river rabbit river apple tiger chair lamp stone lamp violin mirror window apple river garden candle chair bottle mirror chair candle river river horse",
+    "empirical_cond_entropy": 1.8042024273452073,
+    "empirical_unigram_entropy": 4.024693118360758
+  },
+  {
+    "pair_id": 93,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      3
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 3",
+    "role": "base",
+    "prompt": " mirror chair chair apple violin window bread forest mirror candle candle mirror stone mirror stone window river bread stone bread mirror forest cloud candle apple forest bread bread candle cloud jacket jacket bottle chair bottle apple chair jacket ocean river lamp garden rabbit horse stone lamp mirror jacket lamp lamp chair ocean mirror chair river cloud violin apple cloud stone garden cloud forest pencil",
+    "empirical_cond_entropy": 1.916588387050858,
+    "empirical_unigram_entropy": 4.050858306496811
+  },
+  {
+    "pair_id": 93,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      3
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 3",
+    "role": "contrast",
+    "prompt": " stone apple violin jacket candle candle bread river forest rabbit bread cloud apple horse river jacket bread river lamp chair chair chair chair window apple candle lamp mirror jacket ocean chair window mirror bottle pencil mirror garden cloud stone mirror stone garden bread forest lamp mirror violin lamp jacket forest bread stone ocean cloud cloud cloud stone candle forest apple mirror mirror bottle chair",
+    "empirical_cond_entropy": 1.6522229579706424,
+    "empirical_unigram_entropy": 4.050858306496811
+  },
+  {
+    "pair_id": 94,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      4
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 4",
+    "role": "base",
+    "prompt": " window tiger bottle lamp forest candle mirror horse bottle river jacket apple pencil river stone forest tiger ocean mirror apple stone ocean candle ocean window cloud mirror violin jacket tiger horse tiger river stone garden jacket apple jacket stone river garden horse window apple mirror lamp bread horse window river ocean window bread cloud rabbit violin rabbit violin forest mirror apple cloud candle river",
+    "empirical_cond_entropy": 1.6421922524825572,
+    "empirical_unigram_entropy": 4.13502739943295
+  },
+  {
+    "pair_id": 94,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      4
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 4",
+    "role": "contrast",
+    "prompt": " cloud mirror stone bread ocean stone jacket garden tiger river lamp window bottle rabbit window window horse window mirror forest apple horse bread mirror river violin apple river pencil ocean apple jacket mirror candle tiger jacket candle violin horse forest stone lamp candle stone apple garden tiger horse forest mirror river jacket river violin window rabbit cloud apple cloud river ocean ocean tiger bottle",
+    "empirical_cond_entropy": 1.7358451815284321,
+    "empirical_unigram_entropy": 4.13502739943295
+  },
+  {
+    "pair_id": 95,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      5
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 5",
+    "role": "base",
+    "prompt": " candle jacket candle forest pencil ocean bottle rabbit horse pencil lamp cloud ocean forest river lamp stone tiger jacket tiger chair window apple candle bread lamp forest horse chair stone lamp cloud apple jacket pencil lamp mirror rabbit bread bread stone forest horse bottle pencil mirror jacket stone rabbit ocean apple bottle window jacket rabbit chair window river forest river ocean forest candle pencil",
+    "empirical_cond_entropy": 1.6827502931483305,
+    "empirical_unigram_entropy": 4.099642047769037
+  },
+  {
+    "pair_id": 95,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      5
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 5",
+    "role": "contrast",
+    "prompt": " river forest horse ocean candle stone bottle lamp forest bottle candle cloud lamp stone stone lamp forest river mirror pencil rabbit mirror lamp horse pencil bread pencil jacket pencil forest tiger rabbit jacket forest bread candle cloud window ocean bottle chair bread pencil river chair jacket window apple jacket apple horse apple window stone ocean rabbit tiger rabbit chair jacket forest candle lamp ocean",
+    "empirical_cond_entropy": 1.688536451507065,
+    "empirical_unigram_entropy": 4.099642047769037
+  },
+  {
+    "pair_id": 96,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      6
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 6",
+    "role": "base",
+    "prompt": " stone lamp jacket rabbit candle garden ocean jacket window mirror apple chair violin tiger ocean horse garden apple forest jacket pencil pencil river pencil bottle window tiger tiger window river violin cloud violin window tiger tiger jacket candle rabbit garden bread candle cloud forest garden stone bottle candle lamp ocean pencil stone mirror forest lamp cloud jacket ocean candle bottle cloud ocean tiger mirror",
+    "empirical_cond_entropy": 1.7478275228326143,
+    "empirical_unigram_entropy": 4.173937164990341
+  },
+  {
+    "pair_id": 96,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      6
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 6",
+    "role": "contrast",
+    "prompt": " bread pencil cloud stone window rabbit window ocean jacket mirror bottle bottle forest violin candle tiger jacket stone tiger lamp bottle jacket ocean garden ocean violin cloud apple garden pencil chair cloud river candle garden forest window mirror forest lamp violin horse tiger pencil ocean candle jacket window river rabbit lamp ocean apple tiger tiger tiger pencil candle candle garden jacket mirror cloud stone",
+    "empirical_cond_entropy": 1.652589427594519,
+    "empirical_unigram_entropy": 4.173937164990341
+  },
+  {
+    "pair_id": 97,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      7
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 7",
+    "role": "base",
+    "prompt": " ocean forest bottle stone candle ocean garden pencil lamp ocean jacket cloud horse stone horse bread tiger chair garden bottle forest bottle garden ocean forest chair chair lamp jacket river window apple garden cloud pencil cloud river forest violin jacket garden pencil garden apple candle bread lamp cloud forest bottle tiger stone mirror lamp garden window window river stone pencil horse rabbit pencil bread",
+    "empirical_cond_entropy": 1.6807986573322333,
+    "empirical_unigram_entropy": 4.165623587245974
+  },
+  {
+    "pair_id": 97,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      7
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 7",
+    "role": "contrast",
+    "prompt": " lamp candle tiger forest forest cloud forest lamp garden horse apple candle cloud stone horse lamp window bottle window garden bread rabbit ocean garden horse ocean forest violin chair bottle bottle pencil tiger cloud bread forest window cloud apple stone stone pencil jacket mirror garden jacket garden river garden stone pencil ocean river ocean pencil bottle garden pencil lamp river jacket chair bread chair",
+    "empirical_cond_entropy": 1.7562730621284788,
+    "empirical_unigram_entropy": 4.165623587245974
+  },
+  {
+    "pair_id": 98,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      8
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 8",
+    "role": "base",
+    "prompt": " jacket bread mirror horse chair garden ocean rabbit ocean forest lamp jacket river window mirror rabbit horse bread ocean tiger chair jacket violin horse stone jacket lamp ocean bread horse garden garden bread apple bottle mirror tiger mirror apple forest bread mirror lamp mirror ocean apple apple garden horse violin candle bottle chair bottle bread stone candle violin pencil rabbit bread chair river window",
+    "empirical_cond_entropy": 1.8317474669247245,
+    "empirical_unigram_entropy": 4.103123587245975
+  },
+  {
+    "pair_id": 98,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      8
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 8",
+    "role": "contrast",
+    "prompt": " bread bread horse violin chair stone forest bottle jacket mirror mirror chair lamp bread window horse garden mirror stone violin tiger ocean rabbit bread horse garden apple river lamp apple forest bread ocean rabbit jacket window lamp garden garden mirror jacket bottle chair apple horse river apple rabbit jacket bread ocean candle chair bread candle violin ocean pencil ocean tiger bottle mirror mirror horse",
+    "empirical_cond_entropy": 1.6474674593939815,
+    "empirical_unigram_entropy": 4.103123587245975
+  },
+  {
+    "pair_id": 99,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      9
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 9",
+    "role": "base",
+    "prompt": " pencil candle horse ocean stone pencil ocean candle tiger pencil garden cloud stone forest violin apple mirror window river jacket violin candle cloud cloud violin tiger jacket chair apple garden cloud mirror cloud window bread mirror chair pencil rabbit garden rabbit lamp garden bread forest window horse mirror apple candle horse window window tiger river ocean garden apple pencil stone horse forest rabbit tiger",
+    "empirical_cond_entropy": 1.761395030329016,
+    "empirical_unigram_entropy": 4.152921884241178
+  },
+  {
+    "pair_id": 99,
+    "category": "markov_H4.32",
+    "contrast_type": "shuffle",
+    "entropy_rate_target": 4.321928094887363,
+    "entropy_rate_true": 4.321928094887363,
+    "lam": 1.0,
+    "length": 64,
+    "seed_key": [
+      20261102,
+      64,
+      9,
+      9
+    ],
+    "description": "Markov chain, H=4.32 bits/token, L=64, rep 9",
+    "role": "contrast",
+    "prompt": " apple cloud window mirror pencil pencil ocean river mirror chair apple ocean stone forest mirror stone jacket pencil apple pencil forest horse mirror garden garden garden violin ocean cloud stone rabbit tiger tiger rabbit window window candle chair cloud pencil apple cloud window cloud candle lamp jacket violin horse bread candle rabbit tiger garden river candle window horse tiger bread horse violin garden forest",
+    "empirical_cond_entropy": 1.6739382842285888,
+    "empirical_unigram_entropy": 4.152921884241178
+  }
+]
