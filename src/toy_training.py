@@ -90,6 +90,8 @@ class ToyConfig:
     batch: int = 64
     steps: int = 20_000
     eval_every: int = 250
+    dense_until: int = 0          # also eval every dense_every steps up to here (decision log P8)
+    dense_every: int = 10
     n_eval: int = 2048
     seed: int = 0
     eval_seed: int = 20261103
@@ -175,7 +177,7 @@ def train(cfg: ToyConfig, ckpt_dir: Path | None = None, log=print) -> tuple[Hook
         opt.zero_grad(set_to_none=True)
         loss.backward()
         opt.step()
-        if step % cfg.eval_every == 0:
+        if step % cfg.eval_every == 0 or (step <= cfg.dense_until and step % cfg.dense_every == 0):
             record(step)
     hist = {k_: np.array(v) for k_, v in hist.items()}
     hist["config"] = np.array(asdict(cfg), dtype=object)
