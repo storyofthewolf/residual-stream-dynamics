@@ -76,20 +76,55 @@ def plot_training_stages(hist: dict, title: str, save_path=None):
 
 
 def plot_attention_patterns(patterns: list[np.ndarray], tokens: np.ndarray, title: str,
-                            n_show: int = 30, save_path=None):
-    """Attention pattern per layer for one sequence (first n_show positions)."""
+                            n_show: int = 30, panel_titles: list[str] | None = None,
+                            save_path=None):
+    """Attention patterns for one sequence (first n_show positions), one panel each.
+    Default panel titles are 'Layer i'; pass panel_titles for other comparisons."""
+    patterns = [np.asarray(A) for A in patterns]
+    tokens = np.asarray(tokens)
     fig, axes = plt.subplots(1, len(patterns), figsize=(5.2 * len(patterns), 4.8))
     axes = np.atleast_1d(axes)
     labels = [str(t) for t in tokens[:n_show]]
     for i, (ax, A) in enumerate(zip(axes, patterns)):
         im = ax.imshow(A[:n_show, :n_show], cmap="Blues", vmin=0, vmax=1)
-        ax.set_title(f"Layer {i}", color=INK, fontsize=11)
+        ax.set_title(panel_titles[i] if panel_titles else f"Layer {i}", color=INK, fontsize=11)
         ax.set_xlabel("Key position (token)", color=INK)
         ax.set_ylabel("Query position (token)", color=INK)
         ax.set_xticks(range(n_show)); ax.set_xticklabels(labels, fontsize=6)
         ax.set_yticks(range(n_show)); ax.set_yticklabels(labels, fontsize=6)
         fig.colorbar(im, ax=ax, fraction=0.046, label="Attention weight")
     fig.suptitle(title, color=INK, fontsize=12)
+    fig.tight_layout()
+    _save(fig, save_path)
+    return fig
+
+
+SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]   # categorical slots 1–4, fixed order
+
+
+def plot_metric_vs_step(steps, series: dict, ylabel: str, title: str,
+                        logx: bool = False, mark_steps=None, save_path=None):
+    """
+    One or more metrics against training step.
+
+    series: {label: values aligned with steps} (≤ 4 series, colors in fixed order).
+    mark_steps: optional steps to draw as faint vertical guides.
+    """
+    steps = np.asarray(steps)
+    fig, ax = plt.subplots(figsize=(7.5, 4.2))
+    for (label, vals), c in zip(series.items(), SERIES):
+        ax.plot(np.maximum(steps, 1) if logx else steps, np.asarray(vals),
+                color=c, lw=2, marker="o", ms=3, label=label)
+    for s in (mark_steps or []):
+        ax.axvline(s, color=MUTED, lw=1, ls=":")
+    if logx:
+        ax.set_xscale("log")
+    ax.set_xlabel("Training step", color=INK)
+    ax.set_ylabel(ylabel, color=INK)
+    ax.set_title(title, color=INK, fontsize=11)
+    if len(series) > 1:
+        ax.legend(frameon=False, fontsize=9)
+    _style(ax)
     fig.tight_layout()
     _save(fig, save_path)
     return fig

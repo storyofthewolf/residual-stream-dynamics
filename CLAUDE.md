@@ -356,7 +356,28 @@ is not argument-parsing or I/O belongs in a compute module.
 
 ## Next steps
 
-### Session handoff — current state (2026-08-17)
+### Session handoff — PROJECT PAUSED (2026-11-03)
+
+The author paused the project. Goal when it resumes: a finishable piece of work
+ending in a public write-up aimed at the interpretability community (career move
+into interpretability; see notes/). State at pause:
+
+- **Batch 1 (ablation controls): stopped at reproduction.** The README's "~20%
+  top-1 flips at 99% EV in both stages" does not reproduce (8-model means: 27.3%
+  post-hoc, 51.3% intervention mid-depth). README not yet corrected.
+- **Markov entropy-rate corpus: run** on gpt2-small and pythia-160m (L=64, 256).
+  Residual entropy anti-correlates with H in middle layers, flips near output.
+- **Phase 1 toy transformers: trained** (k=3 and k=20); the published staged
+  learning and statistical-induction head are reproduced. Open anomaly: layer 1's
+  induction score rises before layer 0's previous-token head forms.
+- **Next, by the author's own hand:** `notebooks/toy_induction_guided.ipynb` — a
+  guided activation-patching investigation of that anomaly. It is deliberately
+  saved WITHOUT outputs and without conclusions; do not run it and report its
+  results unless the author asks. Its tools (`src/toy_patching_compute.py`) were
+  checked against the model's own computation.
+- Every design decision and outcome: `notes/decision_log.md`.
+
+### Earlier handoff (2026-08-17)
 
 The Colab work is **merged to `main`** (PR #1, merge commit `619d932`); the
 `colab-support` branch is deleted locally and on the remote. `main` is the only
